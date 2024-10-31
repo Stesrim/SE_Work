@@ -78,6 +78,7 @@ public class GameMap extends JFrame implements KeyListener {
         startCountdown();
         this.timeLeft = timeLeft;
     }
+    
     //檢查有沒有與傳送門碰撞
     public int checkPortal() {
         //模擬一個矩形 與玩家座標一模一樣 這邊使用玩家原座標是因為是用space來確認
@@ -178,42 +179,69 @@ public class GameMap extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        int[] moveX={0, 0, -10, 10};
+        int[] moveY={-10, 10, 0, 0};
         //獲得玩家的座標與地圖座標
         int newX = player.getX();
         int newY = player.getY();
-        int oldmapX = newmapX;
-        int oldmapY = newmapY;
+        //獲得玩家實際按wasd的什麼
+        int type = -1;
         //使用wasd控制人物
         switch (e.getKeyChar()) {
             case 'w':
-                newY -= 10;
-                newmapY += 10;
+                type = 0;    
+                newY += moveY[type];
+                newmapY -= moveY[type];
                 break;
             case 's':
-                newY += 10;
-                newmapY -= 10;
+                type = 1;
+                newY += moveY[type];
+                newmapY -= moveY[type];
                 break;
             case 'a':
-                newX -= 10;
-                newmapX += 10;
+                type = 2;    
+                newX += moveX[type];
+                newmapX -= moveX[type];
                 break;
             case 'd':
-                newX += 10;
-                newmapX -= 10;
+                type = 3;
+                newX += moveX[type];
+                newmapX -= moveX[type];
                 break;
             case ' ': 
                 //判斷是否碰撞傳送門 如果有就傳送 沒有的話無事發生
                 if (checkPortal() != -1) {
-                    System.out.println("hi");
+                    for(Portal portal : portals ){
+                        if (checkPortal() == portal.getId()) {
+                            newmapX -= portal.getX() + (portal.getWidth() - player.getWidth()) / 2 - newX;
+                            newmapY -= portal.getY() + (portal.getHeight() - player.getHeight()) / 2 - newY;
+                            newX = portal.getX() + (portal.getWidth() - player.getWidth()) / 2;
+                            newY = portal.getY() + (portal.getHeight() - player.getHeight()) / 2;
+                            break;
+                        }
+                    }
                 }
                 break;
         }
+        //如果沒有接觸到障礙物和碰到邊界，則更新玩家位置以及更新地圖的相對位置視角
         if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
             player.setLocation(newX, newY);
             checkWindowMargin(newmapX, newmapY);
-        } else {
-            newmapX = oldmapX;
-            newmapY = oldmapY;
+        }else{
+            //else 則慢慢減少位置間的距離差
+            for (int i = 10 ;i >= 0; i--) {
+                //逐步減少newX,newY的移動距離
+                newX -= moveX[type] / 10;
+                newY -= moveY[type] / 10;
+                //慢慢恢復地圖相對位置視角
+                newmapX += moveX[type] / 10; 
+                newmapY += moveY[type] / 10;
+                if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
+                    player.setLocation(newX, newY);
+                    checkWindowMargin(newmapX, newmapY);
+                    break;
+                }
+            }
         }
     }
 
