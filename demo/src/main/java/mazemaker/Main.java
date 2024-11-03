@@ -30,7 +30,7 @@ public class Main {
         label2.setBounds(105, 200, 50, 50);
         label2.setBackground(Color.blue);
         label2.setOpaque(true);
-        label2.setPassable(false);
+        label2.setPassable(true);
         label2.setType(1);
 
         Obstable label3 = new Obstable();
@@ -39,12 +39,21 @@ public class Main {
         label3.setOpaque(true);
         label3.setPassable(false);
         label3.setType(1);
+        Obstable label4 = new Obstable();
+        label4.setBounds(300, 300, 75, 75);
+        label4.setBackground(Color.black);
+        label4.setOpaque(true);
+        label4.setPassable(true);
+        label4.setType(2);
         GameMap window = new GameMap();
+        window.setBG(1);
         window.setTimeleft(180);
         window.addObstable(label, label.getType());
         window.addObstable(label2, label2.getType());
         window.addObstable(label3, label3.getType());
+        window.addObstable(label4, label4.getType());
         window.addPortal(holl1);
         window.addPortal(holl2);
+        
     }
 }

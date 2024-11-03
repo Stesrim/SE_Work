@@ -10,10 +10,14 @@ public class GameMap extends JFrame implements KeyListener {
     private ArrayList<Obstable> obstables;//存放障礙物的陣列
     private ArrayList<Portal> portals;//存放傳送門的陣列
 
-    private JPanel mapPanel; //存放地圖的資料
+    //private JPanel mapPanel; //存放地圖的資料
+    private JLayeredPane mapPanel;
     private JLabel countdownLabel; //放置時間的標籤
-    
-    //視窗實際大小    
+    //設定背景圖片和resize
+    private ImageIcon backgroundIcon;
+    private Image backgroundImage;
+    JLabel backgroundLabel;
+    //視窗實際大小
     private int windowWidth = 800; 
     private int windowHeight = 600;
     //地圖實際大小    
@@ -38,18 +42,39 @@ public class GameMap extends JFrame implements KeyListener {
         obstables = new ArrayList<>();
         portals = new ArrayList<>();
         //宣告地圖大小
-        mapPanel = new JPanel();
+        mapPanel = new JLayeredPane();
         mapPanel.setSize(mapWidth, mapHeight);
         mapPanel.setLayout(null);
-        mapPanel.setBackground(Color.LIGHT_GRAY);
-        mapPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+
         //將塗層優先順序宣告好
-        JLayeredPane pane = getLayeredPane();//拿到視窗的塗層
+        //拿到視窗的塗層
+        JLayeredPane pane = getLayeredPane();
         countdownLabel = new JLabel();
-        pane.add (countdownLabel, 0);// ground
-        pane.add(mapPanel, 1);// sky
+        pane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
+        pane.add(countdownLabel, JLayeredPane.PALETTE_LAYER);
+        
         
         this.setVisible(true);
+    }
+    //設定背景畫面
+    public void setBG(int type){
+        backgroundLabel = new JLabel();
+        if (type == 1){
+            backgroundIcon = new ImageIcon(getClass().getResource("/images/all.jpg"));
+        }else if (type == 2){
+            backgroundIcon = new ImageIcon(getClass().getResource("/images/sls.png"));
+        }else if (type == 3){
+            backgroundIcon = new ImageIcon(getClass().getResource("/images/test.png"));
+        }
+        //把圖片大小改成跟地圖一樣
+        backgroundImage = backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(backgroundImage));
+        backgroundLabel.setOpaque(false);
+        backgroundLabel.setSize(mapWidth, mapHeight);
+        backgroundLabel.setBorder(BorderFactory.createLineBorder(Color.black));
+        //背景圖片 默認層
+        mapPanel.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
     }
     //倒數計時
     private void startCountdown() {
@@ -78,7 +103,20 @@ public class GameMap extends JFrame implements KeyListener {
         startCountdown();
         this.timeLeft = timeLeft;
     }
-    
+    //檢查有沒有接觸到終點碰撞
+    public boolean checkEndSpot() {
+        //模擬一個矩形 與玩家座標一模一樣 這邊使用玩家原座標是因為是用space來確認
+        Rectangle playerBounds = player.getBounds();
+        for (Obstable obstable : obstables) {
+            if (obstable.getType() == 2){    
+                Rectangle portalBounds = obstable.getBounds();
+                if (playerBounds.intersects(portalBounds)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     //檢查有沒有與傳送門碰撞
     public int checkPortal() {
         //模擬一個矩形 與玩家座標一模一樣 這邊使用玩家原座標是因為是用space來確認
@@ -98,10 +136,12 @@ public class GameMap extends JFrame implements KeyListener {
         //瀏覽每一個障礙物
         for (Obstable obstable : obstables) {
             //模擬一個矩形 與障礙物座標一模一樣
-            Rectangle obstableBounds = obstable.getBounds();
-            //如果碰撞的話 就會回傳true 
-            if (playerBounds.intersects(obstableBounds)) {
-                return true;
+            if (obstable.isPassable() == false){
+                Rectangle obstableBounds = obstable.getBounds();
+                //如果碰撞的話 就會回傳true 
+                if (playerBounds.intersects(obstableBounds)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -140,7 +180,7 @@ public class GameMap extends JFrame implements KeyListener {
         if (type == 0) {
             player = obstable;
             //把玩家加到地圖
-            mapPanel.add(player);
+            mapPanel.add(player, JLayeredPane.MODAL_LAYER);
             //獲得玩家的實際位置
             int OriginX = player.getX();
             int OriginY = player.getY();
@@ -166,7 +206,7 @@ public class GameMap extends JFrame implements KeyListener {
             mapPanel.setLocation(LimitMapX, LimitMapY);
         } else {
             obstables.add(obstable);
-            mapPanel.add(obstable);
+            mapPanel.add(obstable, JLayeredPane.PALETTE_LAYER);
         }
 
         this.repaint();
@@ -174,7 +214,7 @@ public class GameMap extends JFrame implements KeyListener {
     //新增傳送門
     public void addPortal(Portal portal) {
         portals.add(portal);
-        mapPanel.add(portal);
+        mapPanel.add(portal, JLayeredPane.MODAL_LAYER);
     }
 
     @Override
@@ -242,6 +282,12 @@ public class GameMap extends JFrame implements KeyListener {
                     break;
                 }
             }
+        }
+        //如果玩家與終點接觸到
+        if (checkEndSpot()){
+            
+            System.out.println("You win");
+        
         }
     }
 
