@@ -1,35 +1,56 @@
 package mazemaker;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.Timer;
+
+
 
 public class GameMap extends JFrame implements KeyListener {
     private Obstable player;//玩家
     private ArrayList<Obstable> obstables;//存放障礙物的陣列
     private ArrayList<Portal> portals;//存放傳送門的陣列
 
-    //private JPanel mapPanel; //存放地圖的資料
+    //存放地圖的資料
     private JLayeredPane mapPanel;
-    private JLabel countdownLabel; //放置時間的標籤
+    //放置時間的標籤
+    private JLabel countdownLabel; 
+    //放置結算的標籤 
+    private JLabel theendLabel;
+
     //設定背景圖片和resize
     private ImageIcon backgroundIcon;
-    private Image backgroundImage;
     JLabel backgroundLabel;
     //視窗實際大小
     private int windowWidth = 800; 
     private int windowHeight = 600;
+    
     //地圖實際大小    
     private int mapWidth = 2400;
     private int mapHeight = 1800;
+    
     //邊界的緩衝區，讓玩家不要看到太多地圖邊界
     private int buffer = 100;
     //地圖實際的座標
     private int newmapX;
     private int newmapY;
     //默認時間
-    private int timeLeft = 60; 
+    private int timeLeft = 60;
+    //遊戲是否結束
+    private boolean Gameover = false; 
 
     GameMap() {
         //製作視窗
@@ -45,14 +66,19 @@ public class GameMap extends JFrame implements KeyListener {
         mapPanel = new JLayeredPane();
         mapPanel.setSize(mapWidth, mapHeight);
         mapPanel.setLayout(null);
-        
-
+        theendLabel = new JLabel();
+        theendLabel.setBounds(windowHeight / 2, windowWidth / 15, 300, 200);
+        theendLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        theendLabel.setForeground(Color.RED);
+        theendLabel.setText("You Win !");
+        theendLabel.setVisible(false);
         //將塗層優先順序宣告好
         //拿到視窗的塗層
         JLayeredPane pane = getLayeredPane();
         countdownLabel = new JLabel();
         pane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
         pane.add(countdownLabel, JLayeredPane.PALETTE_LAYER);
+        pane.add(theendLabel, JLayeredPane.DRAG_LAYER);
         
         
         this.setVisible(true);
@@ -61,15 +87,15 @@ public class GameMap extends JFrame implements KeyListener {
     public void setBG(int type){
         backgroundLabel = new JLabel();
         if (type == 1){
-            backgroundIcon = new ImageIcon(getClass().getResource("/images/all.jpg"));
+            backgroundIcon = new ImageIcon(getClass().getResource("/images/background/all.jpg"));
         }else if (type == 2){
-            backgroundIcon = new ImageIcon(getClass().getResource("/images/sls.png"));
+            backgroundIcon = new ImageIcon(getClass().getResource("/images/background/sls.png"));
         }else if (type == 3){
-            backgroundIcon = new ImageIcon(getClass().getResource("/images/test.png"));
+            backgroundIcon = new ImageIcon(getClass().getResource("/images/background/test.png"));
         }
         //把圖片大小改成跟地圖一樣
-        backgroundImage = backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH);
-        backgroundLabel.setIcon(new ImageIcon(backgroundImage));
+        backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH));
+        backgroundLabel.setIcon(backgroundIcon);
         backgroundLabel.setOpaque(false);
         backgroundLabel.setSize(mapWidth, mapHeight);
         backgroundLabel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -83,10 +109,14 @@ public class GameMap extends JFrame implements KeyListener {
             public void actionPerformed(ActionEvent e) {
                 timeLeft--;
                 countdownLabel.setText("Time left: " + timeLeft + " s");
-                //如果數到0會彈出視窗
-                if (timeLeft <= 0) {
+                //如果數到0顯示出遊戲結果
+                if (timeLeft <= 0 || Gameover) {
                     ((Timer)e.getSource()).stop();
-                    JOptionPane.showMessageDialog(null, "Time's up!");
+                    if(timeLeft <= 0 ){
+                        theendLabel.setText("You Loss !");
+                    }
+                    Gameover = true;
+                    theendLabel.setVisible(true);
                 }
             }
         });
@@ -226,42 +256,44 @@ public class GameMap extends JFrame implements KeyListener {
         int newY = player.getY();
         //獲得玩家實際按wasd的什麼
         int type = -1;
-        //使用wasd控制人物
-        switch (e.getKeyChar()) {
-            case 'w':
-                type = 0;    
-                newY += moveY[type];
-                newmapY -= moveY[type];
-                break;
-            case 's':
-                type = 1;
-                newY += moveY[type];
-                newmapY -= moveY[type];
-                break;
-            case 'a':
-                type = 2;    
-                newX += moveX[type];
-                newmapX -= moveX[type];
-                break;
-            case 'd':
-                type = 3;
-                newX += moveX[type];
-                newmapX -= moveX[type];
-                break;
-            case ' ': 
-                //判斷是否碰撞傳送門 如果有就傳送 沒有的話無事發生
-                if (checkPortal() != -1) {
-                    for(Portal portal : portals ){
-                        if (checkPortal() == portal.getId()) {
-                            newmapX -= portal.getX() + (portal.getWidth() - player.getWidth()) / 2 - newX;
-                            newmapY -= portal.getY() + (portal.getHeight() - player.getHeight()) / 2 - newY;
-                            newX = portal.getX() + (portal.getWidth() - player.getWidth()) / 2;
-                            newY = portal.getY() + (portal.getHeight() - player.getHeight()) / 2;
-                            break;
+        //如果遊戲還沒結束 -> 則可以使用wasd控制人物
+        if (!Gameover){
+            switch (e.getKeyChar()) {
+                case 'w': case 'W':
+                    type = 0;    
+                    newY += moveY[type];
+                    newmapY -= moveY[type];
+                    break;
+                case 's': case 'S':
+                    type = 1;
+                    newY += moveY[type];
+                    newmapY -= moveY[type];
+                    break;
+                case 'a': case 'A':
+                    type = 2;    
+                    newX += moveX[type];
+                    newmapX -= moveX[type];
+                    break;
+                case 'd': case 'D':
+                    type = 3;
+                    newX += moveX[type];
+                    newmapX -= moveX[type];
+                    break;
+                case ' ': 
+                    //判斷是否碰撞傳送門 如果有就傳送 沒有的話無事發生
+                    if (checkPortal() != -1) {
+                        for(Portal portal : portals ){
+                            if (checkPortal() == portal.getId()) {
+                                newmapX -= portal.getX() + (portal.getWidth() - player.getWidth()) / 2 - newX;
+                                newmapY -= portal.getY() + (portal.getHeight() - player.getHeight()) / 2 - newY;
+                                newX = portal.getX() + (portal.getWidth() - player.getWidth()) / 2;
+                                newY = portal.getY() + (portal.getHeight() - player.getHeight()) / 2;
+                                break;
+                            }
                         }
                     }
-                }
-                break;
+                    break;
+            }
         }
         //如果沒有接觸到障礙物和碰到邊界，則更新玩家位置以及更新地圖的相對位置視角
         if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
@@ -283,11 +315,9 @@ public class GameMap extends JFrame implements KeyListener {
                 }
             }
         }
-        //如果玩家與終點接觸到
+        //如果玩家與終點接觸到->遊戲結束
         if (checkEndSpot()){
-            
-            System.out.println("You win");
-        
+            Gameover = true;
         }
     }
 
