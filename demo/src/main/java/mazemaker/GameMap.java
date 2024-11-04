@@ -104,11 +104,12 @@ public class GameMap extends JFrame implements KeyListener {
     }
     //倒數計時
     private void startCountdown() {
-        Timer timer = new Timer(1000, new ActionListener() {
+        //每100毫秒判斷一次
+        Timer timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                timeLeft--;
-                countdownLabel.setText("Time left: " + timeLeft + " s");
+                timeLeft-= 100;
+                countdownLabel.setText("Time left: " + timeLeft/1000 + " s");
                 //如果數到0顯示出遊戲結果
                 if (timeLeft <= 0 || Gameover) {
                     ((Timer)e.getSource()).stop();
@@ -131,7 +132,7 @@ public class GameMap extends JFrame implements KeyListener {
         countdownLabel.setBounds(windowWidth - 200, 10, 180, 30);
         
         startCountdown();
-        this.timeLeft = timeLeft;
+        this.timeLeft = timeLeft*1000;
     }
     //檢查有沒有接觸到終點碰撞
     public boolean checkEndSpot() {

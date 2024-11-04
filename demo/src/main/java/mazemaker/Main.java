@@ -50,7 +50,7 @@ public class Main {
         label4.setType(2);
         GameMap window = new GameMap();
         window.setBG(2);
-        window.setTimeleft(10);
+        window.setTimeleft(100);
         window.addObstable(label, label.getType());
         window.addObstable(label2, label2.getType());
         window.addObstable(label3, label3.getType());
