@@ -21,7 +21,7 @@ import javax.swing.Timer;
 
 public class GameMap extends JFrame implements KeyListener {
     private Obstable player;//玩家
-    private ArrayList<Obstable> obstables;//存放障礙物的陣列
+    private ArrayList<Obstable> obstables;//存放障礙物、裝飾品、終點的陣列
     private ArrayList<Portal> portals;//存放傳送門的陣列
 
     //存放地圖的資料
@@ -54,7 +54,8 @@ public class GameMap extends JFrame implements KeyListener {
 
     GameMap() {
         //製作視窗
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //關閉不等於程式結束##
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(windowWidth, windowHeight);
         this.setLayout(null);
@@ -87,11 +88,11 @@ public class GameMap extends JFrame implements KeyListener {
     public void setBG(int type){
         backgroundLabel = new JLabel();
         if (type == 1){
-            backgroundIcon = new ImageIcon(getClass().getResource("/images/background/all.jpg"));
+            backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/all.jpg"));
         }else if (type == 2){
-            backgroundIcon = new ImageIcon(getClass().getResource("/images/background/sls.png"));
+            backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/sls.png"));
         }else if (type == 3){
-            backgroundIcon = new ImageIcon(getClass().getResource("/images/background/test.png"));
+            backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/test.png"));
         }
         //把圖片大小改成跟地圖一樣
         backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH));
@@ -130,9 +131,9 @@ public class GameMap extends JFrame implements KeyListener {
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 20));
         countdownLabel.setForeground(Color.RED);
         countdownLabel.setBounds(windowWidth - 200, 10, 180, 30);
-        
-        startCountdown();
         this.timeLeft = timeLeft*1000;
+        startCountdown();
+        
     }
     //檢查有沒有接觸到終點碰撞
     public boolean checkEndSpot() {
