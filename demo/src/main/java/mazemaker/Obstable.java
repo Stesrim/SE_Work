@@ -5,8 +5,8 @@ import javax.swing.JLabel;
 
 public class Obstable extends JLabel{
     private ImageIcon name;
-    private int type;// 0 = people 1 = obstable 2 = end
-    private boolean passable;// true = ground false = obstable
+    private int type;
+    private boolean passable;
 
     public Obstable(){
         super();

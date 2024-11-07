@@ -17,7 +17,6 @@ public class MainWindow extends JFrame {
     JButton makemap;
     JButton defaultmap;
     JButton importmap;
-    int click_count;
     JButton returntitle;
 	MainWindow()
 	{
@@ -31,7 +30,7 @@ public class MainWindow extends JFrame {
 	    returntitle = new JButton("返回");
 	    defaultmap = new JButton("預設地圖");
 	    importmap = new JButton("導入地圖");
-	       
+		
 	    this.add(gamestart);
 	    this.add(makemap);
 	    this.add(exitBtn);
