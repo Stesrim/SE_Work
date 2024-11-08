@@ -18,6 +18,8 @@ public class MainWindow extends JFrame {
     JButton defaultmap;
     JButton importmap;
     JButton returntitle;
+
+	private defaultgame gameWindow;
 	MainWindow()
 	{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,7 +104,11 @@ public class MainWindow extends JFrame {
 
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-				new defaultgame();
+				if (gameWindow == null || !gameWindow.window.isVisible()) {
+                    gameWindow = new defaultgame();
+                }else {
+					gameWindow.window.toFront();  
+				}
 	        }
 	    });
 	    importmap.addActionListener(new ActionListener() {

@@ -4,6 +4,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 public class defaultgame {
+    public GameMap window;
     defaultgame() {
         Portal holl1 = new Portal();
         holl1.setId(20);
@@ -48,7 +49,7 @@ public class defaultgame {
         label4.setOpaque(true);
         label4.setPassable(true);
         label4.setType(2);
-        GameMap window = new GameMap();
+        window = new GameMap();
         window.setBG(3);
         window.setTimeleft(100);
         window.addObstable(label, label.getType());
