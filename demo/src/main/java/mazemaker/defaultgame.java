@@ -27,7 +27,7 @@ public class defaultgame {
         label.setOpaque(false);
         label.setPassable(true);
         label.setType(0);
-        ImageIcon a = new ImageIcon(defaultgame.class.getResource("/images/playerandendspot/player.png"));
+        ImageIcon a = new ImageIcon(getClass().getResource("/images/playerandendspot/player.png"));
         a.setImage(a.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
         label.setIcon(a);
         Obstable label2 = new Obstable();
@@ -50,6 +50,7 @@ public class defaultgame {
         label4.setPassable(true);
         label4.setType(2);
         window = new GameMap();
+        window.setMazesize(1000, 500);
         window.setBG(3);
         window.setTimeleft(100);
         window.addObstable(label, label.getType());

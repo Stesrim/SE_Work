@@ -2,6 +2,7 @@ package mazemaker;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -9,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
 
 
 public class MainWindow extends JFrame {
@@ -33,6 +35,12 @@ public class MainWindow extends JFrame {
 	    defaultmap = new JButton("預設地圖");
 	    importmap = new JButton("導入地圖");
 		
+		exitBtn.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
+		gamestart.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
+		makemap.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
+		returntitle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
+		defaultmap.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
+		importmap.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
 	    this.add(gamestart);
 	    this.add(makemap);
 	    this.add(exitBtn);
@@ -42,23 +50,17 @@ public class MainWindow extends JFrame {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-	    gamestart.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.5),150,50);
-	    makemap.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.6),150,50);
-	    exitBtn.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.7),150,50);
-	    defaultmap.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.5),150,50);
-	    importmap.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.6),150,50);
-	    returntitle.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.7),150,50);
+	    gamestart.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.5),200,75);
+	    makemap.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.6),200,75);
+	    exitBtn.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.7),200,75);
+	    defaultmap.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.5),200,75);
+	    importmap.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.6),200,75);
+	    returntitle.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.7),200,75);
 	    
 	    returntitle.setVisible(false); 
 	    defaultmap.setVisible(false); 
 	    importmap.setVisible(false); 
-
-
-	    
-	    
-
-	    
-
+		
 	    gamestart.addActionListener(new ActionListener() {
 
 	        @Override
@@ -74,12 +76,13 @@ public class MainWindow extends JFrame {
 
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	    	    defaultmap.setVisible(false); 
-	    	    importmap.setVisible(false); 
-	    	    returntitle.setVisible(false); 
-	    	    gamestart.setVisible(true); 
-	    	    makemap.setVisible(true); 
-	    	    exitBtn.setVisible(true); 	        }
+	    	    defaultmap.setVisible(false);
+	    	    importmap.setVisible(false);
+	    	    returntitle.setVisible(false);
+	    	    gamestart.setVisible(true);
+	    	    makemap.setVisible(true);
+	    	    exitBtn.setVisible(true); 	        
+			}
 	    });
 	    
 

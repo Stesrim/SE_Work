@@ -84,6 +84,12 @@ public class GameMap extends JFrame implements KeyListener {
         
         this.setVisible(true);
     }
+    //設定地圖實際大小
+    public void setMazesize(int Width, int Height){
+        this.mapWidth = Width;
+        this.mapHeight = Height;
+        mapPanel.setSize(mapWidth, mapHeight);
+    }
     //設定背景畫面
     public void setBG(int type){
         backgroundLabel = new JLabel();
@@ -192,7 +198,7 @@ public class GameMap extends JFrame implements KeyListener {
         int MiniumY = windowHeight / 2 - buffer - player.getHeight() / 2;
         //下邊界
         int MaximumY = windowHeight / 2 - mapHeight + buffer + player.getHeight() / 2;
-        //如果超出邊界將視角調到邊界 沒超出邊界就用原本的邊界
+        //如果超出邊界將視角調到邊界 沒超出邊界就用原本的位置
         if (newmapX > MiniumX) {
             newmapX = MiniumX;
         } else if (newmapX < MaximumX) {

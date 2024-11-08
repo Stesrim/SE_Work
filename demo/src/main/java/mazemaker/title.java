@@ -1,22 +1,17 @@
 package mazemaker;
 
 import java.awt.Color;
-import javax.swing.*;
 
-public class title extends JFrame 
-{
-   public String title = "ezPaint";
-   public int version = 1;
+import javax.swing.JFrame;
 
-   title()
-   {
-	   MainWindow mainWin = new MainWindow();
-	   
+public class title extends JFrame {
+   	public String title = "ezPaint";
+   	public int version = 1;
 
-	   mainWin.getContentPane().setBackground(Color.GRAY); // 設置內容面板背景色
- 
-	   mainWin.setVisible(true);
- 
-	   mainWin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   }
+   	title(){
+	   	MainWindow mainWin = new MainWindow();
+	   	mainWin.getContentPane().setBackground(Color.GRAY); // 設置內容面板背景色
+		mainWin.setVisible(true);
+	   	mainWin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
 }
