@@ -1,5 +1,4 @@
 package mazemaker;
-
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,23 +6,11 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-
-public class gamedesign extends JFrame {
-	
-	JButton exitBtn;
-    JButton gamestart;
-    JButton makemap;
-    JButton defaultmap;
-    JButton importmap;
-    JButton returntitle;
-    gamedesign()
-	{
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(null);
-		this.setBackground(Color.darkGray);	
+public class mazedesignmenu extends JFrame{
+    mazedesignmenu(makemap parent){
 		
-	    returntitle = new JButton("重返主頁面");
-	    this.add(returntitle);
+        JButton returntitle = new JButton("重返主頁面");
+	    parent.designWin.add(returntitle);
 
 		JMenu fileMenu = new JMenu("檔案");
         JMenuItem openMenuItem = new JMenuItem("新增");
@@ -55,11 +42,10 @@ public class gamedesign extends JFrame {
 		menuBar.add(editmMenu);
 
 
-        this.setJMenuBar(menuBar); 
+        parent.designWin.setJMenuBar(menuBar); 
 	
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		// Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
 	    // returntitle.setBounds((int)(screenSize.getWidth ()/2-75),(int)(screenSize.getHeight()*0.7),150,50);
 
@@ -74,6 +60,5 @@ public class gamedesign extends JFrame {
 	        }
 	    });
 
-	}
-
+    }
 }
