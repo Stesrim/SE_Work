@@ -6,12 +6,16 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+
 public class mazedesignmenu extends JFrame{
-    mazedesignmenu(makemap parent){
+
+
+	
+    	mazedesignmenu(makemap parent){
 		
         JButton returntitle = new JButton("重返主頁面");
 	    parent.designWin.add(returntitle);
-
+		
 		JMenu fileMenu = new JMenu("檔案");
         JMenuItem openMenuItem = new JMenuItem("新增");
         JMenuItem saveMenuItem = new JMenuItem("保存");

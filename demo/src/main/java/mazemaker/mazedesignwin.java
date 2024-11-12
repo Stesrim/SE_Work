@@ -9,12 +9,12 @@ import java.awt.event.ActionEvent;
 
 
 public class mazedesignwin extends JFrame {
-	
+
     mazedesignwin(makemap parent)
 	{
 
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.getContentPane().setBackground(Color.BLACK); // 設置內容面板背景色 
+		setLayout(new BorderLayout());
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
