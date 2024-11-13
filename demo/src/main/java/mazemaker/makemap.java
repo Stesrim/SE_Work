@@ -1,10 +1,9 @@
 package mazemaker;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 
 public class makemap extends JFrame {
 
@@ -14,9 +13,7 @@ public class makemap extends JFrame {
    	makemap(){
     	tabpane = new Page();
 		designWin = new mazedesignwin(this); //創建設計端頁面
-		dm = new mazedesignmenu(this); //創建設計端菜單&工具列
-		
-        designWin.add(tabpane, BorderLayout.CENTER); // 將 TabbedPaneDemo 面板添加到 JFrame
-
+		dm = new mazedesignmenu(this, tabpane); //創建設計端菜單&工具列
+		designWin.add(tabpane, BorderLayout.CENTER);
    	}
 }

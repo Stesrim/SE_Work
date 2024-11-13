@@ -41,6 +41,7 @@ public class MainWindow extends JFrame {
 		returntitle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
 		defaultmap.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
 		importmap.setFont(new Font("Microsoft JhengHei", Font.BOLD, 35));
+		
 	    this.add(gamestart);
 	    this.add(makemap);
 	    this.add(exitBtn);
