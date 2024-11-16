@@ -96,7 +96,7 @@ public class mazedesignmenu extends JFrame{
 
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	    	    dispose();
+	    	    parent.designWin.dispose();
 	    	    new title();
 	        }
 	    });
