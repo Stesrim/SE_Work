@@ -1,20 +1,9 @@
 package mazemaker;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 
 public class toolbar extends JPanel {
     private JToolBar toolBar;  // 工具條
@@ -56,6 +45,7 @@ public class toolbar extends JPanel {
                 showSupportList();  
             }
         });
+        
         toolBar.add(supportbtn);
         toolBar.add(new JButton("裝飾物"));
 
@@ -75,9 +65,7 @@ public class toolbar extends JPanel {
         toolBar.setAlignmentY(Component.TOP_ALIGNMENT);
         contentPanel.add(toolBar, BorderLayout.NORTH);
         // 設置內容區域
-        parent.designWin.add(contentPanel, BorderLayout.EAST);
-
-        
+        parent.designWin.add(contentPanel, BorderLayout.EAST);        
         
 
         
@@ -87,7 +75,7 @@ public class toolbar extends JPanel {
     }
 
     // 創建顯示障礙物選項的 JList 面板
-    private JPanel createObstacleListPanel() {
+    public JPanel createObstacleListPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -103,7 +91,7 @@ public class toolbar extends JPanel {
 
         // 設置 JList 的選擇模式（例如單選模式）
         obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        
         // 包裹 JList 的滾動面板
         JScrollPane scrollPane = new JScrollPane(obstacleList);
 
@@ -113,11 +101,30 @@ public class toolbar extends JPanel {
         // 添加到面板中
         panel.add(scrollPane, BorderLayout.WEST);
         
+        obstacleList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // 判斷鼠標是否單擊
+                if (e.getClickCount() == 1) {
+                    // 獲取 JList 被點擊的項目索引
+                    int index = obstacleList.locationToIndex(e.getPoint());
+                    
+                    // 確保點擊的索引有效
+                    if (index >= 0) {
+                        String selectedItem = obstacleList.getModel().getElementAt(index);
+                        if(makemap.st == State.active)
+	    			{
+	    				makemap.st = State.ready2drawRectangle;
+	    			}
+                    }
+                }
+            }
+        });
 
         return panel;
     }
 
-    private JPanel createSupportListPanel() {
+    public JPanel createSupportListPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
