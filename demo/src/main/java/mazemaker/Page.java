@@ -6,10 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
  
-public class Page extends JPanel{  
+public class Page extends JPanel{
     private boolean[] exists = {false, false, false, false, false};
     private JTabbedPane tabbedPane;
- 
     public Page() {
         tabbedPane = new JTabbedPane();
         setLayout(new BorderLayout());
@@ -29,10 +28,10 @@ public class Page extends JPanel{
     }
     //新增頁面
     public void addNewTab() {
-        for (int i = 0 ; i <= exists.length; i++){
+        for (int i = 0 ; i < exists.length; i++){
             if (exists[i] == false){
-                JPanel panel = new JPanel(new BorderLayout());
-                JLabel label = new JLabel("這是頁面 " + (i +1)); 
+                DrawPanel panel = new DrawPanel();
+                JLabel label = new JLabel("這是頁面 " + (i +1));
                 // 添加元件到頁面
                 panel.add(label, BorderLayout.CENTER);
                 // 將新頁面添加到 JTabbedPane

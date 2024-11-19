@@ -1,11 +1,22 @@
 package mazemaker;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
-public class toolbar extends JFrame {
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
+import javax.swing.ListSelectionModel;
+
+public class toolbar extends JPanel {
     private JToolBar toolBar;  // 工具條
     private JPanel contentPanel;  // 內容區域面板，顯示不同的物件
     private JPanel toolPanel;  // 用來顯示 JList 的面板
@@ -61,12 +72,13 @@ public class toolbar extends JFrame {
         // toolPanel.add(toolBar,BorderLayout.NORTH);
         // 將 JList 面板放入卡片布局中
         contentPanel.add(createObstacleListPanel(), "障礙物選項");
-
+        toolBar.setAlignmentY(Component.TOP_ALIGNMENT);
+        contentPanel.add(toolBar, BorderLayout.NORTH);
         // 設置內容區域
         parent.designWin.add(contentPanel, BorderLayout.EAST);
 
-        contentPanel.add(toolBar, BorderLayout.NORTH);
-        toolBar.setAlignmentY(Component.TOP_ALIGNMENT);
+        
+        
 
         
 
