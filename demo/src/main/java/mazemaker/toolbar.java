@@ -112,10 +112,9 @@ public class toolbar extends JPanel {
                     // 確保點擊的索引有效
                     if (index >= 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
-                        if(makemap.st == State.active)
-	    			{
-	    				makemap.st = State.ready2drawRectangle;
-	    			}
+                        if(makemap.st == State.active){
+	    			    	makemap.st = State.ready2drawRectangle;
+	    			    }
                     }
                 }
             }

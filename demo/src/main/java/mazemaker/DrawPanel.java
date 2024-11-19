@@ -9,8 +9,8 @@ import javax.sound.sampled.Line;
 import javax.swing.JPanel;
 
 public class DrawPanel extends JPanel {
-    public ArrayList< ArrayList <Portal>> portals;
-    public ArrayList< ArrayList <Obstable>> obstables;
+    public ArrayList<Portal> portals;
+    public ArrayList<Obstable> obstables;
     public Point lp, sp;
 	boolean isDraw = false;
 	boolean isDrawRect = false;
