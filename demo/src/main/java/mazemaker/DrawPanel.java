@@ -1,11 +1,14 @@
 package mazemaker;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.sound.sampled.Line;
 import javax.swing.JPanel;
 
 public class DrawPanel extends JPanel {
@@ -128,7 +131,7 @@ public class DrawPanel extends JPanel {
                         DrawPanel.this.validate();
                         DrawPanel.this.repaint();
 					
-                        makemap.st = State.active;
+                        makemap.st = State.ready2drawRectangle;
 				}
 			}
 			

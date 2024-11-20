@@ -1,9 +1,21 @@
 package mazemaker;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
+import javax.swing.ListSelectionModel;
 
 public class toolbar extends JPanel {
     private JToolBar toolBar;  // 工具條
@@ -27,7 +39,8 @@ public class toolbar extends JPanel {
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
-                showObstacleList();  // 顯示障礙物選項
+                makemap.st = State.active;
+                // showObstacleList();  // 顯示障礙物選項
 
                 
             }
@@ -42,7 +55,8 @@ public class toolbar extends JPanel {
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
-                showSupportList();  
+                makemap.st = State.active;
+                // showSupportList();  
             }
         });
         
@@ -108,13 +122,31 @@ public class toolbar extends JPanel {
                 if (e.getClickCount() == 1) {
                     // 獲取 JList 被點擊的項目索引
                     int index = obstacleList.locationToIndex(e.getPoint());
-                    
+                    makemap.st = State.active;
                     // 確保點擊的索引有效
-                    if (index >= 0) {
+                    if (index == 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
 	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(selectedItem);
 	    			    }
+                    
+                    }
+                    else if (index == 1) {
+                        String selectedItem = obstacleList.getModel().getElementAt(index);
+                        if(makemap.st == State.active){
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(selectedItem);
+	    			    }
+                    
+                    }
+                    else if (index == 2) {
+                        String selectedItem = obstacleList.getModel().getElementAt(index);
+                        if(makemap.st == State.active){
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(selectedItem);
+	    			    }
+                    
                     }
                 }
             }
@@ -149,6 +181,35 @@ public class toolbar extends JPanel {
         // 添加到面板中
         panel.add(scrollPane, BorderLayout.WEST);
         
+        obstacleList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // 判斷鼠標是否單擊
+                if (e.getClickCount() == 1) {
+                    // 獲取 JList 被點擊的項目索引
+                    int index = obstacleList.locationToIndex(e.getPoint());
+                    makemap.st = State.active;
+                    // 確保點擊的索引有效
+                    if (index == 0) {
+                        String selectedItem = obstacleList.getModel().getElementAt(index);
+                        if(makemap.st == State.active){
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(selectedItem);
+	    			    }
+                    
+                    }
+                    else if (index == 1) {
+                        String selectedItem = obstacleList.getModel().getElementAt(index);
+                        if(makemap.st == State.active){
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(selectedItem);
+	    			    }
+                    
+                    }
+
+                }
+            }
+        });
 
         return panel;
     }
