@@ -129,6 +129,8 @@ public class toolbar extends JPanel {
                         if(makemap.st == State.active){
 	    			    	makemap.st = State.ready2drawRectangle;
                             System.out.println(selectedItem);
+                            makemap.sta = State.obstablestate;
+
 	    			    }
                     
                     }
@@ -137,6 +139,8 @@ public class toolbar extends JPanel {
                         if(makemap.st == State.active){
 	    			    	makemap.st = State.ready2drawRectangle;
                             System.out.println(selectedItem);
+                            makemap.sta = State.obstablestate;
+
 	    			    }
                     
                     }
@@ -145,6 +149,8 @@ public class toolbar extends JPanel {
                         if(makemap.st == State.active){
 	    			    	makemap.st = State.ready2drawRectangle;
                             System.out.println(selectedItem);
+                            makemap.sta = State.obstablestate;
+
 	    			    }
                     
                     }
@@ -203,6 +209,7 @@ public class toolbar extends JPanel {
                         if(makemap.st == State.active){
 	    			    	makemap.st = State.ready2drawRectangle;
                             System.out.println(selectedItem);
+                            makemap.sta = State.portalstate;
 	    			    }
                     
                     }

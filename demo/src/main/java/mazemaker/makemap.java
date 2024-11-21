@@ -13,6 +13,8 @@ public class makemap extends JFrame {
 	public Page tabpane;
 	public toolbar tb;
 	public static State st;
+	public static State sta;
+
    	makemap(){
 		designWin = new mazedesignwin(this); //創建設計端頁面
     	tabpane = new Page();

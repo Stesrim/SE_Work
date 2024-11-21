@@ -9,153 +9,188 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.sound.sampled.Line;
 import javax.swing.JPanel;
 
 public class DrawPanel extends JPanel {
-    public ArrayList<Portal> portals;
-    public ArrayList<Obstable> obstables;
     public Point lp, sp;
-	boolean isDraw = false;
-	boolean isDrawRect = false;
+    boolean isDraw = false;
+    boolean isDrawRect = false;
+    
+    public Vector<Portals> Prectangles;
+    public Portals activePRectangle = null;
+	public Vector<Obstables> Orectangles;
+    public Obstables activeORectangle = null;
 	
-	public Vector<Rectangle> rectangles;
-	public Rectangle activeRectangle = null;
-	// public State status;
     
     public DrawPanel() {
-        this.portals = new ArrayList<>();
-        this.obstables = new ArrayList<>();
+		
         setLayout(new BorderLayout());
-
+        
         makemap.st = State.active;
-		
-		
-		this.setLayout(null);
-		
-		lp=null;
-		rectangles=null;
-		
-		this.addMouseMotionListener(new MouseAdapter() {
-			public void mouseDragged(MouseEvent e)
-			{
-				if(makemap.st==State.creatingRectangle)
-				{
-					Graphics g = DrawPanel.this.getGraphics();
-					
-					if(lp!=null)
-					{
-						g.setXORMode(new Color(0,255,255));
-						g.drawRect( DrawPanel.this.sp.x, 
-                                    DrawPanel.this.sp.y, 
-									lp.x-DrawPanel.this.sp.x, 
-									lp.y-DrawPanel.this.sp.y);
-					}
-					
-					g.setXORMode(new Color(0,255,255));
-					//g.setColor(Color.red);
-					
-					if((e.getX()<sp.x) && (e.getY()>sp.y))
-					{
-						g.drawRect(e.getX(), 
-                                    DrawPanel.this.sp.y, 
-                                 DrawPanel.this.sp.x-e.getX(),
-								   e.getY()-DrawPanel.this.sp.y);
-					}
-					else
-					{
-						g.drawRect( DrawPanel.this.sp.x, 
-                                     DrawPanel.this.sp.y, 
-									e.getX()-DrawPanel.this.sp.x, 
-									e.getY()-DrawPanel.this.sp.y);
-					}
-					lp = e.getPoint();
-				}
-			}
-		});
-		
-		this.addMouseListener(new MouseAdapter() {
+        
+        this.setLayout(null);
+        
+        lp = null;
+		if (makemap.sta == State.portalstate)
+        	Prectangles = new Vector<Portals>();
+		else if(makemap.sta == State.obstablestate)
+			Orectangles = new Vector<Obstables>();
+        this.addMouseMotionListener(new MouseAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                if (makemap.st == State.creatingRectangle) {
+                    Graphics g = DrawPanel.this.getGraphics();
 
-			public void mousePressed(MouseEvent e)
-			{
-				if(makemap.st == State.ready2drawRectangle)
+                    // 清除之前的矩形繪製
+                    if (lp != null) {
+						
+                        g.setXORMode(new Color(0, 255, 255));
+						int x = Math.min(DrawPanel.this.sp.x, lp.x);
+						int y = Math.min(DrawPanel.this.sp.y, lp.y);
+						int width = Math.abs(lp.x - DrawPanel.this.sp.x);
+						int height = Math.abs(lp.y - DrawPanel.this.sp.y);
+                        g.drawRect(x, y,width, height);
+						// g.setXORMode(new Color(0, 255, 255));
+                        // g.drawRect(DrawPanel.this.sp.x, DrawPanel.this.sp.y, 
+                        //         lp.x - DrawPanel.this.sp.x, lp.y - DrawPanel.this.sp.y);
+                    }
+
+                    g.setXORMode(new Color(0, 255, 255));
+
+                    // 計算矩形的大小和位置，支持四個象限
+                    int x = Math.min(DrawPanel.this.sp.x, e.getX());
+                    int y = Math.min(DrawPanel.this.sp.y, e.getY());
+                    int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
+                    int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
+                    
+                    g.drawRect(x, y, width, height);
+
+                    lp = e.getPoint();
+                }
+            }
+        });
+        
+        this.addMouseListener(new MouseAdapter() {
+
+            public void mousePressed(MouseEvent e) {
+                if (makemap.st == State.ready2drawRectangle) {
+                    makemap.st = State.creatingRectangle;
+                    DrawPanel.this.sp = e.getPoint();
+                    DrawPanel.this.lp = null;
+                }
+				if (makemap.sta == State.portalstate)
 				{
-					makemap.st = State.creatingRectangle;
-					DrawPanel.this.sp = e.getPoint();
-					DrawPanel.this.lp = null;
-				}
-				
-				if(DrawPanel.this.activeRectangle!=null)
-				{
-					if(DrawPanel.this.activeRectangle.status==State.active)
-					{
-						DrawPanel.this.activeRectangle.status=State.inactive;
-						DrawPanel.this.activeRectangle = null;
-						DrawPanel.this.validate();
-						DrawPanel.this.repaint();
+					if (DrawPanel.this.activePRectangle != null) {
+						if (DrawPanel.this.activePRectangle.status == State.active) {
+							DrawPanel.this.activePRectangle.status = State.inactive;
+							DrawPanel.this.activePRectangle = null;
+							DrawPanel.this.validate();
+							DrawPanel.this.repaint();
+						}
 					}
 				}
-			}
-			
-			public void mouseReleased(MouseEvent e)
-			{
-				if(makemap.st == State.drawing)
+				else if(makemap.sta == State.obstablestate)
 				{
-					lp=null;
-					makemap.st = State.active;
+					if (DrawPanel.this.activeORectangle != null) {
+						if (DrawPanel.this.activeORectangle.status == State.active) {
+							DrawPanel.this.activeORectangle.status = State.inactive;
+							DrawPanel.this.activeORectangle = null;
+							DrawPanel.this.validate();
+							DrawPanel.this.repaint();
+						}
+					}
 				}
-				else if(makemap.st == State.creatingRectangle)
-				{
-					Graphics g = DrawPanel.this.getGraphics();
+            }
+            
+            public void mouseReleased(MouseEvent e) {
+                if (makemap.st == State.creatingRectangle) {
+                    Graphics g = DrawPanel.this.getGraphics();
+                    g.setXORMode(new Color(0, 255, 255));
+                    g.drawRect(DrawPanel.this.sp.x, DrawPanel.this.sp.y,
+                               lp.x - DrawPanel.this.sp.x, lp.y - DrawPanel.this.sp.y);
 
+                    // 創建矩形對象並設置大小和位置
 					
-					g.setXORMode(new Color(0,255,255));
-					g.drawRect( DrawPanel.this.sp.x, 
-								DrawPanel.this.sp.y, 
-								lp.x-DrawPanel.this.sp.x, 
-								lp.y-DrawPanel.this.sp.y);
+					Portals Ptemp = new Portals(DrawPanel.this);
+					Obstables Otemp = new Obstables(DrawPanel.this);
+                    // 計算矩形的正確大小和位置
+                    int x = Math.min(DrawPanel.this.sp.x, e.getX());
+                    int y = Math.min(DrawPanel.this.sp.y, e.getY());
+                    int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
+                    int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
+
+                    
+					if (makemap.sta == State.portalstate)
+					{
+						Ptemp.setSize(width, height);
+						Ptemp.setLocation(x, y);
+						DrawPanel.this.add(Ptemp);
+					}
+					else if(makemap.sta == State.obstablestate)
+					{
+						Otemp.setSize(width, height);
+						Otemp.setLocation(x, y);
+						DrawPanel.this.add(Otemp);
+					}
 					
-					Rectangle temp=new Rectangle(DrawPanel.this);
-					
-					temp.setSize(e.getX()-DrawPanel.this.sp.x, e.getY()-DrawPanel.this.sp.y);
-					temp.setLocation(DrawPanel.this.sp.x , DrawPanel.this.sp.y );
-					
-					DrawPanel.this.add(temp);
-				
-					
-					if(rectangles==null)
-						rectangles = new Vector<Rectangle>();
-					
-                        DrawPanel.this.rectangles.add(temp);
-                        DrawPanel.this.activeRectangle = temp;
-					
-                        DrawPanel.this.validate();
-                        DrawPanel.this.repaint();
-					
-                        makemap.st = State.ready2drawRectangle;
-				}
-			}
-			
-		});
+					if (makemap.sta == State.portalstate)
+					{
+						DrawPanel.this.Prectangles.add(Ptemp);
+						DrawPanel.this.activePRectangle = Ptemp;
+					}
+					else if(makemap.sta == State.obstablestate)
+					{
+						DrawPanel.this.Orectangles.add(Otemp);
+						DrawPanel.this.activeORectangle = Otemp;
+					}
+
+
+                    DrawPanel.this.validate();
+                    DrawPanel.this.repaint();
+                    
+                    makemap.st = State.ready2drawRectangle;
+                }
+            }
+        });
 		
-		
-		
-	}
+
 	
-	// public void paint(Graphics g)
-	// {
+	}
+	public void paint(Graphics g)
+	{
 
-		
+		super.paint(g);  // 呼叫父類的 paint() 方法來保持 JPanel 的正常繪製
+		if (makemap.sta == State.portalstate)
+		{
+				
 
+			if(this.activePRectangle!=null)
+			{
+				g.setXORMode(new Color(0,255,255));
+				
+				g.drawRect(activePRectangle.getLocation().x-4,
+				activePRectangle.getLocation().y-4,
+				activePRectangle.getSize().width+8,
+				activePRectangle.getSize().height+8);
+				
+			}
 		
-	// 	if(this.activeRectangle!=null)
-	// 	{
-	// 		g.setXORMode(new Color(0,255,255));
-			
-	// 		g.drawRect(activeRectangle.getLocation().x-4,
-	// 				activeRectangle.getLocation().y-4,
-	// 				activeRectangle.getSize().width+8,
-	// 				activeRectangle.getSize().height+8);
-			
-	// 	}
-    // }
+		}
+		else if (makemap.sta == State.obstablestate)
+		{
+				
+
+			if(this.activeORectangle!=null)
+			{
+				g.setXORMode(new Color(0,255,255));
+				
+				g.drawRect(activeORectangle.getLocation().x-4,
+				activeORectangle.getLocation().y-4,
+				activeORectangle.getSize().width+8,
+				activeORectangle.getSize().height+8);
+				
+			}
+		
+		}
+	}
 }
