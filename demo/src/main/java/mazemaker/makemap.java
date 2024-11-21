@@ -16,6 +16,7 @@ public class makemap extends JFrame {
 	public static State sta;
 
    	makemap(){
+		sta = State.portalstate;
 		designWin = new mazedesignwin(this); //創建設計端頁面
     	tabpane = new Page();
 		draw = new DrawPanel();

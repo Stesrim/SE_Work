@@ -41,11 +41,13 @@ public class Obstables extends Obstable {
                     if (Obstables.this.parent.activeORectangle != null) {
                         // 取消其他矩形的選中狀態
                         Obstables.this.parent.activeORectangle.status = State.inactive;
+                        // Obstables.this.parent.activePRectangle.status = State.inactive;
                     }
 
                     // 設置當前矩形為選中狀態
                     Obstables.this.status = State.active;
                     Obstables.this.parent.activeORectangle = Obstables.this;
+                    Obstables.this.parent.activePRectangle = null;
 
                     Obstables.this.validate();
                     Obstables.this.parent.repaint();
@@ -71,6 +73,8 @@ public class Obstables extends Obstable {
                     Obstables.this.status = State.active;
                     Obstables.this.parent.activeORectangle = Obstables.this;
                     Obstables.this.parent.repaint();
+                    Obstables.this.parent.activePRectangle = null;
+
                 }
             }
         });

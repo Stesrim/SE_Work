@@ -13,7 +13,7 @@ public class Portals extends Obstable {
 
     Portals(DrawPanel parent) {
         this.parent = parent;
-        this.setBackground(Color.yellow);
+        this.setBackground(Color.BLACK);
         this.status = State.inactive; // 初始化為未選中
         this.setOpaque(true);
 
@@ -23,7 +23,6 @@ public class Portals extends Obstable {
                 if (Portals.this.status == State.ready2Move) {
                     Portals.this.status = State.moving;
                 }
-
                 if (Portals.this.status == State.moving) {
                     Portals.this.setLocation(
                         ol.x + (e.getXOnScreen() - lp.x),
@@ -41,12 +40,13 @@ public class Portals extends Obstable {
                     if (Portals.this.parent.activePRectangle != null) {
                         // 取消其他矩形的選中狀態
                         Portals.this.parent.activePRectangle.status = State.inactive;
+                        // Portals.this.parent.activeORectangle.status = State.inactive;
                     }
 
                     // 設置當前矩形為選中狀態
                     Portals.this.status = State.active;
                     Portals.this.parent.activePRectangle = Portals.this;
-
+                    Portals.this.parent.activeORectangle = null;
                     Portals.this.validate();
                     Portals.this.parent.repaint();
                 } else if (Portals.this.status == State.active) {
@@ -71,6 +71,8 @@ public class Portals extends Obstable {
                     Portals.this.status = State.active;
                     Portals.this.parent.activePRectangle = Portals.this;
                     Portals.this.parent.repaint();
+                    Portals.this.parent.activeORectangle = null;
+
                 }
             }
         });

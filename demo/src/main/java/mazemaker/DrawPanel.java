@@ -17,9 +17,9 @@ public class DrawPanel extends JPanel {
     boolean isDraw = false;
     boolean isDrawRect = false;
     
-    public Vector<Portals> Prectangles;
+    public Vector<Portals> Prectangles = new Vector<Portals>();
     public Portals activePRectangle = null;
-	public Vector<Obstables> Orectangles;
+	public Vector<Obstables> Orectangles = new Vector<Obstables>();
     public Obstables activeORectangle = null;
 	
     
@@ -32,10 +32,7 @@ public class DrawPanel extends JPanel {
         this.setLayout(null);
         
         lp = null;
-		if (makemap.sta == State.portalstate)
-        	Prectangles = new Vector<Portals>();
-		else if(makemap.sta == State.obstablestate)
-			Orectangles = new Vector<Obstables>();
+
         this.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
                 if (makemap.st == State.creatingRectangle) {
@@ -137,11 +134,15 @@ public class DrawPanel extends JPanel {
 					{
 						DrawPanel.this.Prectangles.add(Ptemp);
 						DrawPanel.this.activePRectangle = Ptemp;
+						activeORectangle = null;
+
 					}
 					else if(makemap.sta == State.obstablestate)
 					{
 						DrawPanel.this.Orectangles.add(Otemp);
 						DrawPanel.this.activeORectangle = Otemp;
+						activePRectangle = null;
+
 					}
 
 
@@ -160,9 +161,7 @@ public class DrawPanel extends JPanel {
 	{
 
 		super.paint(g);  // 呼叫父類的 paint() 方法來保持 JPanel 的正常繪製
-		if (makemap.sta == State.portalstate)
-		{
-				
+	
 
 			if(this.activePRectangle!=null)
 			{
@@ -175,10 +174,7 @@ public class DrawPanel extends JPanel {
 				
 			}
 		
-		}
-		else if (makemap.sta == State.obstablestate)
-		{
-				
+	
 
 			if(this.activeORectangle!=null)
 			{
@@ -191,6 +187,5 @@ public class DrawPanel extends JPanel {
 				
 			}
 		
-		}
 	}
 }

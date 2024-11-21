@@ -127,9 +127,9 @@ public class toolbar extends JPanel {
                     if (index == 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
                             makemap.sta = State.obstablestate;
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(makemap.sta);
 
 	    			    }
                     
@@ -137,9 +137,9 @@ public class toolbar extends JPanel {
                     else if (index == 1) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
                             makemap.sta = State.obstablestate;
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(makemap.sta);
 
 	    			    }
                     
@@ -147,9 +147,9 @@ public class toolbar extends JPanel {
                     else if (index == 2) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
                             makemap.sta = State.obstablestate;
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(makemap.sta);
 
 	    			    }
                     
@@ -207,9 +207,9 @@ public class toolbar extends JPanel {
                     else if (index == 1) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
                             makemap.sta = State.portalstate;
+	    			    	makemap.st = State.ready2drawRectangle;
+                            System.out.println(makemap.sta);
 	    			    }
                     
                     }
