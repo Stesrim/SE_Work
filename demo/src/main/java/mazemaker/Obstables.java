@@ -5,16 +5,20 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
+// 有移動事件的Obstables
+
 public class Obstables extends Obstable {
     public DrawPanel parent;
     State status;
-
+    ControlPoint cp=null;
     Point ol, lp = null;
 
     Obstables(DrawPanel parent) {
+        super();
         this.parent = parent;
         this.setBackground(Color.yellow);
-        this.status = State.inactive; // 初始化為未選中
+        this.status = State.active; // 初始化為選中
         this.setOpaque(true);
 
         // 滑鼠拖曳事件
@@ -22,6 +26,10 @@ public class Obstables extends Obstable {
             public void mouseDragged(MouseEvent e) {
                 if (Obstables.this.status == State.ready2Move) {
                     Obstables.this.status = State.moving;
+                    Obstables.this.setLocation(
+                        ol.x + (e.getXOnScreen() - lp.x),
+                        ol.y + (e.getYOnScreen() - lp.y));
+                    
                 }
 
                 if (Obstables.this.status == State.moving) {
@@ -38,6 +46,7 @@ public class Obstables extends Obstable {
             public void mousePressed(MouseEvent e) {
                 // 點擊時選中該矩形
                 if (Obstables.this.status == State.inactive) {
+                    Obstables.this.status=State.active;
                     if (Obstables.this.parent.activeORectangle != null) {
                         // 取消其他矩形的選中狀態
                         Obstables.this.parent.activeORectangle.status = State.inactive;
@@ -45,7 +54,6 @@ public class Obstables extends Obstable {
                     }
 
                     // 設置當前矩形為選中狀態
-                    Obstables.this.status = State.active;
                     Obstables.this.parent.activeORectangle = Obstables.this;
                     Obstables.this.parent.activePRectangle = null;
 
@@ -79,4 +87,14 @@ public class Obstables extends Obstable {
             }
         });
     }
+    public void showControlPoint()
+    {
+        if(cp == null)
+        {
+            // cp = new ControlPoint();
+        }
+        // cp.show();
+    }
 }
+
+

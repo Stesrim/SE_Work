@@ -5,16 +5,17 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Portals extends Obstable {
+public class Portals extends Portal {
     public DrawPanel parent;
     State status;
 
     Point ol, lp = null;
 
     Portals(DrawPanel parent) {
+        super();
         this.parent = parent;
         this.setBackground(Color.BLACK);
-        this.status = State.inactive; // 初始化為未選中
+        this.status = State.active; // 初始化為選中
         this.setOpaque(true);
 
         // 滑鼠拖曳事件

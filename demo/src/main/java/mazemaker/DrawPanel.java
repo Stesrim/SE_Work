@@ -75,36 +75,41 @@ public class DrawPanel extends JPanel {
                     DrawPanel.this.sp = e.getPoint();
                     DrawPanel.this.lp = null;
                 }
-				if (makemap.sta == State.portalstate)
-				{
+				// if (makemap.sta == State.portalstate)
+				// {
 					if (DrawPanel.this.activePRectangle != null) {
 						if (DrawPanel.this.activePRectangle.status == State.active) {
 							DrawPanel.this.activePRectangle.status = State.inactive;
 							DrawPanel.this.activePRectangle = null;
 							DrawPanel.this.validate();
 							DrawPanel.this.repaint();
+							System.out.println("P");
+
 						}
 					}
-				}
-				else if(makemap.sta == State.obstablestate)
-				{
+				// }
+				// else if(makemap.sta == State.obstablestate)
+				// {
 					if (DrawPanel.this.activeORectangle != null) {
 						if (DrawPanel.this.activeORectangle.status == State.active) {
 							DrawPanel.this.activeORectangle.status = State.inactive;
 							DrawPanel.this.activeORectangle = null;
 							DrawPanel.this.validate();
 							DrawPanel.this.repaint();
+							System.out.println("O");
+
 						}
 					}
-				}
+				// }
             }
             
             public void mouseReleased(MouseEvent e) {
+
                 if (makemap.st == State.creatingRectangle) {
                     Graphics g = DrawPanel.this.getGraphics();
                     g.setXORMode(new Color(0, 255, 255));
-                    g.drawRect(DrawPanel.this.sp.x, DrawPanel.this.sp.y,
-                               lp.x - DrawPanel.this.sp.x, lp.y - DrawPanel.this.sp.y);
+                    g.drawRect(Math.min(DrawPanel.this.sp.x,lp.x), Math.min(DrawPanel.this.sp.y,lp.y),
+					Math.abs(lp.x - DrawPanel.this.sp.x),Math.abs( lp.y - DrawPanel.this.sp.y));
 
                     // 創建矩形對象並設置大小和位置
 					
@@ -134,6 +139,7 @@ public class DrawPanel extends JPanel {
 					{
 						DrawPanel.this.Prectangles.add(Ptemp);
 						DrawPanel.this.activePRectangle = Ptemp;
+						System.out.println(Ptemp.isPassable());
 						activeORectangle = null;
 
 					}
@@ -141,7 +147,9 @@ public class DrawPanel extends JPanel {
 					{
 						DrawPanel.this.Orectangles.add(Otemp);
 						DrawPanel.this.activeORectangle = Otemp;
+						System.out.println(Otemp.isPassable());
 						activePRectangle = null;
+						
 
 					}
 
@@ -184,7 +192,7 @@ public class DrawPanel extends JPanel {
 				activeORectangle.getLocation().y-4,
 				activeORectangle.getSize().width+8,
 				activeORectangle.getSize().height+8);
-				
+				activeORectangle.showControlPoint();
 			}
 		
 	}
