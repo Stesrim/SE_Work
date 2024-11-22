@@ -89,10 +89,10 @@ public class Obstables extends Obstable {
     }
     public void showControlPoint()
     {
-        if(cp == null)
-        {
-            // cp = new ControlPoint();
-        }
+        // if(cp == null)
+        // {
+        //     // cp = new ControlPoint();
+        // }
         // cp.show();
     }
 }
