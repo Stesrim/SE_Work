@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 
@@ -15,9 +14,10 @@ public class makemap extends JFrame {
 	public DrawPanel draw;
 	public Page tabpane;
 	public toolbar tb;
+
 	public static State st;
 	public static State sta;
-	public JTabbedPane attributes;
+	public static JTabbedPane attributes;
    	makemap(){
 		sta = State.portalstate;
 		designWin = new mazedesignwin(this); //創建設計端頁面
@@ -30,7 +30,5 @@ public class makemap extends JFrame {
 		attributes = new JTabbedPane();
 		attributes.setPreferredSize(new Dimension(300, designWin.getHeight())); // 增加寬度至 300 像素
 		designWin.add(attributes, BorderLayout.WEST);
-		JPanel temp = new JPanel();
-		attributes.addTab("介紹 ", temp);
 	}
 }

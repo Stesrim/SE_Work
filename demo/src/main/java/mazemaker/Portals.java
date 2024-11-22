@@ -30,6 +30,7 @@ public class Portals extends Portal {
                         ol.y + (e.getYOnScreen() - lp.y)
                     );
                 }
+                DrawPanel.addTab1(makemap.attributes, Portals.this);
             }
         });
 
@@ -41,12 +42,15 @@ public class Portals extends Portal {
                     if (Portals.this.parent.activePRectangle != null) {
                         // 取消其他矩形的選中狀態
                         Portals.this.parent.activePRectangle.status = State.inactive;
-                        // Portals.this.parent.activeORectangle.status = State.inactive;
+                        Portals.this.parent.activePRectangle = null;
                     }
 
                     // 設置當前矩形為選中狀態
                     Portals.this.status = State.active;
                     Portals.this.parent.activePRectangle = Portals.this;
+                    //叫標籤出來
+                    DrawPanel.addTab1(makemap.attributes, Portals.this);
+                    
                     Portals.this.parent.activeORectangle = null;
                     Portals.this.validate();
                     Portals.this.parent.repaint();
@@ -73,6 +77,7 @@ public class Portals extends Portal {
                     Portals.this.parent.activePRectangle = Portals.this;
                     Portals.this.parent.repaint();
                     Portals.this.parent.activeORectangle = null;
+                    DrawPanel.addTab1(makemap.attributes, Portals.this);
 
                 }
             }

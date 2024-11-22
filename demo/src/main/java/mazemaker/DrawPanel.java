@@ -2,21 +2,34 @@ package mazemaker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.sound.sampled.Line;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import sun.print.BackgroundLookupListener;
 
 public class DrawPanel extends JPanel {
 	private int Background;// 預設為-1
 	private int TimeLeft;// 預設為60
+	private static JTextField xField, yField, widthField, heightField, ID, PID;
+
     public Point lp, sp;
     boolean isDraw = false;
     boolean isDrawRect = false;
@@ -24,6 +37,7 @@ public class DrawPanel extends JPanel {
     public Portals activePRectangle = null;
 	public Vector<Obstables> Orectangles = new Vector<Obstables>();
     public Obstables activeORectangle = null;
+
 	
     
     public DrawPanel() {
@@ -73,32 +87,26 @@ public class DrawPanel extends JPanel {
                     DrawPanel.this.sp = e.getPoint();
                     DrawPanel.this.lp = null;
                 }
-				// if (makemap.sta == State.portalstate)
-				// {
-					if (DrawPanel.this.activePRectangle != null) {
-						if (DrawPanel.this.activePRectangle.status == State.active) {
-							DrawPanel.this.activePRectangle.status = State.inactive;
-							DrawPanel.this.activePRectangle = null;
-							DrawPanel.this.validate();
-							DrawPanel.this.repaint();
-							System.out.println("P");
+				if (DrawPanel.this.activePRectangle != null) {
+					if (DrawPanel.this.activePRectangle.status == State.active) {
+						DrawPanel.this.activePRectangle.status = State.inactive;
+						DrawPanel.this.activePRectangle = null;
+						makemap.attributes.removeAll();
+						DrawPanel.this.validate();
+						DrawPanel.this.repaint();
 
-						}
 					}
-				// }
-				// else if(makemap.sta == State.obstablestate)
-				// {
-					if (DrawPanel.this.activeORectangle != null) {
-						if (DrawPanel.this.activeORectangle.status == State.active) {
-							DrawPanel.this.activeORectangle.status = State.inactive;
-							DrawPanel.this.activeORectangle = null;
-							DrawPanel.this.validate();
-							DrawPanel.this.repaint();
-							System.out.println("O");
+				}
+				if (DrawPanel.this.activeORectangle != null) {
+					if (DrawPanel.this.activeORectangle.status == State.active) {
+						DrawPanel.this.activeORectangle.status = State.inactive;
+						DrawPanel.this.activeORectangle = null;
+						makemap.attributes.removeAll();
+						DrawPanel.this.validate();
+						DrawPanel.this.repaint();
 
-						}
 					}
-				// }
+				}
             }
             
             public void mouseReleased(MouseEvent e) {
@@ -122,12 +130,13 @@ public class DrawPanel extends JPanel {
                     
 					if (makemap.sta == State.portalstate)
 					{
+						
 						Ptemp.setSize(width, height);
 						Ptemp.setLocation(x, y);
 						DrawPanel.this.add(Ptemp);
 						DrawPanel.this.Prectangles.add(Ptemp);
 						DrawPanel.this.activePRectangle = Ptemp;
-						System.out.println(Ptemp.isPassable());
+						addTab1(makemap.attributes, Ptemp);
 						activeORectangle = null;
 					}
 					else if(makemap.sta == State.obstablestate)
@@ -137,7 +146,7 @@ public class DrawPanel extends JPanel {
 						DrawPanel.this.add(Otemp);
 						DrawPanel.this.Orectangles.add(Otemp);
 						DrawPanel.this.activeORectangle = Otemp;
-						System.out.println(Otemp.isPassable());
+						addTab(makemap.attributes, Otemp);
 						activePRectangle = null;
 						
 					}
@@ -169,9 +178,6 @@ public class DrawPanel extends JPanel {
 				activePRectangle.getSize().height+8);
 				
 			}
-		
-	
-
 			if(this.activeORectangle!=null)
 			{
 				g.setXORMode(new Color(0,255,255));
@@ -183,6 +189,128 @@ public class DrawPanel extends JPanel {
 				activeORectangle.showControlPoint();
 			}
 		
+	}
+	public static void addTab(JTabbedPane tabbedPane, Obstables label) {
+		if (tabbedPane.getTabCount() > 0) {
+			tabbedPane.remove(0); // 只移除第一個標籤，保留其他
+		}
+
+        // 創建一個新的標籤頁面板
+        JPanel tabPanel = new JPanel(new BorderLayout());
+
+        // 數值編輯區域
+        JPanel editPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        xField = new JTextField(String.valueOf(label.getX()));
+        yField = new JTextField(String.valueOf(label.getY()));
+        widthField = new JTextField(String.valueOf(label.getWidth()));
+        heightField = new JTextField(String.valueOf(label.getHeight()));
+
+        editPanel.add(new JLabel("X 座標:"));
+        editPanel.add(xField);
+        editPanel.add(new JLabel("Y 座標:"));
+        editPanel.add(yField);
+        editPanel.add(new JLabel("寬度:"));
+        editPanel.add(widthField);
+        editPanel.add(new JLabel("高度:"));
+        editPanel.add(heightField);
+		System.out.println("Portals");
+        tabPanel.add(editPanel, BorderLayout.CENTER);
+
+        // 提交按鈕區域
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton saveButton = new JButton("儲存");
+
+        // 儲存按鈕的行為
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // 驗證輸入是否為有效數字
+                    int newX = Integer.parseInt(xField.getText());
+                    int newY = Integer.parseInt(yField.getText());
+                    int newWidth = Integer.parseInt(widthField.getText());
+                    int newHeight = Integer.parseInt(heightField.getText());
+
+                    // 更新 JLabel 屬性
+                    label.setBounds(newX, newY, newWidth, newHeight);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(tabPanel, "請輸入有效的數字！", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        buttonPanel.add(saveButton);
+        tabPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // 自訂標籤標題
+        String tabTitle = "障礙物";
+        tabbedPane.addTab(tabTitle, tabPanel);
+        tabbedPane.setSelectedComponent(tabPanel);
+		tabbedPane.revalidate();
+		tabbedPane.repaint();
+	}
+	public static void addTab1(JTabbedPane tabbedPane, Portals label) {
+		if (tabbedPane.getTabCount() > 0) {
+			tabbedPane.remove(0); // 只移除第一個標籤，保留其他
+		}
+        // 創建一個新的標籤頁面板
+        JPanel tabPanel = new JPanel(new BorderLayout());
+
+        // 數值編輯區域
+        JPanel editPanel = new JPanel(new GridLayout(6, 2, 8, 8));
+        xField = new JTextField(String.valueOf(label.getX()));
+        yField = new JTextField(String.valueOf(label.getY()));
+        widthField = new JTextField(String.valueOf(label.getWidth()));
+        heightField = new JTextField(String.valueOf(label.getHeight()));
+		ID = new JTextField(String.valueOf(label.getId()));
+		PID = new JTextField(String.valueOf(label.getPortalId()));
+        editPanel.add(new JLabel("X 座標:"));
+        editPanel.add(xField);
+        editPanel.add(new JLabel("Y 座標:"));
+        editPanel.add(yField);
+        editPanel.add(new JLabel("寬度:"));
+        editPanel.add(widthField);
+        editPanel.add(new JLabel("高度:"));
+        editPanel.add(heightField);
+		editPanel.add(new JLabel("傳送門ID:"));
+        editPanel.add(ID);
+		editPanel.add(new JLabel("目標傳送門:"));
+        editPanel.add(PID);
+        tabPanel.add(editPanel, BorderLayout.CENTER);
+
+        // 提交按鈕區域
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton saveButton = new JButton("儲存");
+
+        // 儲存按鈕的行為
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // 驗證輸入是否為有效數字
+                    int newX = Integer.parseInt(xField.getText());
+                    int newY = Integer.parseInt(yField.getText());
+                    int newWidth = Integer.parseInt(widthField.getText());
+                    int newHeight = Integer.parseInt(heightField.getText());
+					int newID = Integer.parseInt(ID.getText());
+                    int newPID = Integer.parseInt(PID.getText());
+                    // 更新 JLabel 屬性
+                    label.setBounds(newX, newY, newWidth, newHeight);
+					label.setId(newID);
+					label.setPortalId(newPID);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(tabPanel, "請輸入有效的數字！", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        buttonPanel.add(saveButton);
+        tabPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // 自訂標籤標題
+        String tabTitle = "傳送門";
+        tabbedPane.addTab(tabTitle, tabPanel);
+        tabbedPane.setSelectedComponent(tabPanel);
+		tabbedPane.revalidate();
+		tabbedPane.repaint();
 	}
 	public int getTimeLeft(){
 		return TimeLeft;

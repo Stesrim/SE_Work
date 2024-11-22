@@ -26,10 +26,6 @@ public class Obstables extends Obstable {
             public void mouseDragged(MouseEvent e) {
                 if (Obstables.this.status == State.ready2Move) {
                     Obstables.this.status = State.moving;
-                    Obstables.this.setLocation(
-                        ol.x + (e.getXOnScreen() - lp.x),
-                        ol.y + (e.getYOnScreen() - lp.y));
-                    
                 }
 
                 if (Obstables.this.status == State.moving) {
@@ -38,6 +34,7 @@ public class Obstables extends Obstable {
                         ol.y + (e.getYOnScreen() - lp.y)
                     );
                 }
+                DrawPanel.addTab(makemap.attributes, Obstables.this);
             }
         });
 
@@ -51,11 +48,13 @@ public class Obstables extends Obstable {
                     if (Obstables.this.parent.activeORectangle != null) {
                         // 取消其他矩形的選中狀態
                         Obstables.this.parent.activeORectangle.status = State.inactive;
-                        // Obstables.this.parent.activePRectangle.status = State.inactive;
                     }
 
                     // 設置當前矩形為選中狀態
                     Obstables.this.parent.activeORectangle = Obstables.this;
+                    //叫標籤出來
+                    DrawPanel.addTab(makemap.attributes, Obstables.this);
+
                     Obstables.this.parent.activePRectangle = null;
 
                     Obstables.this.validate();
@@ -83,7 +82,7 @@ public class Obstables extends Obstable {
                     Obstables.this.parent.activeORectangle = Obstables.this;
                     Obstables.this.parent.repaint();
                     Obstables.this.parent.activePRectangle = null;
-
+                    DrawPanel.addTab(makemap.attributes, Obstables.this);
                 }
             }
         });
