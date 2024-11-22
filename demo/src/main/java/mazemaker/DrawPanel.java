@@ -12,11 +12,14 @@ import java.util.Vector;
 import javax.sound.sampled.Line;
 import javax.swing.JPanel;
 
+import sun.print.BackgroundLookupListener;
+
 public class DrawPanel extends JPanel {
+	private int Background;// 預設為-1
+	private int TimeLeft;// 預設為60
     public Point lp, sp;
     boolean isDraw = false;
     boolean isDrawRect = false;
-    
     public Vector<Portals> Prectangles = new Vector<Portals>();
     public Portals activePRectangle = null;
 	public Vector<Obstables> Orectangles = new Vector<Obstables>();
@@ -24,14 +27,12 @@ public class DrawPanel extends JPanel {
 	
     
     public DrawPanel() {
-		
+		Background = -1;
+		TimeLeft = 60;
         setLayout(new BorderLayout());
-        
-        makemap.st = State.active;
-        
+		makemap.st = State.active;
         this.setLayout(null);
-        
-        lp = null;
+		lp = null;
 
         this.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
@@ -47,9 +48,6 @@ public class DrawPanel extends JPanel {
 						int width = Math.abs(lp.x - DrawPanel.this.sp.x);
 						int height = Math.abs(lp.y - DrawPanel.this.sp.y);
                         g.drawRect(x, y,width, height);
-						// g.setXORMode(new Color(0, 255, 255));
-                        // g.drawRect(DrawPanel.this.sp.x, DrawPanel.this.sp.y, 
-                        //         lp.x - DrawPanel.this.sp.x, lp.y - DrawPanel.this.sp.y);
                     }
 
                     g.setXORMode(new Color(0, 255, 255));
@@ -127,33 +125,23 @@ public class DrawPanel extends JPanel {
 						Ptemp.setSize(width, height);
 						Ptemp.setLocation(x, y);
 						DrawPanel.this.add(Ptemp);
+						DrawPanel.this.Prectangles.add(Ptemp);
+						DrawPanel.this.activePRectangle = Ptemp;
+						System.out.println(Ptemp.isPassable());
+						activeORectangle = null;
 					}
 					else if(makemap.sta == State.obstablestate)
 					{
 						Otemp.setSize(width, height);
 						Otemp.setLocation(x, y);
 						DrawPanel.this.add(Otemp);
-					}
-					
-					if (makemap.sta == State.portalstate)
-					{
-						DrawPanel.this.Prectangles.add(Ptemp);
-						DrawPanel.this.activePRectangle = Ptemp;
-						System.out.println(Ptemp.isPassable());
-						activeORectangle = null;
-
-					}
-					else if(makemap.sta == State.obstablestate)
-					{
 						DrawPanel.this.Orectangles.add(Otemp);
 						DrawPanel.this.activeORectangle = Otemp;
 						System.out.println(Otemp.isPassable());
 						activePRectangle = null;
 						
-
 					}
-
-
+					
                     DrawPanel.this.validate();
                     DrawPanel.this.repaint();
                     
@@ -195,5 +183,17 @@ public class DrawPanel extends JPanel {
 				activeORectangle.showControlPoint();
 			}
 		
+	}
+	public int getTimeLeft(){
+		return TimeLeft;
+	}
+	public void setTimeLeft(int time){
+		TimeLeft = time;
+	}
+	public int getBg(){
+		return Background;
+	}
+	public void setBg(int Bg){
+		Background = Bg;
 	}
 }

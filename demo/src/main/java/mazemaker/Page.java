@@ -1,6 +1,7 @@
 package mazemaker;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ public class Page extends JPanel{
     public Page() {
         tabbedPane = new JTabbedPane();
         setLayout(new BorderLayout());
+
         add(tabbedPane, BorderLayout.CENTER);
     }
     //刪除頁面
@@ -32,11 +34,14 @@ public class Page extends JPanel{
             if (exists[i] == false){
                 DrawPanel panel = new DrawPanel();
                 JLabel label = new JLabel("這是頁面 " + (i +1));
+                panel.setPreferredSize(new Dimension(400, 300));
                 // 添加元件到頁面
                 panel.add(label, BorderLayout.CENTER);
                 // 將新頁面添加到 JTabbedPane
                 tabbedPane.addTab("頁面 " + (i +1), panel);
                 exists[i] = true;
+                System.out.println(this.getWidth());
+                System.out.println(this.getHeight());
                 break;
                
             }

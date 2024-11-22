@@ -47,6 +47,7 @@ public class Obstables extends Obstable {
                 // 點擊時選中該矩形
                 if (Obstables.this.status == State.inactive) {
                     Obstables.this.status=State.active;
+                    
                     if (Obstables.this.parent.activeORectangle != null) {
                         // 取消其他矩形的選中狀態
                         Obstables.this.parent.activeORectangle.status = State.inactive;
