@@ -1,34 +1,18 @@
 package mazemaker;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Vector;
 
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import sun.print.BackgroundLookupListener;
+import javax.swing.*;
 
 public class DrawPanel extends JPanel {
 	private int Background;// 預設為-1
 	private int TimeLeft;// 預設為60
 	private static JTextField xField, yField, widthField, heightField, ID, PID;
+
 
     public Point lp, sp;
     boolean isDraw = false;
@@ -48,33 +32,39 @@ public class DrawPanel extends JPanel {
         this.setLayout(null);
 		lp = null;
 
+
         this.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
                 if (makemap.st == State.creatingRectangle) {
                     Graphics g = DrawPanel.this.getGraphics();
 
+
                     // 清除之前的矩形繪製
-                    if (lp != null) {
-						
-                        g.setXORMode(new Color(0, 255, 255));
+                    if (lp != null ) {
+
+                        g.setXORMode(new Color(255, 255, 255));
+                        // g.setXORMode(new Color(0, 0, 0));
+                        // g.setColor(DrawPanel.this.getBackground());
 						int x = Math.min(DrawPanel.this.sp.x, lp.x);
 						int y = Math.min(DrawPanel.this.sp.y, lp.y);
 						int width = Math.abs(lp.x - DrawPanel.this.sp.x);
 						int height = Math.abs(lp.y - DrawPanel.this.sp.y);
                         g.drawRect(x, y,width, height);
                     }
-
-                    g.setXORMode(new Color(0, 255, 255));
+                    
 
                     // 計算矩形的大小和位置，支持四個象限
                     int x = Math.min(DrawPanel.this.sp.x, e.getX());
                     int y = Math.min(DrawPanel.this.sp.y, e.getY());
                     int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
                     int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
-                    
+
+                    g.setXORMode(new Color(255, 255, 255));
+                    // g.setXORMode(new Color(0, 0, 0));
                     g.drawRect(x, y, width, height);
 
                     lp = e.getPoint();
+
                 }
             }
         });
@@ -200,6 +190,7 @@ public class DrawPanel extends JPanel {
 
         // 數值編輯區域
         JPanel editPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        
         xField = new JTextField(String.valueOf(label.getX()));
         yField = new JTextField(String.valueOf(label.getY()));
         widthField = new JTextField(String.valueOf(label.getWidth()));
@@ -230,9 +221,12 @@ public class DrawPanel extends JPanel {
                     int newY = Integer.parseInt(yField.getText());
                     int newWidth = Integer.parseInt(widthField.getText());
                     int newHeight = Integer.parseInt(heightField.getText());
-
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
+                    label.getParent().revalidate();
+                    label.getParent().repaint();
+                    
+
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(tabPanel, "請輸入有效的數字！", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -297,6 +291,9 @@ public class DrawPanel extends JPanel {
                     label.setBounds(newX, newY, newWidth, newHeight);
 					label.setId(newID);
 					label.setPortalId(newPID);
+                    label.getParent().revalidate();
+                    label.getParent().repaint();
+                
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(tabPanel, "請輸入有效的數字！", "Error", JOptionPane.ERROR_MESSAGE);
                 }

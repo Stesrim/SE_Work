@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
  
 public class Page extends JPanel{
-    private boolean[] exists = {false, false, false, false, false};
-    private JTabbedPane tabbedPane;
+    public boolean[] exists = {false, false, false, false, false};
+    public JTabbedPane tabbedPane;
     public Page() {
         tabbedPane = new JTabbedPane();
         setLayout(new BorderLayout());

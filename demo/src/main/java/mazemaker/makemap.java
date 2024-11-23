@@ -18,6 +18,8 @@ public class makemap extends JFrame {
 	public static State st;
 	public static State sta;
 	public static JTabbedPane attributes;
+	public static int jtype;
+	public static boolean ispass;
    	makemap(){
 		sta = State.portalstate;
 		designWin = new mazedesignwin(this); //創建設計端頁面

@@ -127,9 +127,11 @@ public class toolbar extends JPanel {
                     if (index == 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.jtype = 1;
+                            makemap.ispass = false;
                             makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(makemap.sta);
+                            System.out.println(selectedItem);
 
 	    			    }
                     
@@ -137,9 +139,11 @@ public class toolbar extends JPanel {
                     else if (index == 1) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.jtype = 1;
+                            makemap.ispass = false;
                             makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(makemap.sta);
+                            System.out.println(selectedItem);
 
 	    			    }
                     
@@ -147,9 +151,11 @@ public class toolbar extends JPanel {
                     else if (index == 2) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.jtype = 1;
+                            makemap.ispass = false;
                             makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(makemap.sta);
+                            System.out.println(selectedItem);
 
 	    			    }
                     
@@ -166,7 +172,7 @@ public class toolbar extends JPanel {
         panel.setLayout(new BorderLayout());
 
         // 創建 JList 並添加項目
-        String[] obstacleItems = {"終點", "傳送門"};
+        String[] obstacleItems = {"人物","終點", "傳送門"};
         JList<String> obstacleList = new JList<>(obstacleItems);
 
         // 設置 JList 單元格高度，縮小每個項目的高度
@@ -199,6 +205,9 @@ public class toolbar extends JPanel {
                     if (index == 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.jtype = 0; //type0為玩家
+                            makemap.ispass = false;
+                            makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
                             System.out.println(selectedItem);
 	    			    }
@@ -207,10 +216,19 @@ public class toolbar extends JPanel {
                     else if (index == 1) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
-                            makemap.sta = State.portalstate;
+                            makemap.jtype = 2;//type2為終點
+                            makemap.ispass = true;
+                            makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(makemap.sta);
+                            System.out.println(selectedItem);
 	    			    }
+                    }
+                    else if (index == 2) {
+                        if(makemap.st == State.active){
+                            makemap.sta = State.portalstate;
+                            makemap.st = State.ready2drawRectangle;
+                            System.out.println(makemap.sta);
+                        }
                     
                     }
 
