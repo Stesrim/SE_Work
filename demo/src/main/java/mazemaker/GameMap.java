@@ -93,18 +93,21 @@ public class GameMap extends JFrame implements KeyListener {
     //設定背景畫面
     public void setBG(int type){
         backgroundLabel = new JLabel();
-        if (type == 1){
-            backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/all.jpg"));
-        }else if (type == 2){
-            backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/sls.png"));
-        }else if (type == 3){
-            backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/test.png"));
+        if (type != 0){
+            if (type == 1){
+                backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/grass.jpg"));
+            }else if (type == 2){
+                backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/snow.jpg"));
+            }else if (type == 3){
+                backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/desert.jpg"));
+            }
+            //把圖片大小改成跟地圖一樣
+            backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH));
+            backgroundLabel.setIcon(backgroundIcon);
         }
-        //把圖片大小改成跟地圖一樣
-        backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH));
-        backgroundLabel.setIcon(backgroundIcon);
         backgroundLabel.setOpaque(false);
         backgroundLabel.setSize(mapWidth, mapHeight);
+        
         backgroundLabel.setBorder(BorderFactory.createLineBorder(Color.black));
         //背景圖片 默認層
         mapPanel.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);

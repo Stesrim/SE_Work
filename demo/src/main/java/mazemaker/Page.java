@@ -1,24 +1,34 @@
 package mazemaker;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
  
 public class Page extends JPanel{
+    public static int height;
+    public static int width;
     public boolean[] exists = {false, false, false, false, false};
     public JTabbedPane tabbedPane;
     public Page() {
         tabbedPane = new JTabbedPane();
-        setLayout(new BorderLayout());
+        tabbedPane.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                // 把旁邊的屬性砍掉
+                makemap.attributes.removeAll();
+            }
+        });
 
+        setLayout(new BorderLayout());
         add(tabbedPane, BorderLayout.CENTER);
+        
     }
     //刪除頁面
     public void removeCurrentTab() {
-        int index = tabbedPane.getSelectedIndex();
+    int index = tabbedPane.getSelectedIndex();
         if (index >= 0) {
             // 抓取目前頁面的名稱
             String title = tabbedPane.getTitleAt(index);
@@ -30,18 +40,14 @@ public class Page extends JPanel{
     }
     //新增頁面
     public void addNewTab() {
+        width = this.getWidth();
+        height = this.getHeight();
         for (int i = 0 ; i < exists.length; i++){
             if (exists[i] == false){
                 DrawPanel panel = new DrawPanel();
-                JLabel label = new JLabel("這是頁面 " + (i +1));
-                panel.setPreferredSize(new Dimension(400, 300));
-                // 添加元件到頁面
-                panel.add(label, BorderLayout.CENTER);
                 // 將新頁面添加到 JTabbedPane
                 tabbedPane.addTab("頁面 " + (i +1), panel);
                 exists[i] = true;
-                System.out.println(this.getWidth());
-                System.out.println(this.getHeight());
                 break;
                
             }
