@@ -28,7 +28,7 @@ public class defaultgame {
         label.setPassable(true);
         label.setType(0);
         ImageIcon a = new ImageIcon(getClass().getResource("/images/playerandendspot/player.png"));
-        a.setImage(a.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        a.setImage(a.getImage().getScaledInstance(20, 20, Image.SCALE_AREA_AVERAGING));
         label.setIcon(a);
         Obstable label2 = new Obstable();
         label2.setBounds(105, 200, 50, 50);

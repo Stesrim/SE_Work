@@ -2,12 +2,15 @@ package mazemaker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -23,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+
 
 
 public class DrawPanel extends JPanel implements Serializable{
@@ -92,48 +96,72 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 創建一個新的標籤頁面板
         JPanel tabPanel = new JPanel(new BorderLayout());
-
+        JPanel editPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); 
         // 數值編輯區域
-        JPanel editPanel = new JPanel(new GridLayout(4, 2, 10, 10));
-        xField = new JTextField(String.valueOf(label.getX()));
-        yField = new JTextField(String.valueOf(label.getY()));
-        widthField = new JTextField(String.valueOf(label.getWidth()));
-        heightField = new JTextField(String.valueOf(label.getHeight()));
+        xField = new JTextField(10);
+        xField.setPreferredSize(new Dimension(100, 50));
+        xField.setText(String.valueOf(label.getX()));
+        xField.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        yField = new JTextField(10);
+        yField.setPreferredSize(new Dimension(100, 50));
+        yField.setText(String.valueOf(label.getY()));
+        yField.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        widthField = new JTextField(10);
+        widthField.setPreferredSize(new Dimension(100, 50));
+        widthField.setText(String.valueOf(label.getWidth()));
+        widthField.setFont(new Font("Arial", Font.PLAIN, 20));
+   
+
+        heightField = new JTextField(10);
+        heightField.setPreferredSize(new Dimension(100, 50)); 
+        heightField.setText(String.valueOf(label.getHeight()));
+        heightField.setFont(new Font("Arial", Font.PLAIN, 20));
+        
 
         // X座標
         JLabel xLabel = new JLabel("X 座標:");
-        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
-        editPanel.add(xLabel);
-        xField = new JTextField(String.valueOf(label.getX()));
-        editPanel.add(xField);
+        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 0;
+        editPanel.add(xLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 0;
+        editPanel.add(xField, gbc);
 
         // Y座標
         JLabel yLabel = new JLabel("Y 座標:");
-        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
-        editPanel.add(yLabel);
-        yField = new JTextField(String.valueOf(label.getY()));
-        editPanel.add(yField);
+        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));  
+        gbc.gridx = 0; gbc.gridy = 1;
+        editPanel.add(yLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 1;
+        editPanel.add(yField, gbc);
 
         // 寬度
         JLabel widthLabel = new JLabel("寬度:");
-        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
-        editPanel.add(widthLabel);
-        widthField = new JTextField(String.valueOf(label.getWidth()));
-        editPanel.add(widthField);
+        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 2;
+        editPanel.add(widthLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 2;
+        editPanel.add(widthField, gbc);
 
         // 高度
         JLabel heightLabel = new JLabel("高度:");
-        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
-        editPanel.add(heightLabel);
-        heightField = new JTextField(String.valueOf(label.getHeight()));
-        editPanel.add(heightField);
-        System.out.println("Portals");
-        tabPanel.add(editPanel, BorderLayout.CENTER);
+        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 3;
+        editPanel.add(heightLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 3;
+        editPanel.add(heightField, gbc);
+        tabPanel.add(editPanel, BorderLayout.NORTH);
 
         // 提交按鈕區域
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton saveButton = new JButton("儲存");
+        saveButton.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
         JButton deleteButton = new JButton("刪除");
+        deleteButton.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+
         // 刪除按鈕的行為
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -160,6 +188,9 @@ public class DrawPanel extends JPanel implements Serializable{
 
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
+                    ImageIcon tempIcon = (ImageIcon)label.getIcon();
+                    tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    label.setIcon(tempIcon);
                     label.getParent().revalidate();
                     label.getParent().repaint();
                 } catch (NumberFormatException ex) {
@@ -184,33 +215,97 @@ public class DrawPanel extends JPanel implements Serializable{
         }
         // 創建一個新的標籤頁面板
         JPanel tabPanel = new JPanel(new BorderLayout());
+        JPanel editPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         // 數值編輯區域
-        JPanel editPanel = new JPanel(new GridLayout(6, 2, 8, 8));
-        xField = new JTextField(String.valueOf(label.getX()));
-        yField = new JTextField(String.valueOf(label.getY()));
-        widthField = new JTextField(String.valueOf(label.getWidth()));
-        heightField = new JTextField(String.valueOf(label.getHeight()));
-        ID = new JTextField(String.valueOf(label.getId()));
-        PID = new JTextField(String.valueOf(label.getPortalId()));
-        editPanel.add(new JLabel("X 座標:"));
-        editPanel.add(xField);
-        editPanel.add(new JLabel("Y 座標:"));
-        editPanel.add(yField);
-        editPanel.add(new JLabel("寬度:"));
-        editPanel.add(widthField);
-        editPanel.add(new JLabel("高度:"));
-        editPanel.add(heightField);
-        editPanel.add(new JLabel("傳送門ID:"));
-        editPanel.add(ID);
-        editPanel.add(new JLabel("目標傳送門:"));
-        editPanel.add(PID);
-        tabPanel.add(editPanel, BorderLayout.CENTER);
+        xField = new JTextField(10);
+        xField.setPreferredSize(new Dimension(100, 50));
+        xField.setText(String.valueOf(label.getX()));
+        xField.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        yField = new JTextField(10);
+        yField.setPreferredSize(new Dimension(100, 50));
+        yField.setText(String.valueOf(label.getY()));
+        yField.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        widthField = new JTextField(10);
+        widthField.setPreferredSize(new Dimension(100, 50));
+        widthField.setText(String.valueOf(label.getWidth()));
+        widthField.setFont(new Font("Arial", Font.PLAIN, 20));
+   
+
+        heightField = new JTextField(10);
+        heightField.setPreferredSize(new Dimension(100, 50)); 
+        heightField.setText(String.valueOf(label.getHeight()));
+        heightField.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        ID = new JTextField(10);
+        ID.setPreferredSize(new Dimension(100, 50)); 
+        ID.setText(String.valueOf(label.getId()));
+        ID.setFont(new Font("Arial", Font.PLAIN, 20));
+        
+        PID = new JTextField(10);
+        PID.setPreferredSize(new Dimension(100, 50)); 
+        PID.setText(String.valueOf(label.getPortalId()));
+        PID.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        // X座標
+        JLabel xLabel = new JLabel("X 座標:");
+        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 0;
+        editPanel.add(xLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 0;
+        editPanel.add(xField, gbc);
+
+        // Y座標
+        JLabel yLabel = new JLabel("Y 座標:");
+        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));  
+        gbc.gridx = 0; gbc.gridy = 1;
+        editPanel.add(yLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 1;
+        editPanel.add(yField, gbc);
+
+        // 寬度
+        JLabel widthLabel = new JLabel("寬度:");
+        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 2;
+        editPanel.add(widthLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 2;
+        editPanel.add(widthField, gbc);
+
+        // 高度
+        JLabel heightLabel = new JLabel("高度:");
+        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 3;
+        editPanel.add(heightLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 3;
+        editPanel.add(heightField, gbc);
+        
+        //傳送門ID
+        JLabel IDLabel = new JLabel("傳送門ID:");
+        IDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 4;
+        editPanel.add(IDLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 4;
+        editPanel.add(ID, gbc);
+        //目標傳送門
+        JLabel PIDLabel = new JLabel("傳送門ID:");
+        PIDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        gbc.gridx = 0; gbc.gridy = 5;
+        editPanel.add(PIDLabel, gbc);
+        gbc.gridx = 1; gbc.gridy = 5;
+        editPanel.add(PID, gbc);
+        
+        tabPanel.add(editPanel, BorderLayout.NORTH);
 
         // 提交按鈕區域
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton saveButton = new JButton("儲存");
+        saveButton.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
         JButton deleteButton = new JButton("刪除");
+        deleteButton.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
         // 刪除按鈕的行為
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -238,6 +333,9 @@ public class DrawPanel extends JPanel implements Serializable{
                     int newPID = Integer.parseInt(PID.getText());
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
+                    ImageIcon tempIcon = (ImageIcon)label.getIcon();
+                    tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    label.setIcon(tempIcon);
                     label.setId(newID);
                     label.setPortalId(newPID);
                     label.getParent().revalidate();
@@ -280,15 +378,15 @@ public class DrawPanel extends JPanel implements Serializable{
             BgJLabel.setIcon(null);
         }else if (Bg == 1){
             a = new ImageIcon(getClass().getResource("/images/background/grass.jpg"));
-            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_SMOOTH));
+            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_AREA_AVERAGING));
             BgJLabel.setIcon(a);
         }else if (Bg == 2){
             a = new ImageIcon(getClass().getResource("/images/background/snow.jpg"));
-            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_SMOOTH));
+            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_AREA_AVERAGING));
             BgJLabel.setIcon(a);
         }else if (Bg ==3){
             a = new ImageIcon(getClass().getResource("/images/background/desert.jpg"));
-            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_SMOOTH));
+            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_AREA_AVERAGING));
             BgJLabel.setIcon(a);
         }
         //重新繪圖不然會被遮住
@@ -390,11 +488,12 @@ public class DrawPanel extends JPanel implements Serializable{
                         DrawPanel.this.add(Ptemp);
                         DrawPanel.this.Prectangles.add(Ptemp);
                         DrawPanel.this.activePRectangle = Ptemp;
+                        Ptemp.Pbg.setImage(Ptemp.Pbg.getImage().getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING));
+                        Ptemp.setIcon(Ptemp.Pbg);
                         addTab1(makemap.attributes, Ptemp);
                         activeORectangle = null;
                         //把背景圖放到最下面
                         BGLabelset();
-                        System.out.println("+1");
                     }
                     else if(makemap.sta == State.obstablestate)
                     {
@@ -403,11 +502,15 @@ public class DrawPanel extends JPanel implements Serializable{
                         DrawPanel.this.add(Otemp);
                         DrawPanel.this.Orectangles.add(Otemp);
                         activeORectangle = Otemp;
+                        Otemp.setObg(makemap.obstacletype);
+                        Otemp.Obg.setImage(Otemp.Obg.getImage().getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING));
+                        Otemp.setIcon(Otemp.Obg);
+                        Otemp.setPassable(makemap.ispass);
+                        Otemp.setType(makemap.jtype);
                         addTab(makemap.attributes, Otemp);
                         activePRectangle = null;
                         //把背景圖放到最下面
                         BGLabelset();
-                        System.out.println("+2");
                     }
                     
                     DrawPanel.this.validate();
@@ -517,7 +620,6 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 點擊時選中該矩形
                     if (obstacle.status == State.inactive) {
                         obstacle.status=State.active;
-                        System.out.println(obstacle.parent.activeORectangle != null);
                         if (obstacle.parent.activeORectangle != null) {
                             // 取消其他矩形的選中狀態
                             obstacle.parent.activeORectangle.status = State.inactive;

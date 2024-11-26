@@ -1,6 +1,5 @@
 package mazemaker;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Obstable extends JLabel{
@@ -15,9 +14,9 @@ public class Obstable extends JLabel{
         this.setOpaque(false);
     }
     public Obstable(int type, boolean passable) {
+        super();
         this.type = type;
-        this.passable = passable;
-
+        this.passable = passable;        
     }
     public boolean isPassable() {
         return passable;

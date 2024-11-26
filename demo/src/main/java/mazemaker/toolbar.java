@@ -104,7 +104,7 @@ public class toolbar extends JPanel {
         String[] obstacleItems = {"石頭", "樹木", "牆壁"};
         JList<String> obstacleList = new JList<>(obstacleItems);
 
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为Arial字体，大小为18
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  //設置為Arial字體，大小為18
         obstacleList.setFont(font);
         // 設置 JList 單元格高度，縮小每個項目的高度
         obstacleList.setFixedCellHeight(25);  // 設置每個單元格的高度為 25 像素
@@ -187,7 +187,7 @@ public class toolbar extends JPanel {
         String[] obstacleItems = {"人物","終點", "傳送門"};
         JList<String> obstacleList = new JList<>(obstacleItems);
 
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为Arial字体，大小为18
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 設置為Arial字體，大小為18
         obstacleList.setFont(font);
         // 設置 JList 單元格高度，縮小每個項目的高度
         obstacleList.setFixedCellHeight(25);  // 設置每個單元格的高度為 25 像素

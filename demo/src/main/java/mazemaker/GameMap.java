@@ -102,7 +102,7 @@ public class GameMap extends JFrame implements KeyListener {
                 backgroundIcon = new ImageIcon(GameMap.class.getResource("/images/background/desert.jpg"));
             }
             //把圖片大小改成跟地圖一樣
-            backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_SMOOTH));
+            backgroundIcon.setImage(backgroundIcon.getImage().getScaledInstance(mapWidth, mapHeight, Image.SCALE_AREA_AVERAGING));
             backgroundLabel.setIcon(backgroundIcon);
         }
         backgroundLabel.setOpaque(false);
