@@ -4,11 +4,12 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 
 // 有移動事件的Obstables
 
-public class Obstables extends Obstable {
+public class Obstables extends Obstable implements Serializable{
     public DrawPanel parent;
     State status;
     ControlPoint cp=null;

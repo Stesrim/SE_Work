@@ -3,10 +3,17 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -86,6 +93,73 @@ public class mazedesignmenu extends JFrame{
 	
 		
 		// Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		
+		saveMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				int index = page.tabbedPane.getSelectedIndex();
+				if (index != -1){
+					//抓到放檔案的相對位置
+					File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+					JFileChooser fileChooser = new JFileChooser(defaultDir);
+					fileChooser.setDialogTitle("選擇保存路徑位置");
+					//抓到目前所在的頁面
+					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					int userSelection = fileChooser.showSaveDialog(null);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						try (ObjectOutputStream oos = new ObjectOutputStream(
+							new FileOutputStream(fileChooser.getSelectedFile()))) {
+							oos.writeObject(Temp);
+							JOptionPane.showMessageDialog(null, "保存成功！");
+						} catch (IOException ex) {
+							JOptionPane.showMessageDialog(null, "保存失敗:" + ex.getMessage());
+							ex.printStackTrace();
+						}
+					}
+				}else{
+					JLabel ErrorJLabel = new JLabel();
+					ErrorJLabel.setText("請先建立一個新的頁面");
+					ErrorJLabel.setFont(dialogFont);
+					JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		exitMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				int index = page.tabbedPane.getTabCount();
+				//只讓玩家開最多五個頁面
+				if (index < 4){
+					//抓到放檔案的相對位置
+					File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+					JFileChooser fileChooser = new JFileChooser(defaultDir);
+					fileChooser.setDialogTitle("選擇載入路徑位置");
+
+					int userSelection = fileChooser.showOpenDialog(null);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						try (ObjectInputStream ois = new ObjectInputStream(
+							new FileInputStream(fileChooser.getSelectedFile()))) {
+							DrawPanel loadedPanel = (DrawPanel) ois.readObject();
+							//把監聽器載入回來
+							page.addNewTab2(loadedPanel);
+							loadedPanel.restoreListeners();
+							JOptionPane.showMessageDialog(null, "載入成功！");
+						} catch (IOException ex) {
+							JOptionPane.showMessageDialog(null, "載入失敗:" + ex.getMessage());
+							ex.printStackTrace();
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}else{
+					JLabel ErrorJLabel = new JLabel();
+					ErrorJLabel.setText("請先建立一個新的頁面");
+					ErrorJLabel.setFont(dialogFont);
+					JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		settime.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -23,19 +24,20 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel implements Serializable{
 	private int Background;// 預設為0
 	private int TimeLeft;// 預設為60
-	private static JTextField xField, yField, widthField, heightField, ID, PID;
+    //序列化後不會保留
+	transient private static JTextField xField, yField, widthField, heightField, ID, PID;
 
-    public Point lp, sp;
+    transient public Point lp, sp;
     boolean isDraw = false;
     boolean isDrawRect = false;
     //放置圖片的地方
-    public static Vector<Portals> Prectangles = new Vector<Portals>();
-    public static Portals activePRectangle = null;
-	public static Vector<Obstables> Orectangles = new Vector<Obstables>();
-    public static Obstables activeORectangle = null;
+    public Vector <Portals> Prectangles = new Vector<Portals>();
+    public Portals activePRectangle = null;
+	public Vector <Obstables> Orectangles = new Vector<Obstables>();
+    public Obstables activeORectangle = null;
     public JLabel BgJLabel;
 
     public DrawPanel() {
@@ -51,128 +53,8 @@ public class DrawPanel extends JPanel {
             BgJLabel.setBorder(BorderFactory.createLineBorder(Color.black));
             BgJLabel.setOpaque(true);
             this.add(BgJLabel);
+            this.restoreListeners();
             BGLabelset();
-            
-    
-    
-            this.addMouseMotionListener(new MouseAdapter() {
-                public void mouseDragged(MouseEvent e) {
-                    if (makemap.st == State.creatingRectangle) {
-                        Graphics g = DrawPanel.this.getGraphics();
-    
-                        // 清除之前的矩形繪製
-                        if (lp != null) {
-                            
-                            g.setXORMode(new Color(0, 255, 255));
-                            int x = Math.min(DrawPanel.this.sp.x, lp.x);
-                            int y = Math.min(DrawPanel.this.sp.y, lp.y);
-                            int width = Math.abs(lp.x - DrawPanel.this.sp.x);
-                            int height = Math.abs(lp.y - DrawPanel.this.sp.y);
-                            g.drawRect(x, y,width, height);
-                        }
-    
-                        g.setXORMode(new Color(0, 255, 255));
-    
-                        // 計算矩形的大小和位置，支持四個象限
-                        int x = Math.min(DrawPanel.this.sp.x, e.getX());
-                        int y = Math.min(DrawPanel.this.sp.y, e.getY());
-                        int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
-                        int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
-                        
-                        g.drawRect(x, y, width, height);
-    
-                        lp = e.getPoint();
-                    }
-                }
-            });
-            
-            this.addMouseListener(new MouseAdapter() {
-    
-                public void mousePressed(MouseEvent e) {
-                    if (makemap.st == State.ready2drawRectangle) {
-                        makemap.st = State.creatingRectangle;
-                        DrawPanel.this.sp = e.getPoint();
-                        DrawPanel.this.lp = null;
-                    }
-                    if (DrawPanel.this.activePRectangle != null) {
-                        if (DrawPanel.this.activePRectangle.status == State.active) {
-                            DrawPanel.this.activePRectangle.status = State.inactive;
-                            DrawPanel.this.activePRectangle = null;
-                            makemap.attributes.removeAll();
-                            DrawPanel.this.validate();
-                            DrawPanel.this.repaint();
-    
-                        }
-                    }
-                    if (DrawPanel.this.activeORectangle != null) {
-                        if (DrawPanel.this.activeORectangle.status == State.active) {
-                            DrawPanel.this.activeORectangle.status = State.inactive;
-                            DrawPanel.this.activeORectangle = null;
-                            makemap.attributes.removeAll();
-                            DrawPanel.this.validate();
-                            DrawPanel.this.repaint();
-    
-                        }
-                    }
-                }
-                
-                public void mouseReleased(MouseEvent e) {
-    
-                    if (makemap.st == State.creatingRectangle && lp != null) {
-                        Graphics g = DrawPanel.this.getGraphics();
-                        g.setXORMode(new Color(0, 255, 255));
-                        g.drawRect(Math.min(DrawPanel.this.sp.x,lp.x), Math.min(DrawPanel.this.sp.y,lp.y),
-                        Math.abs(lp.x - DrawPanel.this.sp.x),Math.abs( lp.y - DrawPanel.this.sp.y));
-    
-                        // 創建矩形對象並設置大小和位置
-                        Portals Ptemp = new Portals(DrawPanel.this);
-                        Obstables Otemp = new Obstables(DrawPanel.this);
-                        // 計算矩形的正確大小和位置
-                        int x = Math.min(DrawPanel.this.sp.x, e.getX());
-                        int y = Math.min(DrawPanel.this.sp.y, e.getY());
-                        int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
-                        int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
-    
-                        
-                        if (makemap.sta == State.portalstate)
-                        {
-                            
-                            Ptemp.setSize(width, height);
-                            Ptemp.setLocation(x, y);
-                            DrawPanel.this.add(Ptemp);
-                            DrawPanel.this.Prectangles.add(Ptemp);
-                            DrawPanel.this.activePRectangle = Ptemp;
-                            addTab1(makemap.attributes, Ptemp);
-                            activeORectangle = null;
-                            //把背景圖放到最下面
-                            BGLabelset();
-                            System.out.println("+1");
-                        }
-                        else if(makemap.sta == State.obstablestate)
-                        {
-                            Otemp.setSize(width, height);
-                            Otemp.setLocation(x, y);
-                            DrawPanel.this.add(Otemp);
-                            DrawPanel.this.Orectangles.add(Otemp);
-                            DrawPanel.this.activeORectangle = Otemp;
-                            addTab(makemap.attributes, Otemp);
-                            activePRectangle = null;
-                            //把背景圖放到最下面
-                            BGLabelset();
-                            System.out.println("+2");
-                        }
-                        
-                        DrawPanel.this.validate();
-                        DrawPanel.this.repaint();
-                        
-                        makemap.st = State.ready2drawRectangle;
-                    }else if (makemap.st == State.creatingRectangle && lp == null){
-                        //如果只點一下的話 要把它恢復成準備畫圖的型態
-                        makemap.st = State.ready2drawRectangle;
-                    }
-                }
-            });
-            
     }
     public void paint(Graphics g)
     {
@@ -238,8 +120,8 @@ public class DrawPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 DrawPanel parentPanel = (DrawPanel) label.getParent();
                 label.getParent().remove(label);
-                Orectangles.remove(label);
-                activeORectangle = null;
+                parentPanel.Orectangles.remove(label);
+                parentPanel.activeORectangle = null;
                 tabbedPane.removeAll();
                 parentPanel.revalidate();
                 parentPanel.repaint();
@@ -315,8 +197,8 @@ public class DrawPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 DrawPanel parentPanel = (DrawPanel) label.getParent();
                 label.getParent().remove(label);
-                Prectangles.remove(label);
-                activePRectangle = null;
+                parentPanel.Prectangles.remove(label);
+                parentPanel.activePRectangle = null;
                 tabbedPane.removeAll();
                 parentPanel.revalidate();
                 parentPanel.repaint();
@@ -392,4 +274,277 @@ public class DrawPanel extends JPanel {
         //重新繪圖不然會被遮住
         BGLabelset();
 	}
+    public void restoreListeners() {
+        makemap.st = State.active;    
+        lp = null;
+        sp = null;
+        this.activeORectangle = null;
+        this.activePRectangle = null;
+        this.removeAll();
+        this.add(BgJLabel);
+        //繪圖區的拖曳事件
+        this.addMouseMotionListener(new MouseAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                if (makemap.st == State.creatingRectangle) {
+                    Graphics g = DrawPanel.this.getGraphics();
+
+                    // 清除之前的矩形繪製
+                    if (lp != null) {
+                        
+                        g.setXORMode(new Color(0, 255, 255));
+                        int x = Math.min(DrawPanel.this.sp.x, lp.x);
+                        int y = Math.min(DrawPanel.this.sp.y, lp.y);
+                        int width = Math.abs(lp.x - DrawPanel.this.sp.x);
+                        int height = Math.abs(lp.y - DrawPanel.this.sp.y);
+                        g.drawRect(x, y,width, height);
+                    }
+
+                    g.setXORMode(new Color(0, 255, 255));
+
+                    // 計算矩形的大小和位置，支持四個象限
+                    int x = Math.min(DrawPanel.this.sp.x, e.getX());
+                    int y = Math.min(DrawPanel.this.sp.y, e.getY());
+                    int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
+                    int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
+                    
+                    g.drawRect(x, y, width, height);
+
+                    lp = e.getPoint();
+                }
+            }
+        });
+        //繪圖區的點擊放開事件
+        this.addMouseListener(new MouseAdapter() {
+
+            public void mousePressed(MouseEvent e) {
+                if (makemap.st == State.ready2drawRectangle) {
+                    makemap.st = State.creatingRectangle;
+                    DrawPanel.this.sp = e.getPoint();
+                    DrawPanel.this.lp = null;
+                }
+                if (DrawPanel.this.activePRectangle != null) {
+                    if (DrawPanel.this.activePRectangle.status == State.active) {
+                        DrawPanel.this.activePRectangle.status = State.inactive;
+                        DrawPanel.this.activePRectangle = null;
+                        makemap.attributes.removeAll();
+                        DrawPanel.this.validate();
+                        DrawPanel.this.repaint();
+
+                    }
+                }
+                if (DrawPanel.this.activeORectangle != null) {
+                    if (DrawPanel.this.activeORectangle.status == State.active) {
+                        DrawPanel.this.activeORectangle.status = State.inactive;
+                        DrawPanel.this.activeORectangle = null;
+                        makemap.attributes.removeAll();
+                        DrawPanel.this.validate();
+                        DrawPanel.this.repaint();
+
+                    }
+                }
+            }
+            
+            public void mouseReleased(MouseEvent e) {
+
+                if (makemap.st == State.creatingRectangle && lp != null) {
+                    Graphics g = DrawPanel.this.getGraphics();
+                    g.setXORMode(new Color(0, 255, 255));
+                    g.drawRect(Math.min(DrawPanel.this.sp.x,lp.x), Math.min(DrawPanel.this.sp.y,lp.y),
+                    Math.abs(lp.x - DrawPanel.this.sp.x),Math.abs( lp.y - DrawPanel.this.sp.y));
+
+                    // 創建矩形對象並設置大小和位置
+                    Portals Ptemp = new Portals(DrawPanel.this);
+                    Obstables Otemp = new Obstables(DrawPanel.this);
+                    // 計算矩形的正確大小和位置
+                    int x = Math.min(DrawPanel.this.sp.x, e.getX());
+                    int y = Math.min(DrawPanel.this.sp.y, e.getY());
+                    int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
+                    int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
+
+                    
+                    if (makemap.sta == State.portalstate)
+                    {
+                        
+                        Ptemp.setSize(width, height);
+                        Ptemp.setLocation(x, y);
+                        DrawPanel.this.add(Ptemp);
+                        DrawPanel.this.Prectangles.add(Ptemp);
+                        DrawPanel.this.activePRectangle = Ptemp;
+                        addTab1(makemap.attributes, Ptemp);
+                        activeORectangle = null;
+                        //把背景圖放到最下面
+                        BGLabelset();
+                        System.out.println("+1");
+                    }
+                    else if(makemap.sta == State.obstablestate)
+                    {
+                        Otemp.setSize(width, height);
+                        Otemp.setLocation(x, y);
+                        DrawPanel.this.add(Otemp);
+                        DrawPanel.this.Orectangles.add(Otemp);
+                        activeORectangle = Otemp;
+                        addTab(makemap.attributes, Otemp);
+                        activePRectangle = null;
+                        //把背景圖放到最下面
+                        BGLabelset();
+                        System.out.println("+2");
+                    }
+                    
+                    DrawPanel.this.validate();
+                    DrawPanel.this.repaint();
+                    
+                    makemap.st = State.ready2drawRectangle;
+                }else if (makemap.st == State.creatingRectangle && lp == null){
+                    //如果只點一下的話 要把它恢復成準備畫圖的型態
+                    makemap.st = State.ready2drawRectangle;
+                }
+            }
+        });
+        //把portal的事件加載回來
+        for (Portals portal : Prectangles) {
+            portal.status = State.inactive;
+            this.add(portal);
+            this.activePRectangle = portal;
+            this.activeORectangle = null;
+            portal.addMouseMotionListener(new MouseAdapter() {
+                public void mouseDragged(MouseEvent e) {
+                    if (portal.status == State.ready2Move) {
+                        portal.status = State.moving;
+                    }
+                    if (portal.status == State.moving) {
+                        portal.setLocation(
+                            portal.ol.x + (e.getXOnScreen() - lp.x),
+                            portal.ol.y + (e.getYOnScreen() - lp.y)
+                        );
+                    }
+                    addTab1(makemap.attributes, portal);
+                }
+            });
+            portal.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    // 點擊時選中該矩形
+                    if (portal.status == State.inactive) {
+                        if (portal.parent.activePRectangle != null) {
+                            // 取消其他矩形的選中狀態
+                            portal.parent.activePRectangle.status = State.inactive;
+                            portal.parent.activePRectangle = null;
+                        }
+    
+                        // 設置當前矩形為選中狀態
+                        portal.status = State.active;
+                        portal.parent.activePRectangle = portal;
+                        //叫標籤出來
+                        addTab1(makemap.attributes, portal);
+                        
+                        portal.parent.activeORectangle = null;
+                        portal.validate();
+                        portal.parent.repaint();
+                    } else if (portal.status == State.active) {
+                        // 準備移動該矩形
+                        portal.ol = portal.getLocation();
+                        if (lp == null) {
+                            lp = new Point();
+                        }
+    
+                        lp.x = e.getXOnScreen();
+                        lp.y = e.getYOnScreen();
+    
+                        portal.status = State.ready2Move;
+                        portal.parent.activePRectangle = null; // 移動時清空 activeRectangle
+                        portal.parent.repaint();
+                    }
+                }
+    
+                public void mouseReleased(MouseEvent e) {
+                    // 放開時根據狀態進行處理
+                    if (portal.status == State.ready2Move || portal.status == State.moving) {
+                        portal.status = State.active;
+                        portal.parent.activePRectangle = portal;
+                        portal.parent.repaint();
+                        portal.parent.activeORectangle = null;
+                        addTab1(makemap.attributes, portal);
+    
+                    }
+                }
+            });
+            
+        }
+        for (Obstables obstacle : Orectangles) {
+            obstacle.status = State.inactive;//將它設定成不選取
+            this.add(obstacle);
+            activePRectangle = null;
+            activeORectangle = obstacle;
+            // 滑鼠拖曳事件
+            obstacle.addMouseMotionListener(new MouseAdapter() {
+                public void mouseDragged(MouseEvent e) {
+                    if (obstacle.status == State.ready2Move) {
+                        obstacle.status = State.moving;
+                    }
+
+                    if (obstacle.status == State.moving) {
+                        obstacle.setLocation(
+                            obstacle.ol.x + (e.getXOnScreen() - lp.x),
+                            obstacle.ol.y + (e.getYOnScreen() - lp.y)
+                        );
+                    }
+                    addTab(makemap.attributes, obstacle);
+                }
+            });
+
+            // 滑鼠點擊事件
+            obstacle.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                    // 點擊時選中該矩形
+                    if (obstacle.status == State.inactive) {
+                        obstacle.status=State.active;
+                        System.out.println(obstacle.parent.activeORectangle != null);
+                        if (obstacle.parent.activeORectangle != null) {
+                            // 取消其他矩形的選中狀態
+                            obstacle.parent.activeORectangle.status = State.inactive;
+                        }
+
+                        // 設置當前矩形為選中狀態
+                        obstacle.parent.activeORectangle = obstacle;
+                        //叫標籤出來
+                        addTab(makemap.attributes, obstacle);
+
+                        obstacle.parent.activePRectangle = null;
+
+                        obstacle.validate();
+                        obstacle.parent.repaint();
+                    } else if (obstacle.status == State.active) {
+                        // 準備移動該矩形
+                        obstacle.ol = obstacle.getLocation();
+                        if (lp == null) {
+                            lp = new Point();
+                        }
+
+                        lp.x = e.getXOnScreen();
+                        lp.y = e.getYOnScreen();
+
+                        obstacle.status = State.ready2Move;
+                        obstacle.parent.activeORectangle = null; // 移動時清空 activeRectangle
+                        obstacle.parent.repaint();
+                    }
+                }
+
+                public void mouseReleased(MouseEvent e) {
+                    // 放開時根據狀態進行處理
+                    if (obstacle.status == State.ready2Move || obstacle.status == State.moving) {
+                        obstacle.status = State.active;
+                        obstacle.parent.activeORectangle = obstacle;
+                        obstacle.parent.repaint();
+                        obstacle.parent.activePRectangle = null;
+                        addTab(makemap.attributes, obstacle);
+                    }
+                }
+            });
+            
+            
+        }
+        BGLabelset();
+        DrawPanel.this.activePRectangle = null;
+        DrawPanel.this.activeORectangle = null;
+    }
+
 }

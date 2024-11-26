@@ -48,6 +48,21 @@ public class Page extends JPanel{
                 // 將新頁面添加到 JTabbedPane
                 tabbedPane.addTab("頁面 " + (i +1), panel);
                 exists[i] = true;
+                System.out.println("i");
+                break;
+               
+            }
+        }
+    }
+    //新增頁面 載入專屬
+    public void addNewTab2(DrawPanel panel) {
+        width = this.getWidth();
+        height = this.getHeight();
+        for (int i = 0 ; i < exists.length; i++){
+            if (exists[i] == false){
+                // 將新頁面添加到 JTabbedPane
+                tabbedPane.addTab("頁面 " + (i +1), panel);
+                exists[i] = true;
                 break;
                
             }

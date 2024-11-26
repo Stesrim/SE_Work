@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-public class Portals extends Portal {
+public class Portals extends Portal implements Serializable{
     public DrawPanel parent;
     State status;
 

@@ -117,7 +117,7 @@ public class toolbar extends JPanel {
         
         obstacleList.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 // 判斷鼠標是否單擊
                 if (e.getClickCount() == 1) {
                     // 獲取 JList 被點擊的項目索引
@@ -195,7 +195,7 @@ public class toolbar extends JPanel {
         
         obstacleList.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 // 判斷鼠標是否單擊
                 if (e.getClickCount() == 1) {
                     // 獲取 JList 被點擊的項目索引
