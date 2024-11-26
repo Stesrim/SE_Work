@@ -1,23 +1,28 @@
 package mazemaker;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
+
 public class Portals extends Portal implements Serializable{
     public DrawPanel parent;
     State status;
-
+    public ImageIcon Pbg;
     Point ol, lp = null;
 
     Portals(DrawPanel parent) {
         super();
+        Pbg = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
         this.parent = parent;
-        this.setBackground(Color.BLACK);
+        // this.setBackground(Color.BLACK);
         this.status = State.active; // 初始化為選中
-        this.setOpaque(true);
+        this.setOpaque(false);
 
         // 滑鼠拖曳事件
         this.addMouseMotionListener(new MouseAdapter() {
@@ -84,4 +89,21 @@ public class Portals extends Portal implements Serializable{
             }
         });
     }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // 调用父类的绘制方法
+
+        // 根據每個矩形的 obstacletype 設置背景圖片
+
+        // 如果背景圖片不為空，則繪製背景
+        if (Pbg != null) {
+            Image img = Pbg.getImage();
+            g.drawImage(img, 0, 0, getWidth(), getHeight(), this); // 填充整个组件区域
+        } else {
+            // 如果没有图片，绘制默认背景颜色
+            g.setColor(Color.YELLOW);
+            g.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
+
 }

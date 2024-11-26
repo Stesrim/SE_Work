@@ -18,6 +18,7 @@ public class makemap extends JFrame {
 	public static State st;
 	public static State sta;
 	public static JTabbedPane attributes;
+	public static int obstacletype;
 	public static int jtype;
 	public static boolean ispass;
    	makemap(){

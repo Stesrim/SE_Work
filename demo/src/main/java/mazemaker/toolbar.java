@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -23,6 +24,7 @@ public class toolbar extends JPanel {
     private JPanel toolPanel;  // 用來顯示 JList 的面板
     private JButton obstacleButton; // 障礙物按鈕
     private JButton supportbtn;
+    private JButton decoratebtn;
     private CardLayout cardLayout;  // 用來切換顯示的布局
 
     toolbar(makemap parent) {
@@ -31,6 +33,8 @@ public class toolbar extends JPanel {
         toolBar.setFloatable(false);
         // 添加工具按鈕
         obstacleButton = new JButton("障礙物");
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 创建字体，大小为18
+        obstacleButton.setFont(font);
         obstacleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,6 +51,7 @@ public class toolbar extends JPanel {
         });
         toolBar.add(obstacleButton);
         supportbtn = new JButton("輔助物");
+        supportbtn.setFont(font);
         supportbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,8 +66,10 @@ public class toolbar extends JPanel {
         });
         
         toolBar.add(supportbtn);
-        toolBar.add(new JButton("裝飾物"));
-
+        decoratebtn = new JButton("裝飾物");
+        decoratebtn.setFont(font);
+        toolBar.add(decoratebtn);
+        
         // 設置工具條的位置
 
         // 創建卡片布局來管理內容區域
@@ -94,9 +101,11 @@ public class toolbar extends JPanel {
         panel.setLayout(new BorderLayout());
 
         // 創建 JList 並添加項目
-        String[] obstacleItems = {"石頭", "樹木", "水域"};
+        String[] obstacleItems = {"石頭", "樹木", "牆壁"};
         JList<String> obstacleList = new JList<>(obstacleItems);
 
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为Arial字体，大小为18
+        obstacleList.setFont(font);
         // 設置 JList 單元格高度，縮小每個項目的高度
         obstacleList.setFixedCellHeight(25);  // 設置每個單元格的高度為 25 像素
 
@@ -127,6 +136,7 @@ public class toolbar extends JPanel {
                     if (index == 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.obstacletype = 0;
                             makemap.jtype = 1;
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
@@ -139,6 +149,7 @@ public class toolbar extends JPanel {
                     else if (index == 1) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.obstacletype = 1;
                             makemap.jtype = 1;
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
@@ -151,6 +162,7 @@ public class toolbar extends JPanel {
                     else if (index == 2) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.obstacletype = 2;
                             makemap.jtype = 1;
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
@@ -175,6 +187,8 @@ public class toolbar extends JPanel {
         String[] obstacleItems = {"人物","終點", "傳送門"};
         JList<String> obstacleList = new JList<>(obstacleItems);
 
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为Arial字体，大小为18
+        obstacleList.setFont(font);
         // 設置 JList 單元格高度，縮小每個項目的高度
         obstacleList.setFixedCellHeight(25);  // 設置每個單元格的高度為 25 像素
 
@@ -205,6 +219,7 @@ public class toolbar extends JPanel {
                     if (index == 0) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.obstacletype = 3;
                             makemap.jtype = 0; //type0為玩家
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
@@ -216,6 +231,7 @@ public class toolbar extends JPanel {
                     else if (index == 1) {
                         String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
+                            makemap.obstacletype = 4;
                             makemap.jtype = 2;//type2為終點
                             makemap.ispass = true;
                             makemap.sta = State.obstablestate;

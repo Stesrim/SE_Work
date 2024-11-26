@@ -154,7 +154,7 @@ public class mazedesignmenu extends JFrame{
 					}
 				}else{
 					JLabel ErrorJLabel = new JLabel();
-					ErrorJLabel.setText("請先建立一個新的頁面");
+					ErrorJLabel.setText("頁面過多無法載入");
 					ErrorJLabel.setFont(dialogFont);
 					JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
 				}

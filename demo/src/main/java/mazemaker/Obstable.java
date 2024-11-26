@@ -12,14 +12,12 @@ public class Obstable extends JLabel{
         super();
         type = 0;
         passable = false;
-        this.setOpaque(true);
+        this.setOpaque(false);
     }
-    public Obstable(ImageIcon name, int type, boolean passable) {
+    public Obstable(int type, boolean passable) {
         this.type = type;
         this.passable = passable;
 
-        this.setIcon(name);
-        this.setOpaque(true);
     }
     public boolean isPassable() {
         return passable;

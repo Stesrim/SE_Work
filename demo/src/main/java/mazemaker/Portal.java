@@ -11,8 +11,8 @@ public class Portal extends Obstable{
         this.Id = 0;
         this.PortalId = 0;
     }
-    public Portal(ImageIcon name, int type, boolean passable, int Id) {
-        super(name, type, passable);
+    public Portal( int type, boolean passable, int Id) {
+        super( type, passable);
         super.setPassable(true);
         this.Id = Id;
         this.PortalId = 0;

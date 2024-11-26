@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -99,13 +100,32 @@ public class DrawPanel extends JPanel implements Serializable{
         widthField = new JTextField(String.valueOf(label.getWidth()));
         heightField = new JTextField(String.valueOf(label.getHeight()));
 
-        editPanel.add(new JLabel("X 座標:"));
+        // X座標
+        JLabel xLabel = new JLabel("X 座標:");
+        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
+        editPanel.add(xLabel);
+        xField = new JTextField(String.valueOf(label.getX()));
         editPanel.add(xField);
-        editPanel.add(new JLabel("Y 座標:"));
+
+        // Y座標
+        JLabel yLabel = new JLabel("Y 座標:");
+        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
+        editPanel.add(yLabel);
+        yField = new JTextField(String.valueOf(label.getY()));
         editPanel.add(yField);
-        editPanel.add(new JLabel("寬度:"));
+
+        // 寬度
+        JLabel widthLabel = new JLabel("寬度:");
+        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
+        editPanel.add(widthLabel);
+        widthField = new JTextField(String.valueOf(label.getWidth()));
         editPanel.add(widthField);
-        editPanel.add(new JLabel("高度:"));
+
+        // 高度
+        JLabel heightLabel = new JLabel("高度:");
+        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 16));  // 設置字體大小為16
+        editPanel.add(heightLabel);
+        heightField = new JTextField(String.valueOf(label.getHeight()));
         editPanel.add(heightField);
         System.out.println("Portals");
         tabPanel.add(editPanel, BorderLayout.CENTER);
