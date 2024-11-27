@@ -131,7 +131,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // X座標
         JLabel xLabel = new JLabel("X 座標:");
-        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 0;
         editPanel.add(xLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 0;
@@ -139,7 +139,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // Y座標
         JLabel yLabel = new JLabel("Y 座標:");
-        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));  
+        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));  
         gbc.gridx = 0; gbc.gridy = 1;
         editPanel.add(yLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1;
@@ -147,7 +147,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 寬度
         JLabel widthLabel = new JLabel("寬度:");
-        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 2;
         editPanel.add(widthLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 2;
@@ -155,7 +155,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 高度
         JLabel heightLabel = new JLabel("高度:");
-        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 3;
         editPanel.add(heightLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 3;
@@ -260,15 +260,16 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // X座標
         JLabel xLabel = new JLabel("X 座標:");
-        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
+        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
         gbc.gridx = 0; gbc.gridy = 0;
         editPanel.add(xLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 0;
         editPanel.add(xField, gbc);
 
+
         // Y座標
         JLabel yLabel = new JLabel("Y 座標:");
-        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));  
+        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));  
         gbc.gridx = 0; gbc.gridy = 1;
         editPanel.add(yLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1;
@@ -276,7 +277,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 寬度
         JLabel widthLabel = new JLabel("寬度:");
-        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
+        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
         gbc.gridx = 0; gbc.gridy = 2;
         editPanel.add(widthLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 2;
@@ -284,7 +285,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 高度
         JLabel heightLabel = new JLabel("高度:");
-        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
+        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
         gbc.gridx = 0; gbc.gridy = 3;
         editPanel.add(heightLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 3;
@@ -292,14 +293,14 @@ public class DrawPanel extends JPanel implements Serializable{
         
         //傳送門ID
         JLabel IDLabel = new JLabel("傳送門ID:");
-        IDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
+        IDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
         gbc.gridx = 0; gbc.gridy = 4;
         editPanel.add(IDLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 4;
         editPanel.add(ID, gbc);
         //目標傳送門
         JLabel PIDLabel = new JLabel("目標傳送門:");
-        PIDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
+        PIDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 15));
         gbc.gridx = 0; gbc.gridy = 5;
         editPanel.add(PIDLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 5;
