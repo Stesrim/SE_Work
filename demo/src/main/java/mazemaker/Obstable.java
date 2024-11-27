@@ -18,13 +18,6 @@ public class Obstable extends JLabel{
         this.type = type;
         this.passable = passable;
     }
-    // //deep copy
-    // public Obstable(Obstable otherObstable){
-    //     super();
-    //     type = otherObstable.type;
-    //     this.type = otherObstable.type;
-    //     this.passable = otherObstable.passable;
-    // }
     public boolean isPassable() {
         return passable;
     }

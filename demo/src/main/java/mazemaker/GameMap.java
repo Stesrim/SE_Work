@@ -58,6 +58,7 @@ public class GameMap extends JFrame implements KeyListener {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setResizable(false);
         this.setSize(windowWidth, windowHeight);
+        this.setLocationRelativeTo(null);
         this.setLayout(null);
         this.addKeyListener(this);
 

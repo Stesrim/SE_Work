@@ -8,10 +8,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class MainWindow extends JFrame {
     JButton exitBtn;
@@ -124,19 +131,87 @@ public class MainWindow extends JFrame {
         defaultmap.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (gameWindow == null || !gameWindow.window.isVisible()) {
-                    gameWindow = new defaultgame();
+                // 指定檔案的具體位置
+                File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+                // 您可以將這裡的路徑修改為固定的檔案路徑
+                String filePath = defaultDir.getPath() + "/hihhi";  // 存放的是預設地圖
+        
+                File selectedFile = new File(filePath);
+        
+                // 檢查檔案是否存在
+                if (selectedFile.exists()) {
+                    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(selectedFile))) {
+                        DrawPanel loadedPanel = (DrawPanel) ois.readObject();
+                        if (loadedPanel.CheckCollison() == true) {
+                            GameMap window = new GameMap();
+                            window.setMazesize(loadedPanel.width, loadedPanel.height);
+                            window.setBG(loadedPanel.getBg());
+                            window.setTimeleft(loadedPanel.getTimeLeft());
+                            for (Obstables obstable : loadedPanel.Orectangles) {
+                                window.addObstable(obstable, obstable.getType());
+                            }
+                            for (Portals portal : loadedPanel.Prectangles) {
+                                window.addPortal(portal);
+                            }
+                        } else {
+                            JLabel ErrorJLabel = new JLabel();
+                            ErrorJLabel.setText("編譯不通過，請再檢查一下");
+                            JOptionPane.showMessageDialog(null, ErrorJLabel, "Fail", JOptionPane.WARNING_MESSAGE);
+                        }
+        
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "載入失敗:" + ex.getMessage());
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
                 } else {
-                    gameWindow.window.toFront();
+                    JOptionPane.showMessageDialog(null, "檔案不存在，請確認檔案路徑！");
                 }
             }
         });
-
+        
         importmap.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 导入地图功能的代码
-            }
-        });
+				
+				
+                //抓到放檔案的相對位置
+                File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+                JFileChooser fileChooser = new JFileChooser(defaultDir);
+                fileChooser.setDialogTitle("選擇載入路徑位置");
+                int userSelection = fileChooser.showOpenDialog(null);
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    try (ObjectInputStream ois = new ObjectInputStream(
+                        new FileInputStream(fileChooser.getSelectedFile()))) {
+                        DrawPanel loadedPanel = (DrawPanel) ois.readObject();
+                        if (loadedPanel.CheckCollison() == true){
+							GameMap window = new GameMap();
+							window.setMazesize(loadedPanel.width, loadedPanel.height);
+        					window.setBG(loadedPanel.getBg());
+        					window.setTimeleft(loadedPanel.getTimeLeft());
+							for (Obstables obstable: loadedPanel.Orectangles) {
+								window.addObstable(obstable, obstable.getType());
+							}
+							for (Portals portal: loadedPanel.Prectangles) {
+								window.addPortal(portal);
+							}
+                        }else{
+							JLabel ErrorJLabel = new JLabel();
+							ErrorJLabel.setText("編譯不通過，請再檢查一下");
+							JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
+						}
+                        
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "載入失敗:" + ex.getMessage());
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
+				
+			}
+		});
     }
 }

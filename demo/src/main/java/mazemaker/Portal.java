@@ -15,13 +15,6 @@ public class Portal extends Obstable{
         this.Id = Id;
         this.PortalId = 0;
     }
-    // //deep copy
-    // public Portal(Portal otherPortal) {
-    //     super();
-    //     super.setPassable(true);
-    //     this.Id = otherPortal.Id;
-    //     this.PortalId = otherPortal.PortalId;
-    // }
     public void setPortalId(int PortalId){
         this.PortalId = PortalId;
     }
