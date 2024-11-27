@@ -395,7 +395,7 @@ public class toolbar extends JPanel {
                     if (index == 0) {
                         if(makemap.st == State.active){
                             makemap.obstacletype = 5;
-                            makemap.jtype = 1; //type0為玩家
+                            makemap.jtype = 1; 
                             makemap.ispass = true;
                             makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
