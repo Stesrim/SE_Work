@@ -1,7 +1,5 @@
 package mazemaker;
 
-import javax.swing.ImageIcon;
-
 public class Portal extends Obstable{
     private int PortalId;//目標傳送門
     private int Id;//傳送門
@@ -17,6 +15,13 @@ public class Portal extends Obstable{
         this.Id = Id;
         this.PortalId = 0;
     }
+    // //deep copy
+    // public Portal(Portal otherPortal) {
+    //     super();
+    //     super.setPassable(true);
+    //     this.Id = otherPortal.Id;
+    //     this.PortalId = otherPortal.PortalId;
+    // }
     public void setPortalId(int PortalId){
         this.PortalId = PortalId;
     }

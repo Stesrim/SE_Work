@@ -488,7 +488,7 @@ public class DrawPanel extends JPanel implements Serializable{
                     int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
 
                     
-                    if (makemap.sta == State.portalstate)
+                    if (makemap.sta == State.portalstate && width!= 0 && height != 0)
                     {
                         
                         Ptemp.setSize(width, height);
@@ -503,7 +503,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         //把背景圖放到最下面
                         BGLabelset();
                     }
-                    else if(makemap.sta == State.obstablestate)
+                    else if(makemap.sta == State.obstablestate && width!= 0 && height != 0)
                     {
                         Otemp.setSize(width, height);
                         Otemp.setLocation(x, y);
@@ -680,32 +680,53 @@ public class DrawPanel extends JPanel implements Serializable{
     //確認每個障礙物都沒有碰觸到與確認每個傳送門都可以傳送到目標傳送門
     public boolean CheckCollison(){
         int Playercount = 0;
-        //這邊是看每一個障礙物的部分 include 玩家障礙物裝飾物終點
+        boolean EndSpot = false;
+        //這邊是不能讓玩家跟其他物件有碰撞的情況
         for (Obstables obstable : Orectangles){
-            Rectangle firstBounds = obstable.getBounds();
+            if (obstable.getType() == 2){
+                EndSpot = true;
+            }
+            //玩家
             if (obstable.getType() == 0) {
+                System.out.println("implayer");
                 Playercount++;
-            }
-            for (Obstable  temp: Orectangles){
-            if (obstable != temp){
-
-                Rectangle obstableBounds = obstable.getBounds();
-                if (firstBounds.intersects(obstableBounds)) {
-                    return false;
+                Rectangle firstBounds = obstable.getBounds();
+                for (Obstable temp : Orectangles){
+                    if (obstable != temp){
+                        Rectangle obstableBounds = temp.getBounds();
+                        if (firstBounds.intersects(obstableBounds)) {
+                            System.out.println("error1");
+                            return false;
+                        }
+                    }
                 }
-            }
-            for (Portals portal : Prectangles){
-                Rectangle portalBounds = portal.getBounds();
-                if (firstBounds.intersects(portalBounds)) {
-                    return false;
+                System.out.println("checkpoint");
+                for (Portals portal : Prectangles){
+                    Rectangle portalBounds = portal.getBounds();
+                    if (firstBounds.intersects(portalBounds)) {
+                        return false;
+                    }
                 }
-
             }
         }
-        if (Playercount != 1){
+        //有多個或0個玩家||沒有放置終點
+        if (Playercount != 1 || EndSpot == false){
             return false;
         }
-        
+        for (Portals portal : Prectangles) {
+            //傳送門要傳的id
+            boolean check = false;
+            int PorId = portal.getPortalId();
+            for (Portals temp : Prectangles) {
+                if (portal != temp) {
+                    if(PorId == temp.getId()){
+                        check = true;
+                    }
+                }
+            }
+            if (check == false) {
+                return false;
+            }
         }
         return true;
     }

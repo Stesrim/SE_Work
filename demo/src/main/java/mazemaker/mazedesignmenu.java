@@ -3,6 +3,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -93,7 +95,87 @@ public class mazedesignmenu extends JFrame{
 	
 		
 		// Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		
+		Comp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				int index = page.tabbedPane.getSelectedIndex();
+				if (index != -1){
+					//抓DrawPanel裡面的資料
+					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					if (Temp.CheckCollison() == true){
+						JLabel PassJLabel = new JLabel();
+						PassJLabel.setText("編譯通過");
+						PassJLabel.setFont(dialogFont);
+						JOptionPane.showMessageDialog(null,PassJLabel);
+					}else{
+						JLabel ErrorJLabel = new JLabel();
+						ErrorJLabel.setText("編譯不通過，請再檢查一下");
+						ErrorJLabel.setFont(dialogFont);
+						JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
+					}
+				}else{
+					JLabel ErrorJLabel = new JLabel();
+					ErrorJLabel.setText("請先建立一個新的頁面");
+					ErrorJLabel.setFont(dialogFont);
+					JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+				}
+            }
+        });
+		CompAndRun.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+				int index = page.tabbedPane.getSelectedIndex();
+				if (index != -1){
+					//shallow copy temp
+					DrawPanel ScTemp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					try {
+            			// 用 ByteArrayOutputStream 創建一個內存流
+            			ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
+            
+            			// 用 ObjectOutputStream 來序列化物件到這個流
+            			ObjectOutputStream oos = new ObjectOutputStream(BAOS);
+            			oos.writeObject(ScTemp);
+            			oos.flush();  // 確保寫入所有數據
+            
+            			// 用 ByteArrayInputStream 來讀取這些字節數據
+            			ByteArrayInputStream BAIS = new ByteArrayInputStream(BAOS.toByteArray());
+            
+            			// 用 ObjectInputStream 來反序列化數據，並返回新物件
+            			ObjectInputStream ois = new ObjectInputStream(BAIS);
+             			//這個物件是deepcopy的不會影響到原本的DrawPanel
+						DrawPanel Temp = (DrawPanel)ois.readObject();
+						if (Temp.CheckCollison() == true){
+							GameMap window = new GameMap();
+							window.setMazesize(Temp.width, Temp.height);
+        					window.setBG(Temp.getBg());
+        					window.setTimeleft(Temp.getTimeLeft());
+							for (Obstables obstable:Temp.Orectangles) {
+								window.addObstable(obstable, obstable.getType());
+							}
+							for (Portals portal:Temp.Prectangles) {
+								window.addPortal(portal);
+							}
+
+						}else{
+							JLabel ErrorJLabel = new JLabel();
+							ErrorJLabel.setText("編譯不通過，請再檢查一下");
+							ErrorJLabel.setFont(dialogFont);
+							JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (IOException ex ) {
+						ex.printStackTrace();
+					} catch (ClassNotFoundException e1) {
+						e1.printStackTrace();
+					}
+					
+				}else{
+					JLabel ErrorJLabel = new JLabel();
+					ErrorJLabel.setText("請先建立一個新的頁面");
+					ErrorJLabel.setFont(dialogFont);
+					JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+				}
+            }
+        });
 		saveMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
