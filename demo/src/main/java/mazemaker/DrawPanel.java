@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -29,12 +30,16 @@ import javax.swing.JTextField;
 
 
 
+
 public class DrawPanel extends JPanel implements Serializable{
 	private int Background;// 預設為0
 	private int TimeLeft;// 預設為60
+    //編譯要用到的長寬
+    public int width;
+    public int height;
     //序列化後不會保留
 	transient private static JTextField xField, yField, widthField, heightField, ID, PID;
-
+    
     transient public Point lp, sp;
     boolean isDraw = false;
     boolean isDrawRect = false;
@@ -46,6 +51,8 @@ public class DrawPanel extends JPanel implements Serializable{
     public JLabel BgJLabel;
 
     public DrawPanel() {
+            width = Page.width;
+            height = Page.height;
             Background = 0;
             TimeLeft = 60;
             setLayout(new BorderLayout());
@@ -253,7 +260,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // X座標
         JLabel xLabel = new JLabel("X 座標:");
-        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        xLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 0;
         editPanel.add(xLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 0;
@@ -261,7 +268,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // Y座標
         JLabel yLabel = new JLabel("Y 座標:");
-        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));  
+        yLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));  
         gbc.gridx = 0; gbc.gridy = 1;
         editPanel.add(yLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1;
@@ -269,7 +276,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 寬度
         JLabel widthLabel = new JLabel("寬度:");
-        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        widthLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 2;
         editPanel.add(widthLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 2;
@@ -277,7 +284,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 高度
         JLabel heightLabel = new JLabel("高度:");
-        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        heightLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 3;
         editPanel.add(heightLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 3;
@@ -285,14 +292,14 @@ public class DrawPanel extends JPanel implements Serializable{
         
         //傳送門ID
         JLabel IDLabel = new JLabel("傳送門ID:");
-        IDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        IDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 4;
         editPanel.add(IDLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 4;
         editPanel.add(ID, gbc);
         //目標傳送門
-        JLabel PIDLabel = new JLabel("傳送門ID:");
-        PIDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 25));
+        JLabel PIDLabel = new JLabel("目標傳送門:");
+        PIDLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 20));
         gbc.gridx = 0; gbc.gridy = 5;
         editPanel.add(PIDLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 5;
@@ -505,6 +512,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         Otemp.setObg(makemap.obstacletype);
                         Otemp.Obg.setImage(Otemp.Obg.getImage().getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING));
                         Otemp.setIcon(Otemp.Obg);
+                        //設定他的障礙物類別
                         Otemp.setPassable(makemap.ispass);
                         Otemp.setType(makemap.jtype);
                         addTab(makemap.attributes, Otemp);
@@ -668,5 +676,36 @@ public class DrawPanel extends JPanel implements Serializable{
         DrawPanel.this.activePRectangle = null;
         DrawPanel.this.activeORectangle = null;
     }
+    //確認每個障礙物都沒有碰觸到與確認每個傳送門都可以傳送到目標傳送門
+    public boolean CheckCollison(){
+        int Playercount = 0;
+        //這邊是看每一個障礙物的部分 include 玩家障礙物裝飾物終點
+        for (Obstables obstable : Orectangles){
+            Rectangle firstBounds = obstable.getBounds();
+            if (obstable.getType() == 0) {
+                Playercount++;
+            }
+            for (Obstable  temp: Orectangles){
+            if (obstable != temp){
 
+                Rectangle obstableBounds = obstable.getBounds();
+                if (firstBounds.intersects(obstableBounds)) {
+                    return false;
+                }
+            }
+            for (Portals portal : Prectangles){
+                Rectangle portalBounds = portal.getBounds();
+                if (firstBounds.intersects(portalBounds)) {
+                    return false;
+                }
+
+            }
+        }
+        if (Playercount != 1){
+            return false;
+        }
+        
+        }
+        return true;
+    }
 }

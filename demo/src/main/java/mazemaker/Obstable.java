@@ -3,7 +3,7 @@ package mazemaker;
 import javax.swing.JLabel;
 
 public class Obstable extends JLabel{
-    
+    // 0 = player 1 = obstable 2 = endspot
     private int type;
     private boolean passable;
 
