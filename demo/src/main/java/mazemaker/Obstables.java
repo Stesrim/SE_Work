@@ -108,6 +108,9 @@ public class Obstables extends Obstable implements Serializable{
             case 4: 
                 Obg = new ImageIcon(getClass().getResource("/images/object image/flag.png"));
                 break;
+            case 5: 
+            Obg = new ImageIcon(getClass().getResource("/images/object image/foliagePack_019.png"));
+            break;
         
     }
     

@@ -2,20 +2,26 @@ package mazemaker;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 
 public class toolbar extends JPanel {
@@ -26,7 +32,7 @@ public class toolbar extends JPanel {
     private JButton supportbtn;
     private JButton decoratebtn;
     private CardLayout cardLayout;  // 用來切換顯示的布局
-
+    private ImageIcon listIcon;
     toolbar(makemap parent) {
         // 創建工具條並設置為垂直
         toolBar = new JToolBar(JToolBar.VERTICAL);
@@ -66,10 +72,24 @@ public class toolbar extends JPanel {
         });
         
         toolBar.add(supportbtn);
+        // decoratebtn = new JButton("裝飾物");
+        // decoratebtn.setFont(font);
+        // toolBar.add(decoratebtn);
         decoratebtn = new JButton("裝飾物");
         decoratebtn.setFont(font);
-        toolBar.add(decoratebtn);
+        decoratebtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                contentPanel.removeAll();
+                contentPanel.add(createDecoratebtnListPanel(), "裝飾物選項");
+                contentPanel.add(toolBar, BorderLayout.EAST);
+                contentPanel.revalidate();
+                contentPanel.repaint();
+                makemap.st = State.active;
+            }
+        });
         
+        toolBar.add(decoratebtn);
         // 設置工具條的位置
 
         // 創建卡片布局來管理內容區域
@@ -100,77 +120,94 @@ public class toolbar extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // 創建 JList 並添加項目
-        String[] obstacleItems = {"石頭", "樹木", "牆壁"};
-        JList<String> obstacleList = new JList<>(obstacleItems);
+        // 创建 ImageIcon 数组并加载图片
+        ImageIcon[] listicon = new ImageIcon[3];
+        listicon[0] = new ImageIcon(getClass().getResource("/images/object image/foliagePack_053.png"));
+        listicon[1] = new ImageIcon(getClass().getResource("/images/object image/foliagePack_011.png"));
+        listicon[2] = new ImageIcon(getClass().getResource("/images/object image/牆壁.png"));
 
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  //設置為Arial字體，大小為18
+        // 创建 JList，使用 ImageIcon 数组
+        JList<ImageIcon> obstacleList = new JList<>(listicon);
+
+        // 设置字体
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为微软雅黑字体，大小为18
         obstacleList.setFont(font);
-        // 設置 JList 單元格高度，縮小每個項目的高度
-        obstacleList.setFixedCellHeight(25);  // 設置每個單元格的高度為 25 像素
 
-        // 設置 JList 的寬度（如果需要）
-        obstacleList.setFixedCellWidth(150);  // 設置每個單元格的寬度為 150 像素
+        // 使用自定义的 ListCellRenderer 来根据图片尺寸调整单元格大小
+        obstacleList.setCellRenderer(new ListCellRenderer<ImageIcon>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends ImageIcon> list, ImageIcon value, int index, boolean isSelected, boolean cellHasFocus) {
+                JPanel panel = new JPanel() {
+                    @Override
+                    public Dimension getPreferredSize() {
+                        // 根据图片的宽高设置单元格大小
+                        int width = value.getIconWidth();
+                        int height = value.getIconHeight();
+                        return new Dimension(width + 10, height + 10);  // 增加一些额外空间，避免图片紧贴边缘
+                    }
+                };
 
-        // 設置 JList 的選擇模式（例如單選模式）
+                // 使用 JLabel 来显示图片
+                JLabel label = new JLabel(value);
+                panel.setLayout(new BorderLayout());
+                panel.add(label, BorderLayout.CENTER);
+
+                // 设置选中时的背景颜色
+                if (isSelected) {
+                    panel.setBackground(Color.LIGHT_GRAY);
+                } else {
+                    panel.setBackground(Color.WHITE);
+                }
+
+                // 设置边框，增加项之间的间隔
+                panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+                return panel;
+            }
+        });
+
+        // 设置 JList 的选择模式（例如单选模式）
         obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        // 包裹 JList 的滾動面板
+
+        // 包裹 JList 的滚动面板
         JScrollPane scrollPane = new JScrollPane(obstacleList);
 
-        // 限制顯示區域的大小，避免顯示過多項目
-        scrollPane.setPreferredSize(new Dimension(160, 150));  // 設置滾動區域的大小
+        // 限制显示区域的大小，避免显示过多项目
+        scrollPane.setPreferredSize(new Dimension(160, 150));  // 设置滚动区域的大小
 
         // 添加到面板中
         panel.add(scrollPane, BorderLayout.WEST);
-        
+
+        // 处理鼠标点击事件
         obstacleList.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // 判斷鼠標是否單擊
+                // 判断鼠标是否单击
                 if (e.getClickCount() == 1) {
-                    // 獲取 JList 被點擊的項目索引
+                    // 获取 JList 被点击的项目索引
                     int index = obstacleList.locationToIndex(e.getPoint());
                     makemap.st = State.active;
-                    // 確保點擊的索引有效
-                    if (index == 0) {
-                        String selectedItem = obstacleList.getModel().getElementAt(index);
-                        if(makemap.st == State.active){
+                    // 根据点击的索引设置不同的障碍类型
+                    if (makemap.st == State.active) {
+                        if (index == 0) {
                             makemap.obstacletype = 0;
                             makemap.jtype = 1;
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
-
-	    			    }
-                    
-                    }
-                    else if (index == 1) {
-                        String selectedItem = obstacleList.getModel().getElementAt(index);
-                        if(makemap.st == State.active){
+                            makemap.st = State.ready2drawRectangle;
+                        } else if (index == 1) {
                             makemap.obstacletype = 1;
                             makemap.jtype = 1;
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
-
-	    			    }
-                    
-                    }
-                    else if (index == 2) {
-                        String selectedItem = obstacleList.getModel().getElementAt(index);
-                        if(makemap.st == State.active){
+                            makemap.st = State.ready2drawRectangle;
+                        } else if (index == 2) {
                             makemap.obstacletype = 2;
                             makemap.jtype = 1;
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
-	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
-
-	    			    }
-                    
+                            makemap.st = State.ready2drawRectangle;
+                        }
                     }
                 }
             }
@@ -179,30 +216,65 @@ public class toolbar extends JPanel {
         return panel;
     }
 
+
     public JPanel createSupportListPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // 創建 JList 並添加項目
-        String[] obstacleItems = {"人物","終點", "傳送門"};
-        JList<String> obstacleList = new JList<>(obstacleItems);
+        // 创建 ImageIcon 数组并加载图片
+        ImageIcon[] listicon = new ImageIcon[3];
+        listicon[0] = new ImageIcon(getClass().getResource("/images/playerandendspot/player.png"));
+        listicon[1] = new ImageIcon(getClass().getResource("/images/object image/flag.png"));
+        listicon[2] = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
 
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 設置為Arial字體，大小為18
+        // 创建 JList，使用 ImageIcon 数组
+        JList<ImageIcon> obstacleList = new JList<>(listicon);
+
+        // 设置字体
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为微软雅黑字体，大小为18
         obstacleList.setFont(font);
-        // 設置 JList 單元格高度，縮小每個項目的高度
-        obstacleList.setFixedCellHeight(25);  // 設置每個單元格的高度為 25 像素
 
-        // 設置 JList 的寬度（如果需要）
-        obstacleList.setFixedCellWidth(150);  // 設置每個單元格的寬度為 150 像素
+        // 使用自定义的 ListCellRenderer 来根据图片尺寸调整单元格大小
+        obstacleList.setCellRenderer(new ListCellRenderer<ImageIcon>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends ImageIcon> list, ImageIcon value, int index, boolean isSelected, boolean cellHasFocus) {
+                JPanel panel = new JPanel() {
+                    @Override
+                    public Dimension getPreferredSize() {
+                        // 根据图片的宽高设置单元格大小
+                        int width = value.getIconWidth();
+                        int height = value.getIconHeight();
+                        return new Dimension(width + 10, height + 10);  // 增加一些额外空间，避免图片紧贴边缘
+                    }
+                };
 
-        // 設置 JList 的選擇模式（例如單選模式）
+                // 使用 JLabel 来显示图片
+                JLabel label = new JLabel(value);
+                panel.setLayout(new BorderLayout());
+                panel.add(label, BorderLayout.CENTER);
+
+                // 设置选中时的背景颜色
+                if (isSelected) {
+                    panel.setBackground(Color.LIGHT_GRAY);
+                } else {
+                    panel.setBackground(Color.WHITE);
+                }
+
+                // 设置边框，增加项之间的间隔
+                panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+                return panel;
+            }
+        });
+
+        // 设置 JList 的选择模式（例如单选模式）
         obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // 包裹 JList 的滾動面板
+        // 包裹 JList 的滚动面板
         JScrollPane scrollPane = new JScrollPane(obstacleList);
 
-        // 限制顯示區域的大小，避免顯示過多項目
-        scrollPane.setPreferredSize(new Dimension(160, 150));  // 設置滾動區域的大小
+        // 限制显示区域的大小，避免显示过多项目
+        scrollPane.setPreferredSize(new Dimension(160, 150));  // 设置滚动区域的大小
 
         // 添加到面板中
         panel.add(scrollPane, BorderLayout.WEST);
@@ -217,26 +289,22 @@ public class toolbar extends JPanel {
                     makemap.st = State.active;
                     // 確保點擊的索引有效
                     if (index == 0) {
-                        String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
                             makemap.obstacletype = 3;
                             makemap.jtype = 0; //type0為玩家
                             makemap.ispass = false;
                             makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
 	    			    }
                     
                     }
                     else if (index == 1) {
-                        String selectedItem = obstacleList.getModel().getElementAt(index);
                         if(makemap.st == State.active){
                             makemap.obstacletype = 4;
                             makemap.jtype = 2;//type2為終點
                             makemap.ispass = true;
                             makemap.sta = State.obstablestate;
 	    			    	makemap.st = State.ready2drawRectangle;
-                            System.out.println(selectedItem);
 	    			    }
                     }
                     else if (index == 2) {
@@ -254,14 +322,93 @@ public class toolbar extends JPanel {
 
         return panel;
     }
+    public JPanel createDecoratebtnListPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
-    // 顯示障礙物選項（JList）
-    private void showObstacleList() {
-        // 切換到 "障礙物選項" 卡片
-        cardLayout.show(contentPanel, "障礙物選項");
+        // 创建 ImageIcon 数组并加载图片
+        ImageIcon[] listicon = new ImageIcon[1];
+        listicon[0] = new ImageIcon(getClass().getResource("/images/object image/foliagePack_019.png"));
+
+
+        // 创建 JList，使用 ImageIcon 数组
+        JList<ImageIcon> obstacleList = new JList<>(listicon);
+
+        // 设置字体
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为微软雅黑字体，大小为18
+        obstacleList.setFont(font);
+
+        // 使用自定义的 ListCellRenderer 来根据图片尺寸调整单元格大小
+        obstacleList.setCellRenderer(new ListCellRenderer<ImageIcon>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends ImageIcon> list, ImageIcon value, int index, boolean isSelected, boolean cellHasFocus) {
+                JPanel panel = new JPanel() {
+                    @Override
+                    public Dimension getPreferredSize() {
+                        // 根据图片的宽高设置单元格大小
+                        int width = value.getIconWidth();
+                        int height = value.getIconHeight();
+                        return new Dimension(width + 10, height + 10);  // 增加一些额外空间，避免图片紧贴边缘
+                    }
+                };
+
+                // 使用 JLabel 来显示图片
+                JLabel label = new JLabel(value);
+                panel.setLayout(new BorderLayout());
+                panel.add(label, BorderLayout.CENTER);
+
+                // 设置选中时的背景颜色
+                if (isSelected) {
+                    panel.setBackground(Color.LIGHT_GRAY);
+                } else {
+                    panel.setBackground(Color.WHITE);
+                }
+
+                // 设置边框，增加项之间的间隔
+                panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+                return panel;
+            }
+        });
+
+        // 设置 JList 的选择模式（例如单选模式）
+        obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // 包裹 JList 的滚动面板
+        JScrollPane scrollPane = new JScrollPane(obstacleList);
+
+        // 限制显示区域的大小，避免显示过多项目
+        scrollPane.setPreferredSize(new Dimension(160, 150));  // 设置滚动区域的大小
+
+        // 添加到面板中
+        panel.add(scrollPane, BorderLayout.WEST);
+        
+        obstacleList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // 判斷鼠標是否單擊
+                if (e.getClickCount() == 1) {
+                    // 獲取 JList 被點擊的項目索引
+                    int index = obstacleList.locationToIndex(e.getPoint());
+                    makemap.st = State.active;
+                    // 確保點擊的索引有效
+                    if (index == 0) {
+                        if(makemap.st == State.active){
+                            makemap.obstacletype = 5;
+                            makemap.jtype = 1; //type0為玩家
+                            makemap.ispass = true;
+                            makemap.sta = State.obstablestate;
+	    			    	makemap.st = State.ready2drawRectangle;
+	    			    }
+                    
+                    }
+                    
+
+                }
+            }
+        });
+
+        return panel;
     }
-    private void showSupportList() {
-        // 切換到 "障礙物選項" 卡片
-        cardLayout.show(contentPanel, "輔助物選項");
-    }
+
 }
