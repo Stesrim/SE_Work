@@ -4,11 +4,11 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-public class title extends JFrame {
+public class Title extends JFrame {
    	public String title = "ezPaint";
    	public int version = 1;
 
-   	title(){
+   	Title(){
 	   	MainWindow mainWin = new MainWindow();
 	   	mainWin.getContentPane().setBackground(Color.GRAY); // 設置內容面板背景色
 		mainWin.setVisible(true);

@@ -24,7 +24,7 @@ import javax.swing.JToolBar;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 
-public class toolbar extends JPanel {
+public class Toolbar extends JPanel {
     private JToolBar toolBar;  // 工具條
     private JPanel contentPanel;  // 內容區域面板，顯示不同的物件
     private JPanel toolPanel;  // 用來顯示 JList 的面板
@@ -33,7 +33,7 @@ public class toolbar extends JPanel {
     private JButton decoratebtn;
     private CardLayout cardLayout;  // 用來切換顯示的布局
     private ImageIcon listIcon;
-    toolbar(makemap parent) {
+    Toolbar(Makemap parent) {
         // 創建工具條並設置為垂直
         toolBar = new JToolBar(JToolBar.VERTICAL);
         toolBar.setFloatable(false);
@@ -49,7 +49,7 @@ public class toolbar extends JPanel {
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
-                makemap.st = State.active;
+                Makemap.st = State.active;
                 // showObstacleList();  // 顯示障礙物選項
 
                 
@@ -66,7 +66,7 @@ public class toolbar extends JPanel {
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
-                makemap.st = State.active;
+                Makemap.st = State.active;
                 // showSupportList();  
             }
         });
@@ -85,7 +85,7 @@ public class toolbar extends JPanel {
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
-                makemap.st = State.active;
+                Makemap.st = State.active;
             }
         });
         
@@ -186,27 +186,27 @@ public class toolbar extends JPanel {
                 if (e.getClickCount() == 1) {
                     // 获取 JList 被点击的项目索引
                     int index = obstacleList.locationToIndex(e.getPoint());
-                    makemap.st = State.active;
+                    Makemap.st = State.active;
                     // 根据点击的索引设置不同的障碍类型
-                    if (makemap.st == State.active) {
+                    if (Makemap.st == State.active) {
                         if (index == 0) {
-                            makemap.obstacletype = 0;
-                            makemap.jtype = 1;
-                            makemap.ispass = false;
-                            makemap.sta = State.obstablestate;
-                            makemap.st = State.ready2drawRectangle;
+                            Makemap.obstacletype = 0;
+                            Makemap.jtype = 1;
+                            Makemap.ispass = false;
+                            Makemap.sta = State.obstablestate;
+                            Makemap.st = State.ready2drawRectangle;
                         } else if (index == 1) {
-                            makemap.obstacletype = 1;
-                            makemap.jtype = 1;
-                            makemap.ispass = false;
-                            makemap.sta = State.obstablestate;
-                            makemap.st = State.ready2drawRectangle;
+                            Makemap.obstacletype = 1;
+                            Makemap.jtype = 1;
+                            Makemap.ispass = false;
+                            Makemap.sta = State.obstablestate;
+                            Makemap.st = State.ready2drawRectangle;
                         } else if (index == 2) {
-                            makemap.obstacletype = 2;
-                            makemap.jtype = 1;
-                            makemap.ispass = false;
-                            makemap.sta = State.obstablestate;
-                            makemap.st = State.ready2drawRectangle;
+                            Makemap.obstacletype = 2;
+                            Makemap.jtype = 1;
+                            Makemap.ispass = false;
+                            Makemap.sta = State.obstablestate;
+                            Makemap.st = State.ready2drawRectangle;
                         }
                     }
                 }
@@ -286,32 +286,32 @@ public class toolbar extends JPanel {
                 if (e.getClickCount() == 1) {
                     // 獲取 JList 被點擊的項目索引
                     int index = obstacleList.locationToIndex(e.getPoint());
-                    makemap.st = State.active;
+                    Makemap.st = State.active;
                     // 確保點擊的索引有效
                     if (index == 0) {
-                        if(makemap.st == State.active){
-                            makemap.obstacletype = 3;
-                            makemap.jtype = 0; //type0為玩家
-                            makemap.ispass = false;
-                            makemap.sta = State.obstablestate;
-	    			    	makemap.st = State.ready2drawRectangle;
+                        if(Makemap.st == State.active){
+                            Makemap.obstacletype = 3;
+                            Makemap.jtype = 0; //type0為玩家
+                            Makemap.ispass = false;
+                            Makemap.sta = State.obstablestate;
+	    			    	Makemap.st = State.ready2drawRectangle;
 	    			    }
                     
                     }
                     else if (index == 1) {
-                        if(makemap.st == State.active){
-                            makemap.obstacletype = 4;
-                            makemap.jtype = 2;//type2為終點
-                            makemap.ispass = true;
-                            makemap.sta = State.obstablestate;
-	    			    	makemap.st = State.ready2drawRectangle;
+                        if(Makemap.st == State.active){
+                            Makemap.obstacletype = 4;
+                            Makemap.jtype = 2;//type2為終點
+                            Makemap.ispass = true;
+                            Makemap.sta = State.obstablestate;
+	    			    	Makemap.st = State.ready2drawRectangle;
 	    			    }
                     }
                     else if (index == 2) {
-                        if(makemap.st == State.active){
-                            makemap.sta = State.portalstate;
-                            makemap.st = State.ready2drawRectangle;
-                            System.out.println(makemap.sta);
+                        if(Makemap.st == State.active){
+                            Makemap.sta = State.portalstate;
+                            Makemap.st = State.ready2drawRectangle;
+                            System.out.println(Makemap.sta);
                         }
                     
                     }
@@ -390,15 +390,15 @@ public class toolbar extends JPanel {
                 if (e.getClickCount() == 1) {
                     // 獲取 JList 被點擊的項目索引
                     int index = obstacleList.locationToIndex(e.getPoint());
-                    makemap.st = State.active;
+                    Makemap.st = State.active;
                     // 確保點擊的索引有效
                     if (index == 0) {
-                        if(makemap.st == State.active){
-                            makemap.obstacletype = 5;
-                            makemap.jtype = 1; 
-                            makemap.ispass = true;
-                            makemap.sta = State.obstablestate;
-	    			    	makemap.st = State.ready2drawRectangle;
+                        if(Makemap.st == State.active){
+                            Makemap.obstacletype = 5;
+                            Makemap.jtype = 1; 
+                            Makemap.ispass = true;
+                            Makemap.sta = State.obstablestate;
+	    			    	Makemap.st = State.ready2drawRectangle;
 	    			    }
                     
                     }

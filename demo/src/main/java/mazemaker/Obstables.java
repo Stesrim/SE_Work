@@ -19,7 +19,7 @@ public class Obstables extends Obstable implements Serializable{
     public int obstacletype;
     Obstables(DrawPanel parent) {
         super();
-        obstacletype = makemap.obstacletype;
+        obstacletype = Makemap.obstacletype;
         this.parent = parent;
         // this.setBackground(Color.yellow);
         this.status = State.active; // 初始化為選中
@@ -38,7 +38,7 @@ public class Obstables extends Obstable implements Serializable{
                         ol.y + (e.getYOnScreen() - lp.y)
                     );
                 }
-                DrawPanel.addTab(makemap.attributes, Obstables.this);
+                DrawPanel.addTab(Makemap.attributes, Obstables.this);
             }
         });
 
@@ -57,7 +57,7 @@ public class Obstables extends Obstable implements Serializable{
                     // 設置當前矩形為選中狀態
                     Obstables.this.parent.activeORectangle = Obstables.this;
                     //叫標籤出來
-                    DrawPanel.addTab(makemap.attributes, Obstables.this);
+                    DrawPanel.addTab(Makemap.attributes, Obstables.this);
 
                     Obstables.this.parent.activePRectangle = null;
 
@@ -86,7 +86,7 @@ public class Obstables extends Obstable implements Serializable{
                     Obstables.this.parent.activeORectangle = Obstables.this;
                     Obstables.this.parent.repaint();
                     Obstables.this.parent.activePRectangle = null;
-                    DrawPanel.addTab(makemap.attributes, Obstables.this);
+                    DrawPanel.addTab(Makemap.attributes, Obstables.this);
                 }
             }
         });

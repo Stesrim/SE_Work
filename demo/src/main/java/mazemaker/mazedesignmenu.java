@@ -24,9 +24,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-public class mazedesignmenu extends JFrame{
+public class Mazedesignmenu extends JFrame{
 	private Page page;
-    mazedesignmenu(makemap parent, Page tabpane){	
+    Mazedesignmenu(Makemap parent, Page tabpane){	
         this.page = tabpane;
 		
 		JButton returntitle = new JButton("重返主頁面");
@@ -39,7 +39,7 @@ public class mazedesignmenu extends JFrame{
 
         JMenuItem openMenuItem = new JMenuItem("新增頁面");
 		JMenuItem deleteMenuItem = new JMenuItem("刪除頁面");
-        JMenuItem saveMenuItem = new JMenuItem("保存");
+        JMenuItem saveMenuItem =new JMenuItem("保存");
         JMenuItem exitMenuItem = new JMenuItem("開啟");
 
 		openMenuItem.setFont(itemFont);
@@ -361,7 +361,7 @@ public class mazedesignmenu extends JFrame{
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	    	    parent.designWin.dispose();
-	    	    new title();
+	    	    new Title();
 	        }
 	    });
 

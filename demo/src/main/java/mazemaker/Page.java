@@ -18,7 +18,7 @@ public class Page extends JPanel{
             @Override
             public void stateChanged(ChangeEvent e) {
                 // 把旁邊的屬性砍掉
-                makemap.attributes.removeAll();
+                Makemap.attributes.removeAll();
             }
         });
 

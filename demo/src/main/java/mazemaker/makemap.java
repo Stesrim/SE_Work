@@ -7,13 +7,13 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 
-public class makemap extends JFrame {
+public class Makemap extends JFrame {
 
-	public mazedesignwin designWin;
-	public mazedesignmenu dm;
+	public Mazedesignwin designWin;
+	public Mazedesignmenu dm;
 	public DrawPanel draw;
 	public Page tabpane;
-	public toolbar tb;
+	public Toolbar tb;
 
 	public static State st;
 	public static State sta;
@@ -21,13 +21,13 @@ public class makemap extends JFrame {
 	public static int obstacletype;
 	public static int jtype;
 	public static boolean ispass;
-   	makemap(){
+   	Makemap(){
 		sta = State.portalstate;
-		designWin = new mazedesignwin(this); //創建設計端頁面
+		designWin = new Mazedesignwin(this); //創建設計端頁面
     	tabpane = new Page();
 		draw = new DrawPanel();
-		dm = new mazedesignmenu(this, tabpane); //創建設計端菜單&工具列
-		tb = new toolbar(this);
+		dm = new Mazedesignmenu(this, tabpane); //創建設計端菜單&工具列
+		tb = new Toolbar(this);
 		
 		designWin.add(tabpane, BorderLayout.CENTER);
 		attributes = new JTabbedPane();

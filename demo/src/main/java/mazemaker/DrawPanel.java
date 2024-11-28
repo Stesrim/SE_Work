@@ -56,7 +56,7 @@ public class DrawPanel extends JPanel implements Serializable{
             Background = 0;
             TimeLeft = 60;
             setLayout(new BorderLayout());
-            makemap.st = State.active;
+            Makemap.st = State.active;
             this.setLayout(null);
             lp = null;
             //設定背景圖片
@@ -401,7 +401,7 @@ public class DrawPanel extends JPanel implements Serializable{
         BGLabelset();
 	}
     public void restoreListeners() {
-        makemap.st = State.active;    
+        Makemap.st = State.active;    
         lp = null;
         sp = null;
         this.activeORectangle = null;
@@ -411,7 +411,7 @@ public class DrawPanel extends JPanel implements Serializable{
         //繪圖區的拖曳事件
         this.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
-                if (makemap.st == State.creatingRectangle) {
+                if (Makemap.st == State.creatingRectangle) {
                     Graphics g = DrawPanel.this.getGraphics();
 
                     // 清除之前的矩形繪製
@@ -443,8 +443,8 @@ public class DrawPanel extends JPanel implements Serializable{
         this.addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent e) {
-                if (makemap.st == State.ready2drawRectangle) {
-                    makemap.st = State.creatingRectangle;
+                if (Makemap.st == State.ready2drawRectangle) {
+                    Makemap.st = State.creatingRectangle;
                     DrawPanel.this.sp = e.getPoint();
                     DrawPanel.this.lp = null;
                 }
@@ -452,7 +452,7 @@ public class DrawPanel extends JPanel implements Serializable{
                     if (DrawPanel.this.activePRectangle.status == State.active) {
                         DrawPanel.this.activePRectangle.status = State.inactive;
                         DrawPanel.this.activePRectangle = null;
-                        makemap.attributes.removeAll();
+                        Makemap.attributes.removeAll();
                         DrawPanel.this.validate();
                         DrawPanel.this.repaint();
 
@@ -462,7 +462,7 @@ public class DrawPanel extends JPanel implements Serializable{
                     if (DrawPanel.this.activeORectangle.status == State.active) {
                         DrawPanel.this.activeORectangle.status = State.inactive;
                         DrawPanel.this.activeORectangle = null;
-                        makemap.attributes.removeAll();
+                        Makemap.attributes.removeAll();
                         DrawPanel.this.validate();
                         DrawPanel.this.repaint();
 
@@ -472,7 +472,7 @@ public class DrawPanel extends JPanel implements Serializable{
             
             public void mouseReleased(MouseEvent e) {
 
-                if (makemap.st == State.creatingRectangle && lp != null) {
+                if (Makemap.st == State.creatingRectangle && lp != null) {
                     Graphics g = DrawPanel.this.getGraphics();
                     g.setXORMode(new Color(0, 255, 255));
                     g.drawRect(Math.min(DrawPanel.this.sp.x,lp.x), Math.min(DrawPanel.this.sp.y,lp.y),
@@ -488,7 +488,7 @@ public class DrawPanel extends JPanel implements Serializable{
                     int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
 
                     
-                    if (makemap.sta == State.portalstate && width!= 0 && height != 0)
+                    if (Makemap.sta == State.portalstate && width!= 0 && height != 0)
                     {
                         
                         Ptemp.setSize(width, height);
@@ -498,25 +498,25 @@ public class DrawPanel extends JPanel implements Serializable{
                         DrawPanel.this.activePRectangle = Ptemp;
                         Ptemp.Pbg.setImage(Ptemp.Pbg.getImage().getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING));
                         Ptemp.setIcon(Ptemp.Pbg);
-                        addTab1(makemap.attributes, Ptemp);
+                        addTab1(Makemap.attributes, Ptemp);
                         activeORectangle = null;
                         //把背景圖放到最下面
                         BGLabelset();
                     }
-                    else if(makemap.sta == State.obstablestate && width!= 0 && height != 0)
+                    else if(Makemap.sta == State.obstablestate && width!= 0 && height != 0)
                     {
                         Otemp.setSize(width, height);
                         Otemp.setLocation(x, y);
                         DrawPanel.this.add(Otemp);
                         DrawPanel.this.Orectangles.add(Otemp);
                         activeORectangle = Otemp;
-                        Otemp.setObg(makemap.obstacletype);
+                        Otemp.setObg(Makemap.obstacletype);
                         Otemp.Obg.setImage(Otemp.Obg.getImage().getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING));
                         Otemp.setIcon(Otemp.Obg);
                         //設定他的障礙物類別
-                        Otemp.setPassable(makemap.ispass);
-                        Otemp.setType(makemap.jtype);
-                        addTab(makemap.attributes, Otemp);
+                        Otemp.setPassable(Makemap.ispass);
+                        Otemp.setType(Makemap.jtype);
+                        addTab(Makemap.attributes, Otemp);
                         activePRectangle = null;
                         //把背景圖放到最下面
                         BGLabelset();
@@ -525,10 +525,10 @@ public class DrawPanel extends JPanel implements Serializable{
                     DrawPanel.this.validate();
                     DrawPanel.this.repaint();
                     
-                    makemap.st = State.ready2drawRectangle;
-                }else if (makemap.st == State.creatingRectangle && lp == null){
+                    Makemap.st = State.ready2drawRectangle;
+                }else if (Makemap.st == State.creatingRectangle && lp == null){
                     //如果只點一下的話 要把它恢復成準備畫圖的型態
-                    makemap.st = State.ready2drawRectangle;
+                    Makemap.st = State.ready2drawRectangle;
                 }
             }
         });
@@ -549,7 +549,7 @@ public class DrawPanel extends JPanel implements Serializable{
                             portal.ol.y + (e.getYOnScreen() - lp.y)
                         );
                     }
-                    addTab1(makemap.attributes, portal);
+                    addTab1(Makemap.attributes, portal);
                 }
             });
             portal.addMouseListener(new MouseAdapter() {
@@ -566,7 +566,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         portal.status = State.active;
                         portal.parent.activePRectangle = portal;
                         //叫標籤出來
-                        addTab1(makemap.attributes, portal);
+                        addTab1(Makemap.attributes, portal);
                         
                         portal.parent.activeORectangle = null;
                         portal.validate();
@@ -594,7 +594,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         portal.parent.activePRectangle = portal;
                         portal.parent.repaint();
                         portal.parent.activeORectangle = null;
-                        addTab1(makemap.attributes, portal);
+                        addTab1(Makemap.attributes, portal);
     
                     }
                 }
@@ -619,7 +619,7 @@ public class DrawPanel extends JPanel implements Serializable{
                             obstacle.ol.y + (e.getYOnScreen() - lp.y)
                         );
                     }
-                    addTab(makemap.attributes, obstacle);
+                    addTab(Makemap.attributes, obstacle);
                 }
             });
 
@@ -637,7 +637,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         // 設置當前矩形為選中狀態
                         obstacle.parent.activeORectangle = obstacle;
                         //叫標籤出來
-                        addTab(makemap.attributes, obstacle);
+                        addTab(Makemap.attributes, obstacle);
 
                         obstacle.parent.activePRectangle = null;
 
@@ -666,7 +666,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         obstacle.parent.activeORectangle = obstacle;
                         obstacle.parent.repaint();
                         obstacle.parent.activePRectangle = null;
-                        addTab(makemap.attributes, obstacle);
+                        addTab(Makemap.attributes, obstacle);
                     }
                 }
             });

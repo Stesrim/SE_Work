@@ -30,8 +30,6 @@ public class MainWindow extends JFrame {
     ImageIcon bg;
     JLabel backgroundLabel = new JLabel();
 
-    private defaultgame gameWindow;
-
     MainWindow() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -124,7 +122,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new makemap();
+                new Makemap();
             }
         });
 

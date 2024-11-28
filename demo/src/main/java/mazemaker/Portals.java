@@ -32,7 +32,7 @@ public class Portals extends Portal implements Serializable{
                         ol.y + (e.getYOnScreen() - lp.y)
                     );
                 }
-                DrawPanel.addTab1(makemap.attributes, Portals.this);
+                DrawPanel.addTab1(Makemap.attributes, Portals.this);
             }
         });
 
@@ -51,7 +51,7 @@ public class Portals extends Portal implements Serializable{
                     Portals.this.status = State.active;
                     Portals.this.parent.activePRectangle = Portals.this;
                     //叫標籤出來
-                    DrawPanel.addTab1(makemap.attributes, Portals.this);
+                    DrawPanel.addTab1(Makemap.attributes, Portals.this);
                     
                     Portals.this.parent.activeORectangle = null;
                     Portals.this.validate();
@@ -79,7 +79,7 @@ public class Portals extends Portal implements Serializable{
                     Portals.this.parent.activePRectangle = Portals.this;
                     Portals.this.parent.repaint();
                     Portals.this.parent.activeORectangle = null;
-                    DrawPanel.addTab1(makemap.attributes, Portals.this);
+                    DrawPanel.addTab1(Makemap.attributes, Portals.this);
 
                 }
             }
