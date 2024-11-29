@@ -93,6 +93,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 activeORectangle.getSize().width+8,
                 activeORectangle.getSize().height+8);
                 activeORectangle.showControlPoint();
+                
             }
         
     }
@@ -176,6 +177,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 DrawPanel parentPanel = (DrawPanel) label.getParent();
                 label.getParent().remove(label);
                 parentPanel.Orectangles.remove(label);
+                parentPanel.activeORectangle.closeControlPoint();
                 parentPanel.activeORectangle = null;
                 tabbedPane.removeAll();
                 parentPanel.revalidate();
@@ -461,6 +463,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 if (DrawPanel.this.activeORectangle != null) {
                     if (DrawPanel.this.activeORectangle.status == State.active) {
                         DrawPanel.this.activeORectangle.status = State.inactive;
+                        DrawPanel.this.activeORectangle.closeControlPoint();
                         DrawPanel.this.activeORectangle = null;
                         Makemap.attributes.removeAll();
                         DrawPanel.this.validate();
@@ -518,13 +521,13 @@ public class DrawPanel extends JPanel implements Serializable{
                         Otemp.setType(Makemap.jtype);
                         addTab(Makemap.attributes, Otemp);
                         activePRectangle = null;
+                        activeORectangle.showControlPoint();
                         //把背景圖放到最下面
                         BGLabelset();
                     }
                     
                     DrawPanel.this.validate();
                     DrawPanel.this.repaint();
-                    
                     Makemap.st = State.ready2drawRectangle;
                 }else if (Makemap.st == State.creatingRectangle && lp == null){
                     //如果只點一下的話 要把它恢復成準備畫圖的型態

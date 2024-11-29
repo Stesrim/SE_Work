@@ -39,6 +39,7 @@ public class Obstables extends Obstable implements Serializable{
                     );
                 }
                 DrawPanel.addTab(Makemap.attributes, Obstables.this);
+                closeControlPoint();
             }
         });
 
@@ -51,6 +52,7 @@ public class Obstables extends Obstable implements Serializable{
                     
                     if (Obstables.this.parent.activeORectangle != null) {
                         // 取消其他矩形的選中狀態
+                        Obstables.this.parent.activeORectangle.closeControlPoint();
                         Obstables.this.parent.activeORectangle.status = State.inactive;
                     }
 
@@ -87,6 +89,7 @@ public class Obstables extends Obstable implements Serializable{
                     Obstables.this.parent.repaint();
                     Obstables.this.parent.activePRectangle = null;
                     DrawPanel.addTab(Makemap.attributes, Obstables.this);
+                    showControlPoint();
                 }
             }
         });
@@ -132,11 +135,19 @@ public class Obstables extends Obstable implements Serializable{
     }
     public void showControlPoint()
     {
-        // if(cp == null)
-        // {
-        //     // cp = new ControlPoint();
-        // }
-        // cp.show();
+        if(cp==null)
+		{
+			cp=new ControlPoint(Obstables.this);
+		}
+		cp.show();
+    }
+    public void closeControlPoint()
+    {
+        if(cp==null)
+		{
+			cp=new ControlPoint(Obstables.this);
+		}
+		cp.close();
     }
 }
 
