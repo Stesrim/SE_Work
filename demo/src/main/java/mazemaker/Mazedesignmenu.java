@@ -58,8 +58,8 @@ public class Mazedesignmenu extends JFrame{
         
 
 		JMenu runMenu = new JMenu("執行");
-		JMenuItem Comp = new JMenuItem("編譯");
-		JMenuItem CompAndRun = new JMenuItem("編譯並執行");
+		JMenuItem Comp = new JMenuItem("檢查");
+		JMenuItem CompAndRun = new JMenuItem("檢查並執行");
 
 		Comp.setFont(itemFont);
 		CompAndRun.setFont(itemFont);
@@ -104,12 +104,12 @@ public class Mazedesignmenu extends JFrame{
 					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
 					if (Temp.CheckCollison() == true){
 						JLabel PassJLabel = new JLabel();
-						PassJLabel.setText("編譯通過");
+						PassJLabel.setText("檢查通過");
 						PassJLabel.setFont(dialogFont);
 						JOptionPane.showMessageDialog(null,PassJLabel);
 					}else{
 						JLabel ErrorJLabel = new JLabel();
-						ErrorJLabel.setText("編譯不通過，請再檢查一下");
+						ErrorJLabel.setText("檢查不通過，請再檢查一下");
 						ErrorJLabel.setFont(dialogFont);
 						JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
 					}
@@ -158,7 +158,7 @@ public class Mazedesignmenu extends JFrame{
 
 						}else{
 							JLabel ErrorJLabel = new JLabel();
-							ErrorJLabel.setText("編譯不通過，請再檢查一下");
+							ErrorJLabel.setText("檢查不通過，請再檢查一下");
 							ErrorJLabel.setFont(dialogFont);
 							JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
 						}

@@ -198,8 +198,13 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
                     ImageIcon tempIcon = (ImageIcon)label.getIcon();
-                    tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    label.setIcon(tempIcon);
+                    // tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    
+                    label.setObg(label.obstacletype);
+                    label.Obg.setImage(label.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    label.setIcon(label.Obg);
+                    
+                    // label.setIcon(tempIcon);
                     label.getParent().revalidate();
                     label.getParent().repaint();
                 } catch (NumberFormatException ex) {
@@ -434,7 +439,10 @@ public class DrawPanel extends JPanel implements Serializable{
                     int y = Math.min(DrawPanel.this.sp.y, e.getY());
                     int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
                     int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
-                    
+                    // System.out.println("x"+x);
+                    // System.out.println("y"+y);
+                    // System.out.println("ex"+e.getXOnScreen());
+                    // System.out.println("ey"+e.getYOnScreen());
                     g.drawRect(x, y, width, height);
 
                     lp = e.getPoint();

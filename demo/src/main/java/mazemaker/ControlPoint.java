@@ -1,85 +1,693 @@
 package mazemaker;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Panel;
-import java.awt.Point;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.Serializable;
+import java.util.ResourceBundle.Control;
+
+import javax.swing.ImageIcon;
 
 public class ControlPoint implements Serializable{
 	public Obstables parent;
 	Panel N, S, W, E, SW, SE, NE, NW;
-	Point lp = null;
+	Point fp=null;
+	Point orige=null;
     Dimension os;
+    ImageIcon tempIcon;
 	ControlPoint(Obstables p)
 	{
 		parent=p;
-		N = new Panel();
-		N.setBackground(Color.RED);
-		N.setSize(9,9);
-		S = new Panel();
-		S.setBackground(Color.RED);
-		S.setSize(9,9);
-		W = new Panel();
-		W.setBackground(Color.RED);
-		W.setSize(9,9);
 		E = new Panel();
 		E.setBackground(Color.RED);
 		E.setSize(9,9);
-		SW = new Panel();
-		SW.setBackground(Color.RED);
-		SW.setSize(9,9);
+		parent.parent.add(E);
+		
+		E.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x,
+									ControlPoint.this.parent.getLocation().y);
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  ControlPoint.this.parent.getLocation().y;
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = ControlPoint.this.parent.getHeight();
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  ControlPoint.this.parent.getLocation().y;
+                    int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
+                    int newHeight = ControlPoint.this.parent.getHeight();
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		E.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.E.setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.E.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+
+
+
+		W = new Panel();
+		W.setBackground(Color.RED);
+		W.setSize(9,9);
+		parent.parent.add(W);
+
+		W.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),
+									ControlPoint.this.parent.getLocation().y);
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  ControlPoint.this.parent.getLocation().y;
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = ControlPoint.this.parent.getHeight();
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  ControlPoint.this.parent.getLocation().y;
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = ControlPoint.this.parent.getHeight();
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		W.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.W.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.W.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+
+		
+		S = new Panel();
+		S.setBackground(Color.RED);
+		S.setSize(9,9);
+		parent.parent.add(S);
+
+		S.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x,
+									ControlPoint.this.parent.getLocation().y);
+					int x = ControlPoint.this.parent.getLocation().x;
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int newWidth = ControlPoint.this.parent.getWidth();
+                    int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = ControlPoint.this.parent.getLocation().x;
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int newWidth = ControlPoint.this.parent.getWidth();
+                    int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		S.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.S.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.S.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+
+
+		N = new Panel();
+		N.setBackground(Color.RED);
+		N.setSize(9,9);
+		parent.parent.add(N);
+
+		N.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x,
+									ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
+					int x = ControlPoint.this.parent.getLocation().x;
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int newWidth = ControlPoint.this.parent.getWidth();
+                    int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = ControlPoint.this.parent.getLocation().x;
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int newWidth = ControlPoint.this.parent.getWidth();
+                    int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		N.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.N.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.N.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+
+
 		SE = new Panel();
 		SE.setBackground(Color.RED);
 		SE.setSize(9,9);
+		parent.parent.add(SE);
+		
+		SE.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x,ControlPoint.this.parent.getLocation().y);
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
+
+                    ControlPoint.this.parent.setBounds(x,
+                                                        y,
+                                                        newWidth,
+                                                        newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		SE.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.SE.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.SE.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+		
+		
+		
+		
+
+		SW = new Panel();
+		SW.setBackground(Color.RED);
+		SW.setSize(9,9);
+		parent.parent.add(SW);
+
+		SW.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),ControlPoint.this.parent.getLocation().y);
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+					System.out.println(orige.x);
+					System.out.println(e.getXOnScreen());
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
+
+                    ControlPoint.this.parent.setBounds(x,
+                                                        y,
+                                                        newWidth,
+                                                        newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		SW.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.SW.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.SW.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+		
+
+
 		NE = new Panel();
 		NE.setBackground(Color.RED);
 		NE.setSize(9,9);
+		parent.parent.add(NE);
+
+		NE.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x,ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+					System.out.println(orige.x);
+					System.out.println(e.getXOnScreen());
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
+
+                    ControlPoint.this.parent.setBounds(x,
+                                                        y,
+                                                        newWidth,
+                                                        newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		NE.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.NE.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.NE.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
+
+
 		NW = new Panel();
 		NW.setBackground(Color.RED);
 		NW.setSize(9,9);
-		parent.parent.add(N);
-		parent.parent.add(S);
-		parent.parent.add(E);
-		parent.parent.add(W);
-		parent.parent.add(SW);
-		parent.parent.add(SE);
-		parent.parent.add(NE);
 		parent.parent.add(NW);
-        // SE.addMouseMotionListener(new MouseAdapter() {
-        //     public void mouseDragged(MouseEvent e)
-        //     {
-        //         if (Makemap.st == State.ready2resize)
-        //         {
-        //             Makemap.st = State.resizing;
-        //             ControlPoint.this.parent.setSize(
-        //                 os.width+e.getXOnScreen() - lp.x,
-        //                 os.height+e.getYOnScreen()-lp.y);                    
-        //         }
-        //         else if (Makemap.st == State.resizing)
-        //         {
 
-        //         }
-        //     }
+		NW.addMouseMotionListener(new MouseAdapter() {
+			public void mouseDragged(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),
+									ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
+					int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
+				    ControlPoint.this.parent.status=State.resizing;
+				    ControlPoint.this.parent.setBounds(x,
+                                                    y,
+                                                    newWidth,
+                                                    newHeight);
+				}
+				else if(ControlPoint.this.parent.status==State.resizing)
+				{
+                    int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
+                    int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 
-        // });
-        
-        // SE.addMouseListener(new MouseAdapter ()
-        // {
-        //     public void mouseEntered(MouseEvent e)
-        //     {
+                    ControlPoint.this.parent.setBounds(x,
+                                                        y,
+                                                        newWidth,
+                                                        newHeight);
+                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+                    ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
+				}	
+			}
+		});
+		
+		NW.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e)
+			{				
+				ControlPoint.this.NW.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));	
+			}
+			
+			public void mouseExited(MouseEvent e)
+			{
+				ControlPoint.this.NW.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.active)
+				{
+					
+					os = ControlPoint.this.parent.getSize();	
+					if(fp==null)
+						fp = new Point();
+					
+					fp.x = e.getXOnScreen();
+					fp.y = e.getYOnScreen();
+					
+					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
+					ControlPoint.this.parent.parent.activeORectangle=null;
+					ControlPoint.this.parent.parent.repaint();
+					
+					ControlPoint.this.parent.status=State.ready2resize;	
+				}
+			}
+			
+			public void mouseReleased(MouseEvent e)
+			{
+				if(ControlPoint.this.parent.status==State.resizing)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+			}
+			
+		});
 
-        //     }
-        //     public void mousePressed(MouseEvent e)
-        //     {
-                
-        //     }
-        //     public void mouseExited(MouseEvent e)
-        //     {
-                
-        //     }
-        // }
-        // );
+
 	}
 	
 	public void show()

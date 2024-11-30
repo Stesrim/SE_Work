@@ -15,6 +15,7 @@ public class Obstables extends Obstable implements Serializable{
     State status;
     ControlPoint cp=null;
     Point ol, lp = null;
+    int bg;
     public ImageIcon Obg;
     public int obstacletype;
     Obstables(DrawPanel parent) {
