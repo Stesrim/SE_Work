@@ -56,11 +56,13 @@ public class Obstables extends Obstable implements Serializable{
                         if (Obstables.this.parent.activeORectangle != null )
                         {
                             Obstables.this.parent.activeORectangle.closeControlPoint();
-                            Obstables.this.parent.activeORectangle.status = State.inactive;}
+                            Obstables.this.parent.activeORectangle.status = State.inactive;
+                        }
                         if ( Obstables.this.parent.activePRectangle != null)
                         {
                             Obstables.this.parent.activePRectangle.closeControlPoint();
-                            Obstables.this.parent.activePRectangle.status = State.inactive;}
+                            Obstables.this.parent.activePRectangle.status = State.inactive;
+                        }
                         
                     }
 

@@ -1,9 +1,14 @@
 package mazemaker;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
-import java.util.ResourceBundle.Control;
 
 import javax.swing.ImageIcon;
 
@@ -52,8 +57,10 @@ public class ControlPortalPoint implements Serializable{
                                                     newHeight);
 					DrawPanel.addTab1(Makemap.attributes, ControlPortalPoint.this.parent);
                     ControlPortalPoint.this.parent.Pbg = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
-                    ControlPortalPoint.this.parent.Pbg.setImage(ControlPortalPoint.this.parent.Pbg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    ControlPortalPoint.this.parent.setIcon(ControlPortalPoint.this.parent.Pbg);
+					if (newWidth != 0 && newHeight != 0){
+                    	ControlPortalPoint.this.parent.Pbg.setImage(ControlPortalPoint.this.parent.Pbg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+					}
+						ControlPortalPoint.this.parent.setIcon(ControlPortalPoint.this.parent.Pbg);
 				}	
 			}
 		});
@@ -146,8 +153,9 @@ public class ControlPortalPoint implements Serializable{
                                                     newHeight);
 					DrawPanel.addTab1(Makemap.attributes, ControlPortalPoint.this.parent);
                     ControlPortalPoint.this.parent.Pbg = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
-                    ControlPortalPoint.this.parent.Pbg.setImage(ControlPortalPoint.this.parent.Pbg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    ControlPortalPoint.this.parent.setIcon(ControlPortalPoint.this.parent.Pbg);
+					ControlPortalPoint.this.parent.Pbg.setImage(ControlPortalPoint.this.parent.Pbg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    
+					ControlPortalPoint.this.parent.setIcon(ControlPortalPoint.this.parent.Pbg);
 				}	
 			}
 		});

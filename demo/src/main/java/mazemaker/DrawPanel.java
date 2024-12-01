@@ -199,13 +199,8 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
                     ImageIcon tempIcon = (ImageIcon)label.getIcon();
-                    // tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    label.closeControlPoint();
-                    label.setObg(label.obstacletype);
-                    label.Obg.setImage(label.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    label.setIcon(label.Obg);
-                    
-                    // label.setIcon(tempIcon);
+                    tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    label.setIcon(tempIcon);
                     label.getParent().revalidate();
                     label.getParent().repaint();
                 } catch (NumberFormatException ex) {
@@ -329,9 +324,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 DrawPanel parentPanel = (DrawPanel) label.getParent();
                 label.getParent().remove(label);
                 parentPanel.Prectangles.remove(label);
-                parentPanel.activePRectangle.closeControlPoint();
                 parentPanel.activePRectangle = null;
-                
                 tabbedPane.removeAll();
                 parentPanel.revalidate();
                 parentPanel.repaint();
@@ -352,10 +345,8 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
                     ImageIcon tempIcon = (ImageIcon)label.getIcon();
-                    label.Pbg = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
-                    label.Pbg.setImage(label.Pbg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    label.closeControlPoint();
-                    label.setIcon(label.Pbg);
+                    tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    label.setIcon(tempIcon);
                     label.setId(newID);
                     label.setPortalId(newPID);
                     label.getParent().revalidate();
@@ -444,10 +435,7 @@ public class DrawPanel extends JPanel implements Serializable{
                     int y = Math.min(DrawPanel.this.sp.y, e.getY());
                     int width = Math.abs(e.getX() - DrawPanel.this.sp.x);
                     int height = Math.abs(e.getY() - DrawPanel.this.sp.y);
-                    // System.out.println("x"+x);
-                    // System.out.println("y"+y);
-                    // System.out.println("ex"+e.getXOnScreen());
-                    // System.out.println("ey"+e.getYOnScreen());
+                    
                     g.drawRect(x, y, width, height);
 
                     lp = e.getPoint();
@@ -517,7 +505,6 @@ public class DrawPanel extends JPanel implements Serializable{
                         Ptemp.setIcon(Ptemp.Pbg);
                         addTab1(Makemap.attributes, Ptemp);
                         activeORectangle = null;
-                        activePRectangle.showControlPoint();
                         //把背景圖放到最下面
                         BGLabelset();
                     }
@@ -568,25 +555,32 @@ public class DrawPanel extends JPanel implements Serializable{
                         );
                     }
                     addTab1(Makemap.attributes, portal);
+                    portal.closeControlPoint();
                 }
             });
             portal.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                     // 點擊時選中該矩形
                     if (portal.status == State.inactive) {
-                        if (portal.parent.activePRectangle != null) {
+                        if (activePRectangle != null) {
                             // 取消其他矩形的選中狀態
-                            portal.parent.activePRectangle.status = State.inactive;
-                            portal.parent.activePRectangle = null;
+                            activePRectangle.closeControlPoint();
+                            activePRectangle.status = State.inactive;
+                            activePRectangle = null;
+                        }
+                        if (activeORectangle != null) {
+                            // 取消其他矩形的選中狀態
+                            activeORectangle.closeControlPoint();
+                            activeORectangle.status = State.inactive;
                         }
     
                         // 設置當前矩形為選中狀態
                         portal.status = State.active;
-                        portal.parent.activePRectangle = portal;
+                        activePRectangle = portal;
                         //叫標籤出來
                         addTab1(Makemap.attributes, portal);
                         
-                        portal.parent.activeORectangle = null;
+                        activeORectangle = null;
                         portal.validate();
                         portal.parent.repaint();
                     } else if (portal.status == State.active) {
@@ -600,7 +594,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         lp.y = e.getYOnScreen();
     
                         portal.status = State.ready2Move;
-                        portal.parent.activePRectangle = null; // 移動時清空 activeRectangle
+                        activePRectangle = null; // 移動時清空 activeRectangle
                         portal.parent.repaint();
                     }
                 }
@@ -609,11 +603,11 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 放開時根據狀態進行處理
                     if (portal.status == State.ready2Move || portal.status == State.moving) {
                         portal.status = State.active;
-                        portal.parent.activePRectangle = portal;
+                        activePRectangle = portal;
                         portal.parent.repaint();
-                        portal.parent.activeORectangle = null;
+                        activeORectangle = null;
                         addTab1(Makemap.attributes, portal);
-    
+                        portal.showControlPoint();
                     }
                 }
             });
@@ -624,6 +618,7 @@ public class DrawPanel extends JPanel implements Serializable{
             this.add(obstacle);
             activePRectangle = null;
             activeORectangle = obstacle;
+            activeORectangle.cp = null;
             // 滑鼠拖曳事件
             obstacle.addMouseMotionListener(new MouseAdapter() {
                 public void mouseDragged(MouseEvent e) {
@@ -638,6 +633,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         );
                     }
                     addTab(Makemap.attributes, obstacle);
+                    obstacle.closeControlPoint();
                 }
             });
 
@@ -647,17 +643,23 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 點擊時選中該矩形
                     if (obstacle.status == State.inactive) {
                         obstacle.status=State.active;
-                        if (obstacle.parent.activeORectangle != null) {
+                        if (activeORectangle != null) {
                             // 取消其他矩形的選中狀態
-                            obstacle.parent.activeORectangle.status = State.inactive;
+                            activeORectangle.closeControlPoint();
+                            activeORectangle.status = State.inactive;
+                        }
+                        if (activePRectangle != null)
+                        {
+                            activePRectangle.closeControlPoint();
+                            activePRectangle.status = State.inactive;
                         }
 
                         // 設置當前矩形為選中狀態
-                        obstacle.parent.activeORectangle = obstacle;
+                        activeORectangle = obstacle;
                         //叫標籤出來
                         addTab(Makemap.attributes, obstacle);
 
-                        obstacle.parent.activePRectangle = null;
+                        activePRectangle = null;
 
                         obstacle.validate();
                         obstacle.parent.repaint();
@@ -672,7 +674,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         lp.y = e.getYOnScreen();
 
                         obstacle.status = State.ready2Move;
-                        obstacle.parent.activeORectangle = null; // 移動時清空 activeRectangle
+                        activeORectangle = null; // 移動時清空 activeRectangle
                         obstacle.parent.repaint();
                     }
                 }
@@ -681,10 +683,11 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 放開時根據狀態進行處理
                     if (obstacle.status == State.ready2Move || obstacle.status == State.moving) {
                         obstacle.status = State.active;
-                        obstacle.parent.activeORectangle = obstacle;
+                        activeORectangle = obstacle;
                         obstacle.parent.repaint();
-                        obstacle.parent.activePRectangle = null;
+                        activePRectangle = null;
                         addTab(Makemap.attributes, obstacle);
+                        obstacle.showControlPoint();
                     }
                 }
             });
