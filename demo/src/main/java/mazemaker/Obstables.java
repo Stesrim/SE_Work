@@ -130,20 +130,7 @@ public class Obstables extends Obstable implements Serializable{
     }
     
     
-    
-        
-        // 根據每個矩形的 obstacletype 設置背景圖片
-        
 
-        // 如果背景圖片不為空，則繪製背景
-        // if (Obg != null) {
-        //     Image img = Obg.getImage();
-        //     g.drawImage(img, 0, 0, getWidth(), getHeight(), this); // 填充整個區域
-        // } else {
-        //     // 如果没有图片，绘制默认背景颜色
-        //     g.setColor(Color.YELLOW);
-        //     g.fillRect(0, 0, getWidth(), getHeight());
-        // }
     }
     public void showControlPoint()
     {
