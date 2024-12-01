@@ -50,6 +50,7 @@ public class ControlPoint implements Serializable{
                                                     y,
                                                     newWidth,
                                                     newHeight);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
                     ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
@@ -58,6 +59,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		E.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.E.setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));	
@@ -82,7 +92,6 @@ public class ControlPoint implements Serializable{
 					ControlPoint.this.parent.parent.activeORectangle.closeControlPoint();
 					ControlPoint.this.parent.parent.activeORectangle=null;
 					ControlPoint.this.parent.parent.repaint();
-					
 					ControlPoint.this.parent.status=State.ready2resize;	
 				}
 			}
@@ -92,6 +101,7 @@ public class ControlPoint implements Serializable{
 				if(ControlPoint.this.parent.status==State.resizing)
 				{
 					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
 					ControlPoint.this.parent.parent.repaint();
 					ControlPoint.this.parent.status=State.active;
 				}
@@ -134,6 +144,7 @@ public class ControlPoint implements Serializable{
                                                     y,
                                                     newWidth,
                                                     newHeight);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
                     ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
@@ -142,6 +153,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		W.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.W.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));	
@@ -217,6 +237,7 @@ public class ControlPoint implements Serializable{
                                                     y,
                                                     newWidth,
                                                     newHeight);
+													DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
                     ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
@@ -225,6 +246,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		S.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.S.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));	
@@ -280,7 +310,7 @@ public class ControlPoint implements Serializable{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,
 									ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
 					int x = ControlPoint.this.parent.getLocation().x;
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -292,7 +322,7 @@ public class ControlPoint implements Serializable{
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
                     int x = ControlPoint.this.parent.getLocation().x;
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -300,7 +330,8 @@ public class ControlPoint implements Serializable{
                                                     y,
                                                     newWidth,
                                                     newHeight);
-                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
+					ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
 				}	
@@ -308,6 +339,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		N.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.N.setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));	
@@ -383,7 +423,8 @@ public class ControlPoint implements Serializable{
                                                         y,
                                                         newWidth,
                                                         newHeight);
-                    ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
+					ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
 				}	
@@ -391,6 +432,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		SE.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.SE.setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));	
@@ -470,6 +520,7 @@ public class ControlPoint implements Serializable{
                                                         y,
                                                         newWidth,
                                                         newHeight);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
                     ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
@@ -478,6 +529,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		SW.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.SW.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));	
@@ -533,7 +593,7 @@ public class ControlPoint implements Serializable{
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
 					int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -547,7 +607,7 @@ public class ControlPoint implements Serializable{
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
                     int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 
@@ -555,6 +615,7 @@ public class ControlPoint implements Serializable{
                                                         y,
                                                         newWidth,
                                                         newHeight);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
                     ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
@@ -563,6 +624,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		NE.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.NE.setCursor(new Cursor(Cursor.NE_RESIZE_CURSOR));	
@@ -618,7 +688,7 @@ public class ControlPoint implements Serializable{
 					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),
 									ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
 					int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -630,14 +700,18 @@ public class ControlPoint implements Serializable{
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
                     int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+10);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0 )
+						newWidth = 1;
+					if (newHeight== 0 )
+						newHeight =1;
                     ControlPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
                                                         newHeight);
+					DrawPanel.addTab(Makemap.attributes, ControlPoint.this.parent);
                     ControlPoint.this.parent.setObg(ControlPoint.this.parent.obstacletype);
                     ControlPoint.this.parent.Obg.setImage(ControlPoint.this.parent.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     ControlPoint.this.parent.setIcon(ControlPoint.this.parent.Obg);
@@ -646,6 +720,15 @@ public class ControlPoint implements Serializable{
 		});
 		
 		NW.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if(ControlPoint.this.parent.status==State.ready2resize)
+				{
+					ControlPoint.this.parent.parent.activeORectangle=ControlPoint.this.parent;
+					
+					ControlPoint.this.parent.parent.repaint();
+					ControlPoint.this.parent.status=State.active;
+				}
+            }
 			public void mouseEntered(MouseEvent e)
 			{				
 				ControlPoint.this.NW.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));	
@@ -687,6 +770,14 @@ public class ControlPoint implements Serializable{
 			
 		});
 
+		parent.parent.setComponentZOrder(N, 0);
+		parent.parent.setComponentZOrder(S, 0);
+		parent.parent.setComponentZOrder(E, 0);
+		parent.parent.setComponentZOrder(W, 0);
+		parent.parent.setComponentZOrder(NE, 0);
+		parent.parent.setComponentZOrder(NW, 0);
+		parent.parent.setComponentZOrder(SE, 0);
+		parent.parent.setComponentZOrder(SW, 0);
 
 	}
 	
@@ -700,7 +791,7 @@ public class ControlPoint implements Serializable{
                        parent.getLocation().y + parent.getSize().height/2-4);
         W.setLocation(parent.getLocation().x -4-4, 
                        parent.getLocation().y + parent.getSize().height/2-4);
-        SE.setLocation(parent.getLocation().x + parent.getSize().width-4, 
+        SE.setLocation(parent.getLocation().x + parent.getSize().width, 
 				       parent.getLocation().y + parent.getSize().height-4+8-4);
         NE.setLocation(parent.getLocation().x + parent.getSize().width-4+8-4, 
 				       parent.getLocation().y -4-4);

@@ -199,7 +199,7 @@ public class DrawPanel extends JPanel implements Serializable{
                     label.setBounds(newX, newY, newWidth, newHeight);
                     ImageIcon tempIcon = (ImageIcon)label.getIcon();
                     // tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    
+                    label.closeControlPoint();
                     label.setObg(label.obstacletype);
                     label.Obg.setImage(label.Obg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
                     label.setIcon(label.Obg);
