@@ -68,6 +68,7 @@ public class Obstables extends Obstable implements Serializable{
 
                     // 設置當前矩形為選中狀態
                     Obstables.this.parent.activeORectangle = Obstables.this;
+                    
                     //叫標籤出來
                     DrawPanel.addTab(Makemap.attributes, Obstables.this);
 
@@ -84,11 +85,12 @@ public class Obstables extends Obstable implements Serializable{
 
                     lp.x = e.getXOnScreen();
                     lp.y = e.getYOnScreen();
-
+                    Obstables.this.parent.activeORectangle.closeControlPoint();
                     Obstables.this.status = State.ready2Move;
                     Obstables.this.parent.activeORectangle = null; // 移動時清空 activeRectangle
                     Obstables.this.parent.repaint();
                 }
+                
             }
 
             public void mouseReleased(MouseEvent e) {

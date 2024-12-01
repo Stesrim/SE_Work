@@ -74,7 +74,7 @@ public class Portals extends Portal implements Serializable{
  
                     lp.x = e.getXOnScreen();
                     lp.y = e.getYOnScreen();
- 
+                    Portals.this.parent.activePRectangle.closeControlPoint();
                     Portals.this.status = State.ready2Move;
                     Portals.this.parent.activePRectangle = null; // 移動時清空 activeRectangle
                     Portals.this.parent.repaint();

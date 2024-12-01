@@ -23,8 +23,6 @@ public class ControlPortalPoint implements Serializable{
 	{
 		parent=p;
 		E = new Panel();
-		E.setBackground(Color.RED);
-		E.setSize(9,9);
 		parent.parent.add(E);
 		
 		E.addMouseMotionListener(new MouseAdapter() {
@@ -51,6 +49,14 @@ public class ControlPortalPoint implements Serializable{
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPortalPoint.this.parent.getHeight();
 				    ControlPortalPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPortalPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -119,8 +125,7 @@ public class ControlPortalPoint implements Serializable{
 
 
 		W = new Panel();
-		W.setBackground(Color.RED);
-		W.setSize(9,9);
+
 		parent.parent.add(W);
 
 		W.addMouseMotionListener(new MouseAdapter() {
@@ -147,6 +152,14 @@ public class ControlPortalPoint implements Serializable{
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPortalPoint.this.parent.getHeight();
 				    ControlPortalPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPortalPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -213,8 +226,6 @@ public class ControlPortalPoint implements Serializable{
 
 		
 		S = new Panel();
-		S.setBackground(Color.RED);
-		S.setSize(9,9);
 		parent.parent.add(S);
 
 		S.addMouseMotionListener(new MouseAdapter() {
@@ -241,6 +252,14 @@ public class ControlPortalPoint implements Serializable{
                     int newWidth = ControlPortalPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPortalPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPortalPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -306,8 +325,7 @@ public class ControlPortalPoint implements Serializable{
 
 
 		N = new Panel();
-		N.setBackground(Color.RED);
-		N.setSize(9,9);
+
 		parent.parent.add(N);
 
 		N.addMouseMotionListener(new MouseAdapter() {
@@ -334,6 +352,14 @@ public class ControlPortalPoint implements Serializable{
                     int newWidth = ControlPortalPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPortalPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPortalPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -399,8 +425,7 @@ public class ControlPortalPoint implements Serializable{
 
 
 		SE = new Panel();
-		SE.setBackground(Color.RED);
-		SE.setSize(9,9);
+
 		parent.parent.add(SE);
 		
 		SE.addMouseMotionListener(new MouseAdapter() {
@@ -426,7 +451,14 @@ public class ControlPortalPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPortalPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -491,12 +523,9 @@ public class ControlPortalPoint implements Serializable{
 		});
 		
 		
-		
-		
 
 		SW = new Panel();
-		SW.setBackground(Color.RED);
-		SW.setSize(9,9);
+
 		parent.parent.add(SW);
 
 		SW.addMouseMotionListener(new MouseAdapter() {
@@ -521,7 +550,14 @@ public class ControlPortalPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPortalPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -588,8 +624,7 @@ public class ControlPortalPoint implements Serializable{
 
 
 		NE = new Panel();
-		NE.setBackground(Color.RED);
-		NE.setSize(9,9);
+
 		parent.parent.add(NE);
 
 		NE.addMouseMotionListener(new MouseAdapter() {
@@ -615,7 +650,14 @@ public class ControlPortalPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPortalPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -681,8 +723,7 @@ public class ControlPortalPoint implements Serializable{
 
 
 		NW = new Panel();
-		NW.setBackground(Color.RED);
-		NW.setSize(9,9);
+
 		parent.parent.add(NW);
 
 		NW.addMouseMotionListener(new MouseAdapter() {
@@ -708,6 +749,14 @@ public class ControlPortalPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPortalPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -800,6 +849,22 @@ public class ControlPortalPoint implements Serializable{
 				       parent.getLocation().y + parent.getSize().height-4+8-4);
         NW.setLocation(parent.getLocation().x -4-4, 
 				       parent.getLocation().y -4-4);
+		N.setBackground(Color.RED);
+		N.setSize(9,9);
+		E.setBackground(Color.RED);
+		E.setSize(9,9);
+		S.setBackground(Color.RED);
+		S.setSize(9,9);
+		W.setBackground(Color.RED);
+		W.setSize(9,9);
+		NE.setBackground(Color.RED);
+		NE.setSize(9,9);
+		SE.setBackground(Color.RED);
+		SE.setSize(9,9);
+		SW.setBackground(Color.RED);
+		SW.setSize(9,9);
+		NW.setBackground(Color.RED);
+		NW.setSize(9,9);
         N.setVisible(true);
         S.setVisible(true);
         W.setVisible(true);

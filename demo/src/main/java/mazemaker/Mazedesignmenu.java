@@ -187,6 +187,30 @@ public class Mazedesignmenu extends JFrame{
 					fileChooser.setDialogTitle("選擇保存路徑位置");
 					//抓到目前所在的頁面
 					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					if (Temp.activeORectangle != null)
+					{
+						if (Temp.activeORectangle.status == State.active) {
+							Temp.activeORectangle.status = State.inactive;
+							Temp.activeORectangle.closeControlPoint();
+							Temp.activeORectangle = null;
+							Makemap.attributes.removeAll();
+							Temp.validate();
+							Temp.repaint();
+	
+						}
+					}
+					if (Temp.activePRectangle != null)
+					{
+						if (Temp.activePRectangle.status == State.active) {
+							Temp.activePRectangle.status = State.inactive;
+							Temp.activePRectangle.closeControlPoint();
+							Temp.activePRectangle = null;
+							Makemap.attributes.removeAll();
+							Temp.validate();
+							Temp.repaint();
+	
+						}
+					}
 					int userSelection = fileChooser.showSaveDialog(null);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						try (ObjectOutputStream oos = new ObjectOutputStream(
@@ -211,7 +235,7 @@ public class Mazedesignmenu extends JFrame{
             public void actionPerformed(ActionEvent e) {
 				int index = page.tabbedPane.getTabCount();
 				//只讓玩家開最多五個頁面
-				if (index < 4){
+				if (index <= 4){
 					//抓到放檔案的相對位置
 					File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
 					JFileChooser fileChooser = new JFileChooser(defaultDir);
@@ -226,6 +250,7 @@ public class Mazedesignmenu extends JFrame{
 							page.addNewTab2(loadedPanel);
 							loadedPanel.restoreListeners();
 							JOptionPane.showMessageDialog(null, "載入成功！");
+
 						} catch (IOException ex) {
 							JOptionPane.showMessageDialog(null, "載入失敗:" + ex.getMessage());
 							ex.printStackTrace();

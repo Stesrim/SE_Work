@@ -324,6 +324,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 DrawPanel parentPanel = (DrawPanel) label.getParent();
                 label.getParent().remove(label);
                 parentPanel.Prectangles.remove(label);
+                parentPanel.activePRectangle.closeControlPoint();
                 parentPanel.activePRectangle = null;
                 tabbedPane.removeAll();
                 parentPanel.revalidate();
@@ -543,6 +544,8 @@ public class DrawPanel extends JPanel implements Serializable{
             this.add(portal);
             this.activePRectangle = portal;
             this.activeORectangle = null;
+            this.activePRectangle.cp = null;
+
             portal.addMouseMotionListener(new MouseAdapter() {
                 public void mouseDragged(MouseEvent e) {
                     if (portal.status == State.ready2Move) {
@@ -589,10 +592,10 @@ public class DrawPanel extends JPanel implements Serializable{
                         if (lp == null) {
                             lp = new Point();
                         }
-    
+                        
                         lp.x = e.getXOnScreen();
                         lp.y = e.getYOnScreen();
-    
+                        portal.closeControlPoint();
                         portal.status = State.ready2Move;
                         activePRectangle = null; // 移動時清空 activeRectangle
                         portal.parent.repaint();
@@ -672,7 +675,7 @@ public class DrawPanel extends JPanel implements Serializable{
 
                         lp.x = e.getXOnScreen();
                         lp.y = e.getYOnScreen();
-
+                        obstacle.closeControlPoint();
                         obstacle.status = State.ready2Move;
                         activeORectangle = null; // 移動時清空 activeRectangle
                         obstacle.parent.repaint();

@@ -18,8 +18,7 @@ public class ControlPoint implements Serializable{
 	{
 		parent=p;
 		E = new Panel();
-		E.setBackground(Color.RED);
-		E.setSize(9,9);
+		
 		parent.parent.add(E);
 		
 		E.addMouseMotionListener(new MouseAdapter() {
@@ -46,6 +45,14 @@ public class ControlPoint implements Serializable{
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPoint.this.parent.getHeight();
 				    ControlPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -112,8 +119,7 @@ public class ControlPoint implements Serializable{
 
 
 		W = new Panel();
-		W.setBackground(Color.RED);
-		W.setSize(9,9);
+
 		parent.parent.add(W);
 
 		W.addMouseMotionListener(new MouseAdapter() {
@@ -140,6 +146,14 @@ public class ControlPoint implements Serializable{
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPoint.this.parent.getHeight();
 				    ControlPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -205,8 +219,7 @@ public class ControlPoint implements Serializable{
 
 		
 		S = new Panel();
-		S.setBackground(Color.RED);
-		S.setSize(9,9);
+
 		parent.parent.add(S);
 
 		S.addMouseMotionListener(new MouseAdapter() {
@@ -233,6 +246,14 @@ public class ControlPoint implements Serializable{
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -298,8 +319,7 @@ public class ControlPoint implements Serializable{
 
 
 		N = new Panel();
-		N.setBackground(Color.RED);
-		N.setSize(9,9);
+
 		parent.parent.add(N);
 
 		N.addMouseMotionListener(new MouseAdapter() {
@@ -326,6 +346,14 @@ public class ControlPoint implements Serializable{
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -391,8 +419,7 @@ public class ControlPoint implements Serializable{
 
 
 		SE = new Panel();
-		SE.setBackground(Color.RED);
-		SE.setSize(9,9);
+
 		parent.parent.add(SE);
 		
 		SE.addMouseMotionListener(new MouseAdapter() {
@@ -406,7 +433,6 @@ public class ControlPoint implements Serializable{
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
-
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -418,7 +444,14 @@ public class ControlPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -487,8 +520,7 @@ public class ControlPoint implements Serializable{
 		
 
 		SW = new Panel();
-		SW.setBackground(Color.RED);
-		SW.setSize(9,9);
+
 		parent.parent.add(SW);
 
 		SW.addMouseMotionListener(new MouseAdapter() {
@@ -514,7 +546,14 @@ public class ControlPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -581,8 +620,7 @@ public class ControlPoint implements Serializable{
 
 
 		NE = new Panel();
-		NE.setBackground(Color.RED);
-		NE.setSize(9,9);
+
 		parent.parent.add(NE);
 
 		NE.addMouseMotionListener(new MouseAdapter() {
@@ -596,7 +634,7 @@ public class ControlPoint implements Serializable{
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
-
+					
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -608,7 +646,14 @@ public class ControlPoint implements Serializable{
                     int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
-
+					if (newWidth == 0)
+					{
+						newWidth = 1;
+					}
+					if (newHeight == 0)
+					{	
+						newHeight = 1;
+					}
                     ControlPoint.this.parent.setBounds(x,
                                                         y,
                                                         newWidth,
@@ -674,8 +719,7 @@ public class ControlPoint implements Serializable{
 
 
 		NW = new Panel();
-		NW.setBackground(Color.RED);
-		NW.setSize(9,9);
+
 		parent.parent.add(NW);
 
 		NW.addMouseMotionListener(new MouseAdapter() {
@@ -783,20 +827,42 @@ public class ControlPoint implements Serializable{
 	{
         N.setLocation(parent.getLocation().x + parent.getSize().width/2-4, 
 				       parent.getLocation().y -4-4);
+		N.setBackground(Color.RED);
+		N.setSize(9,9);
+
         S.setLocation(parent.getLocation().x + parent.getSize().width/2-4, 
 				       parent.getLocation().y + parent.getSize().height-4+8-4);
+		S.setBackground(Color.RED);
+		S.setSize(9,9);
+		
         E.setLocation(parent.getLocation().x + parent.getSize().width-4+8-4, 
                        parent.getLocation().y + parent.getSize().height/2-4);
+		E.setBackground(Color.RED);
+		E.setSize(9,9);
+
         W.setLocation(parent.getLocation().x -4-4, 
                        parent.getLocation().y + parent.getSize().height/2-4);
+		W.setBackground(Color.RED);
+		W.setSize(9,9);
+
         SE.setLocation(parent.getLocation().x + parent.getSize().width, 
 				       parent.getLocation().y + parent.getSize().height-4+8-4);
+		SE.setBackground(Color.RED);
+		SE.setSize(9,9);
+
         NE.setLocation(parent.getLocation().x + parent.getSize().width-4+8-4, 
 				       parent.getLocation().y -4-4);
+		NE.setBackground(Color.RED);
+		NE.setSize(9,9);
+
         SW.setLocation(parent.getLocation().x -4-4, 
 				       parent.getLocation().y + parent.getSize().height-4+8-4);
+		SW.setBackground(Color.RED);
+		SW.setSize(9,9);
         NW.setLocation(parent.getLocation().x -4-4, 
 				       parent.getLocation().y -4-4);
+		NW.setBackground(Color.RED);
+		NW.setSize(9,9);
         N.setVisible(true);
         S.setVisible(true);
         W.setVisible(true);
