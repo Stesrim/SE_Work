@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 public class Portals extends Portal implements Serializable{
     public DrawPanel parent;
     State status;
+    ControlPortalPoint cp =null;
     public ImageIcon Pbg;
     Point ol, lp = null;
 
@@ -33,6 +34,7 @@ public class Portals extends Portal implements Serializable{
                     );
                 }
                 DrawPanel.addTab1(Makemap.attributes, Portals.this);
+                closeControlPoint();
             }
         });
 
@@ -41,10 +43,17 @@ public class Portals extends Portal implements Serializable{
             public void mousePressed(MouseEvent e) {
                 // 點擊時選中該矩形
                 if (Portals.this.status == State.inactive) {
-                    if (Portals.this.parent.activePRectangle != null) {
+                    if (Portals.this.parent.activeORectangle != null || Portals.this.parent.activePRectangle != null) {
                         // 取消其他矩形的選中狀態
-                        Portals.this.parent.activePRectangle.status = State.inactive;
-                        Portals.this.parent.activePRectangle = null;
+                        if (Portals.this.parent.activeORectangle != null )
+                        {
+                            Portals.this.parent.activeORectangle.closeControlPoint();
+                            Portals.this.parent.activeORectangle.status = State.inactive;}
+                        if ( Portals.this.parent.activePRectangle != null)
+                        {
+                            Portals.this.parent.activePRectangle.closeControlPoint();
+                            Portals.this.parent.activePRectangle.status = State.inactive;}
+                        
                     }
 
                     // 設置當前矩形為選中狀態
@@ -102,4 +111,20 @@ public class Portals extends Portal implements Serializable{
     //     }
     // }
 
+    public void showControlPoint()
+    {
+        if(cp==null)
+		{
+			cp=new ControlPortalPoint(Portals.this);
+		}
+		cp.show();
+    }
+    public void closeControlPoint()
+    {
+        if(cp==null)
+		{
+			cp=new ControlPortalPoint(Portals.this);
+		}
+		cp.close();
+    }
 }

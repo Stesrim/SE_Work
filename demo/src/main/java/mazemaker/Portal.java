@@ -27,4 +27,5 @@ public class Portal extends Obstable{
     public int getId(){
         return Id;
     }
+    
 }

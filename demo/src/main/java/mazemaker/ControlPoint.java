@@ -502,8 +502,7 @@ public class ControlPoint implements Serializable{
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
-					System.out.println(orige.x);
-					System.out.println(e.getXOnScreen());
+
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,
@@ -597,8 +596,7 @@ public class ControlPoint implements Serializable{
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
-					System.out.println(orige.x);
-					System.out.println(e.getXOnScreen());
+
 				    ControlPoint.this.parent.setBounds(x,
                                                     y,
                                                     newWidth,

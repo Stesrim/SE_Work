@@ -51,10 +51,17 @@ public class Obstables extends Obstable implements Serializable{
                 if (Obstables.this.status == State.inactive) {
                     Obstables.this.status=State.active;
                     
-                    if (Obstables.this.parent.activeORectangle != null) {
+                    if (Obstables.this.parent.activeORectangle != null || Obstables.this.parent.activePRectangle != null) {
                         // 取消其他矩形的選中狀態
-                        Obstables.this.parent.activeORectangle.closeControlPoint();
-                        Obstables.this.parent.activeORectangle.status = State.inactive;
+                        if (Obstables.this.parent.activeORectangle != null )
+                        {
+                            Obstables.this.parent.activeORectangle.closeControlPoint();
+                            Obstables.this.parent.activeORectangle.status = State.inactive;}
+                        if ( Obstables.this.parent.activePRectangle != null)
+                        {
+                            Obstables.this.parent.activePRectangle.closeControlPoint();
+                            Obstables.this.parent.activePRectangle.status = State.inactive;}
+                        
                     }
 
                     // 設置當前矩形為選中狀態

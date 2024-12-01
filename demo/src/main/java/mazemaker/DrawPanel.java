@@ -82,6 +82,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 activePRectangle.getLocation().y-4,
                 activePRectangle.getSize().width+8,
                 activePRectangle.getSize().height+8);
+                activePRectangle.showControlPoint();
                 
             }
             if(this.activeORectangle!=null)
@@ -328,7 +329,9 @@ public class DrawPanel extends JPanel implements Serializable{
                 DrawPanel parentPanel = (DrawPanel) label.getParent();
                 label.getParent().remove(label);
                 parentPanel.Prectangles.remove(label);
+                parentPanel.activePRectangle.closeControlPoint();
                 parentPanel.activePRectangle = null;
+                
                 tabbedPane.removeAll();
                 parentPanel.revalidate();
                 parentPanel.repaint();
@@ -349,8 +352,10 @@ public class DrawPanel extends JPanel implements Serializable{
                     // 更新 JLabel 屬性
                     label.setBounds(newX, newY, newWidth, newHeight);
                     ImageIcon tempIcon = (ImageIcon)label.getIcon();
-                    tempIcon.setImage(tempIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
-                    label.setIcon(tempIcon);
+                    label.Pbg = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
+                    label.Pbg.setImage(label.Pbg.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_AREA_AVERAGING));
+                    label.closeControlPoint();
+                    label.setIcon(label.Pbg);
                     label.setId(newID);
                     label.setPortalId(newPID);
                     label.getParent().revalidate();
@@ -461,6 +466,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 if (DrawPanel.this.activePRectangle != null) {
                     if (DrawPanel.this.activePRectangle.status == State.active) {
                         DrawPanel.this.activePRectangle.status = State.inactive;
+                        DrawPanel.this.activePRectangle.closeControlPoint();
                         DrawPanel.this.activePRectangle = null;
                         Makemap.attributes.removeAll();
                         DrawPanel.this.validate();
@@ -511,6 +517,7 @@ public class DrawPanel extends JPanel implements Serializable{
                         Ptemp.setIcon(Ptemp.Pbg);
                         addTab1(Makemap.attributes, Ptemp);
                         activeORectangle = null;
+                        activePRectangle.showControlPoint();
                         //把背景圖放到最下面
                         BGLabelset();
                     }
