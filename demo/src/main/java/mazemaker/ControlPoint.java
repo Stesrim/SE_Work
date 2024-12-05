@@ -28,7 +28,7 @@ public class ControlPoint implements Serializable{
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,
 									ControlPoint.this.parent.getLocation().y);
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
                     int y =  ControlPoint.this.parent.getLocation().y;
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPoint.this.parent.getHeight();
@@ -40,7 +40,7 @@ public class ControlPoint implements Serializable{
 				}
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
                     int y =  ControlPoint.this.parent.getLocation().y;
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPoint.this.parent.getHeight();
@@ -129,7 +129,7 @@ public class ControlPoint implements Serializable{
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),
 									ControlPoint.this.parent.getLocation().y);
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
                     int y =  ControlPoint.this.parent.getLocation().y;
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPoint.this.parent.getHeight();
@@ -141,7 +141,7 @@ public class ControlPoint implements Serializable{
 				}
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
-                    int x = Math.min(orige.x,e.getXOnScreen()-300);
+                    int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
                     int y =  ControlPoint.this.parent.getLocation().y;
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = ControlPoint.this.parent.getHeight();
@@ -230,7 +230,7 @@ public class ControlPoint implements Serializable{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,
 									ControlPoint.this.parent.getLocation().y);
 					int x = ControlPoint.this.parent.getLocation().x;
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12));
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -242,7 +242,7 @@ public class ControlPoint implements Serializable{
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
                     int x = ControlPoint.this.parent.getLocation().x;
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12));
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -330,7 +330,7 @@ public class ControlPoint implements Serializable{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,
 									ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
 					int x = ControlPoint.this.parent.getLocation().x;
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12)+9);
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -342,7 +342,7 @@ public class ControlPoint implements Serializable{
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
                     int x = ControlPoint.this.parent.getLocation().x;
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12)+9);
                     int newWidth = ControlPoint.this.parent.getWidth();
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -428,8 +428,8 @@ public class ControlPoint implements Serializable{
 				if(ControlPoint.this.parent.status==State.ready2resize)
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,ControlPoint.this.parent.getLocation().y);
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12));
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -440,8 +440,8 @@ public class ControlPoint implements Serializable{
 				}
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
-                    int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12));
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 					if (newWidth == 0)
@@ -529,8 +529,8 @@ public class ControlPoint implements Serializable{
 				if(ControlPoint.this.parent.status==State.ready2resize)
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),ControlPoint.this.parent.getLocation().y);
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12));
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -542,8 +542,8 @@ public class ControlPoint implements Serializable{
 				}
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
-                    int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100);
+                    int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12));
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height+(e.getYOnScreen() - fp.y));
 					if (newWidth == 0)
@@ -629,8 +629,8 @@ public class ControlPoint implements Serializable{
 				if(ControlPoint.this.parent.status==State.ready2resize)
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x,ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12)+9);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -642,8 +642,8 @@ public class ControlPoint implements Serializable{
 				}
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
-                    int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
+                    int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12)+9);
                     int newWidth = Math.abs(os.width+(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 					if (newWidth == 0)
@@ -729,8 +729,8 @@ public class ControlPoint implements Serializable{
 				{
 					orige = new Point(ControlPoint.this.parent.getLocation().x+ControlPoint.this.parent.getWidth(),
 									ControlPoint.this.parent.getLocation().y+ControlPoint.this.parent.getHeight());
-					int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
+					int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12)+9);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 				    ControlPoint.this.parent.status=State.resizing;
@@ -741,8 +741,8 @@ public class ControlPoint implements Serializable{
 				}
 				else if(ControlPoint.this.parent.status==State.resizing)
 				{
-                    int x = Math.min(orige.x,e.getXOnScreen()-300);
-                    int y =  Math.min(orige.y,e.getYOnScreen()-100+9);
+                    int x = Math.min(orige.x,e.getXOnScreen()-(int)(Makemap.designWin.getWidth() * 0.193));
+                    int y =  Math.min(orige.y,e.getYOnScreen()-(int)(Makemap.designWin.getHeight() * 0.12)+9);
                     int newWidth = Math.abs(os.width-(e.getXOnScreen() - fp.x));
                     int newHeight = Math.abs(os.height-(e.getYOnScreen() - fp.y));
 					if (newWidth == 0 )

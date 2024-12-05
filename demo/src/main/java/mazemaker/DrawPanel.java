@@ -98,9 +98,9 @@ public class DrawPanel extends JPanel implements Serializable{
             }
         
     }
-    public static void addTab(JTabbedPane tabbedPane, Obstables label) {
-        if (tabbedPane.getTabCount() > 0) {
-            tabbedPane.remove(0); // 只移除第一個標籤，保留其他
+    public static void addTab(JTabbedPane pageArray, Obstables label) {
+        if (pageArray.getTabCount() > 0) {
+            pageArray.remove(0); // 只移除第一個標籤，保留其他
         }
 
         // 創建一個新的標籤頁面板
@@ -180,7 +180,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 parentPanel.Orectangles.remove(label);
                 parentPanel.activeORectangle.closeControlPoint();
                 parentPanel.activeORectangle = null;
-                tabbedPane.removeAll();
+                pageArray.removeAll();
                 parentPanel.revalidate();
                 parentPanel.repaint();
             }
@@ -214,14 +214,14 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 自訂標籤標題
         String tabTitle = "障礙物";
-        tabbedPane.addTab(tabTitle, tabPanel);
-        tabbedPane.setSelectedComponent(tabPanel);
-        tabbedPane.revalidate();
-        tabbedPane.repaint();
+        pageArray.addTab(tabTitle, tabPanel);
+        pageArray.setSelectedComponent(tabPanel);
+        pageArray.revalidate();
+        pageArray.repaint();
     }
-    public static void addTab1(JTabbedPane tabbedPane, Portals label) {
-        if (tabbedPane.getTabCount() > 0) {
-            tabbedPane.remove(0); // 只移除第一個標籤，保留其他
+    public static void addTab1(JTabbedPane pageArray, Portals label) {
+        if (pageArray.getTabCount() > 0) {
+            pageArray.remove(0); // 只移除第一個標籤，保留其他
         }
         // 創建一個新的標籤頁面板
         JPanel tabPanel = new JPanel(new BorderLayout());
@@ -326,7 +326,7 @@ public class DrawPanel extends JPanel implements Serializable{
                 parentPanel.Prectangles.remove(label);
                 parentPanel.activePRectangle.closeControlPoint();
                 parentPanel.activePRectangle = null;
-                tabbedPane.removeAll();
+                pageArray.removeAll();
                 parentPanel.revalidate();
                 parentPanel.repaint();
             }
@@ -364,10 +364,10 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 自訂標籤標題
         String tabTitle = "傳送門";
-        tabbedPane.addTab(tabTitle, tabPanel);
-        tabbedPane.setSelectedComponent(tabPanel);
-        tabbedPane.revalidate();
-        tabbedPane.repaint();
+        pageArray.addTab(tabTitle, tabPanel);
+        pageArray.setSelectedComponent(tabPanel);
+        pageArray.revalidate();
+        pageArray.repaint();
     }
 	//新增圖片的時候要把背景圖移動到最下面
     public void BGLabelset() {

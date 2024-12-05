@@ -16,6 +16,7 @@ public class Portals extends Portal implements Serializable{
  
     Portals(DrawPanel parent) {
         super();
+        // 設置傳送門圖片
         Pbg = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
         this.parent = parent;
         this.status = State.active; // 初始化為選中

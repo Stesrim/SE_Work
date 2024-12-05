@@ -28,62 +28,60 @@ public class Mazedesignmenu extends JFrame{
 	private Page page;
     Mazedesignmenu(Makemap parent, Page tabpane){	
         this.page = tabpane;
-		
+		// 新增重返主頁面按鈕並添加進designWin
 		JButton returntitle = new JButton("重返主頁面");
 	    parent.designWin.add(returntitle);
+		// 設置字體
 		Font menuFont = new Font("Microsoft JhengHei", Font.BOLD, 26);
 		Font itemFont = new Font("Microsoft JhengHei", Font.BOLD, 20);
 		Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+		// 新增 檔案的JMenu與JMenuItem
 		JMenu fileMenu = new JMenu("檔案");
 		returntitle.setFont(menuFont);
+        JMenuItem newPage = new JMenuItem("新增頁面");
+		JMenuItem deletePage = new JMenuItem("刪除頁面");
+        JMenuItem saveFile =new JMenuItem("保存");
+        JMenuItem openFile = new JMenuItem("開啟");
 
-        JMenuItem openMenuItem = new JMenuItem("新增頁面");
-		JMenuItem deleteMenuItem = new JMenuItem("刪除頁面");
-        JMenuItem saveMenuItem =new JMenuItem("保存");
-        JMenuItem exitMenuItem = new JMenuItem("開啟");
-
-		openMenuItem.setFont(itemFont);
-		deleteMenuItem.setFont(itemFont);
-		saveMenuItem.setFont(itemFont);
-		exitMenuItem.setFont(itemFont);
-
+		newPage.setFont(itemFont);
+		deletePage.setFont(itemFont);
+		saveFile.setFont(itemFont);
+		openFile.setFont(itemFont);
+		// 將JMenuItem添加至Jmenu
 		fileMenu.setFont(menuFont);
-        fileMenu.add(openMenuItem);
+        fileMenu.add(newPage);
 		fileMenu.addSeparator();
-        fileMenu.add(deleteMenuItem);
+        fileMenu.add(deletePage);
 		fileMenu.addSeparator();
-		fileMenu.add(saveMenuItem);
+		fileMenu.add(saveFile);
 		fileMenu.addSeparator();
-        fileMenu.add(exitMenuItem);
+        fileMenu.add(openFile);
         
-
+		// 新增 執行的JMenu與JMenuItem
 		JMenu runMenu = new JMenu("執行");
-		JMenuItem Comp = new JMenuItem("檢查");
-		JMenuItem CompAndRun = new JMenuItem("檢查並執行");
+		JMenuItem Cheak = new JMenuItem("檢查");
+		JMenuItem CheakAndTest = new JMenuItem("檢查並測試");
 
-		Comp.setFont(itemFont);
-		CompAndRun.setFont(itemFont);
-
+		Cheak.setFont(itemFont);
+		CheakAndTest.setFont(itemFont);
+		// 將JMenuItem添加至Jmenu
 		runMenu.setFont(menuFont);
-		runMenu.add(Comp);
+		runMenu.add(Cheak);
 		runMenu.addSeparator();
-		runMenu.add(CompAndRun);
-
+		runMenu.add(CheakAndTest);
+		// 新增 編輯的JMenu與JMenuItem
 		JMenu editMenu = new JMenu("編輯");
-		JMenuItem settime = new JMenuItem("設定遊玩時間");
+		JMenuItem setPlaytime = new JMenuItem("設定遊玩時間");
 		JMenuItem setbackground = new JMenuItem("設定背景圖片");
-		JMenuItem setmapsize = new JMenuItem("設地圖大小");
-		settime.setFont(itemFont);
+		setPlaytime.setFont(itemFont);
 		setbackground.setFont(itemFont);
-		setmapsize.setFont(itemFont);
-
+		// 將JMenuItem添加至Jmenu
 		editMenu.setFont(menuFont);
-		editMenu.add(settime);
+		editMenu.add(setPlaytime);
 		editMenu.addSeparator();
 		editMenu.add(setbackground);
 		editMenu.addSeparator();
-		editMenu.add(setmapsize);
-
+		// 新增JMenuBar 並將以上功能添加其中
         JMenuBar menuBar = new JMenuBar();
 		menuBar.add(returntitle);
         menuBar.add(fileMenu);
@@ -95,13 +93,13 @@ public class Mazedesignmenu extends JFrame{
 	
 		
 		// Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		Comp.addActionListener(new ActionListener() {
+		Cheak.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				int index = page.tabbedPane.getSelectedIndex();
-				if (index != -1){
+				int pageNum = page.pageArray.getSelectedIndex();
+				if (pageNum >= 0){
 					//抓DrawPanel裡面的資料
-					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					DrawPanel Temp = (DrawPanel)page.pageArray.getComponentAt(pageNum);
 					if (Temp.CheckCollison() == true){
 						JLabel PassJLabel = new JLabel();
 						PassJLabel.setText("檢查通過");
@@ -121,72 +119,23 @@ public class Mazedesignmenu extends JFrame{
 				}
             }
         });
-		CompAndRun.addActionListener(new ActionListener() {
+		CheakAndTest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				int index = page.tabbedPane.getSelectedIndex();
-				if (index != -1){
-					//shallow copy temp
-					DrawPanel ScTemp = (DrawPanel)page.tabbedPane.getComponentAt(index);
-					try {
-            			// 用 ByteArrayOutputStream 創建一個內存流
-            			ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-            
-            			// 用 ObjectOutputStream 來序列化物件到這個流
-            			ObjectOutputStream oos = new ObjectOutputStream(BAOS);
-            			oos.writeObject(ScTemp);
-            			oos.flush();  // 確保寫入所有數據
-            
-            			// 用 ByteArrayInputStream 來讀取這些字節數據
-            			ByteArrayInputStream BAIS = new ByteArrayInputStream(BAOS.toByteArray());
-            
-            			// 用 ObjectInputStream 來反序列化數據，並返回新物件
-            			ObjectInputStream ois = new ObjectInputStream(BAIS);
-             			//這個物件是deepcopy的不會影響到原本的DrawPanel
-						DrawPanel Temp = (DrawPanel)ois.readObject();
-						if (Temp.CheckCollison() == true){
-							GameMap window = new GameMap();
-							window.setMazesize(Temp.width, Temp.height);
-        					window.setBG(Temp.getBg());
-        					window.setTimeleft(Temp.getTimeLeft());
-							for (Obstables obstable:Temp.Orectangles) {
-								window.addObstable(obstable, obstable.getType());
-							}
-							for (Portals portal:Temp.Prectangles) {
-								window.addPortal(portal);
-							}
-
-						}else{
-							JLabel ErrorJLabel = new JLabel();
-							ErrorJLabel.setText("檢查不通過，請再檢查一下");
-							ErrorJLabel.setFont(dialogFont);
-							JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
-						}
-					} catch (IOException ex ) {
-						ex.printStackTrace();
-					} catch (ClassNotFoundException e1) {
-						e1.printStackTrace();
-					}
-					
-				}else{
-					JLabel ErrorJLabel = new JLabel();
-					ErrorJLabel.setText("請先建立一個新的頁面");
-					ErrorJLabel.setFont(dialogFont);
-					JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
-				}
+                page.checkandRun();
             }
         });
-		saveMenuItem.addActionListener(new ActionListener() {
+		saveFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				int index = page.tabbedPane.getSelectedIndex();
-				if (index != -1){
+				int pageNum = page.pageArray.getSelectedIndex();
+				if (pageNum >= 0){
 					//抓到放檔案的相對位置
 					File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
 					JFileChooser fileChooser = new JFileChooser(defaultDir);
 					fileChooser.setDialogTitle("選擇保存路徑位置");
 					//抓到目前所在的頁面
-					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					DrawPanel Temp = (DrawPanel)page.pageArray.getComponentAt(pageNum);
 					if (Temp.activeORectangle != null)
 					{
 						if (Temp.activeORectangle.status == State.active) {
@@ -230,12 +179,12 @@ public class Mazedesignmenu extends JFrame{
 				}
 			}
 		});
-		exitMenuItem.addActionListener(new ActionListener() {
+		openFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				int index = page.tabbedPane.getTabCount();
+				int pageNum = page.pageArray.getTabCount();
 				//只讓玩家開最多五個頁面
-				if (index <= 4){
+				if (pageNum <= 4){
 					//抓到放檔案的相對位置
 					File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
 					JFileChooser fileChooser = new JFileChooser(defaultDir);
@@ -267,11 +216,11 @@ public class Mazedesignmenu extends JFrame{
 				}
 			}
 		});
-		settime.addActionListener(new ActionListener() {
+		setPlaytime.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				int index = page.tabbedPane.getSelectedIndex();
-				if (index != -1){
+				int pageNum = page.pageArray.getSelectedIndex();
+				if (pageNum >= 0){
 					//初始化
                 	JDialog Tleftinput = new JDialog(parent,"設置遊玩時間", true);
                 	Tleftinput.setSize(450, 175);
@@ -279,7 +228,7 @@ public class Mazedesignmenu extends JFrame{
 					JLabel Pt = new JLabel("請輸入遊玩時間 (s):");
 					Pt.setFont(dialogFont);
 					//抓DrawPanel裡面的資料
-					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					DrawPanel Temp = (DrawPanel)page.pageArray.getComponentAt(pageNum);
 					JTextField Tleft = new JTextField(5);
 					Tleft.setText(String.valueOf(Temp.getTimeLeft()));
 					Tleft.setFont(dialogFont);
@@ -327,8 +276,8 @@ public class Mazedesignmenu extends JFrame{
 		setbackground.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				int index = page.tabbedPane.getSelectedIndex();
-				if (index != -1){
+				int pageNum = page.pageArray.getSelectedIndex();
+				if (pageNum >= 0){
 					//初始化
                 	JDialog Bginput = new JDialog(parent,"設置地圖", true);
                 	Bginput.setSize(450, 175);
@@ -336,7 +285,7 @@ public class Mazedesignmenu extends JFrame{
 					JLabel Pt = new JLabel("請選擇地圖種類:");
 					Pt.setFont(dialogFont);
 					//抓DrawPanel裡面的資料
-					DrawPanel Temp = (DrawPanel)page.tabbedPane.getComponentAt(index);
+					DrawPanel Temp = (DrawPanel)page.pageArray.getComponentAt(pageNum);
 					JButton Save = new JButton("儲存");
 					Save.setFont(dialogFont);
 					String[] options = {"預設(無)", "草地", "雪地", "沙漠"};
@@ -369,13 +318,13 @@ public class Mazedesignmenu extends JFrame{
 				}
             }
         });
-	    openMenuItem.addActionListener(new ActionListener() {
+	    newPage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page.addNewTab();
             }
         });
-		deleteMenuItem.addActionListener(new ActionListener() {
+		deletePage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 page.removeCurrentTab();

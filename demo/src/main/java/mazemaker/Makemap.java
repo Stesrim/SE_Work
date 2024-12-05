@@ -9,7 +9,7 @@ import javax.swing.JTabbedPane;
 
 public class Makemap extends JFrame {
 
-	public Mazedesignwin designWin;
+	public static Mazedesignwin designWin;
 	public Mazedesignmenu dm;
 	public DrawPanel draw;
 	public Page tabpane;
@@ -28,7 +28,6 @@ public class Makemap extends JFrame {
 		draw = new DrawPanel();
 		dm = new Mazedesignmenu(this, tabpane); //創建設計端菜單&工具列
 		tb = new Toolbar(this);
-		
 		designWin.add(tabpane, BorderLayout.CENTER);
 		attributes = new JTabbedPane();
 		attributes.setPreferredSize(new Dimension(300, designWin.getHeight())); // 增加寬度至 300 像素

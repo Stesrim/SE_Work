@@ -106,6 +106,7 @@ public class Obstables extends Obstable implements Serializable{
             }
         });
     }
+    // 根據所選擇的Obstables更改圖片
     public void setObg(int obstacletype){
         switch (obstacletype) {
             case 0: 

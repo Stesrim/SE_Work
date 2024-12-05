@@ -36,17 +36,17 @@ public class MainWindow extends JFrame {
         this.setLayout(null);
         this.setBackground(Color.darkGray);
         
-        // 加载背景图
+        // 加載背景圖
         bg = new ImageIcon(getClass().getResource("/images/background/index.jpg"));
         Image img = bg.getImage().getScaledInstance(screenSize.width, screenSize.height, Image.SCALE_SMOOTH);
         bg = new ImageIcon(img);
         
-        // 设置背景图片到 JLabel
+        // 設置背景圖片到 JLabel
         backgroundLabel.setIcon(bg);
-        backgroundLabel.setBounds(0, 0, screenSize.width, screenSize.height); // 背景图覆盖整个窗口
+        backgroundLabel.setBounds(0, 0, screenSize.width, screenSize.height); // 背景圖覆蓋整個窗口
         this.add(backgroundLabel); // 添加背景标签到窗口
 
-        // 初始化按钮
+        // 初始畫按鈕
         exitBtn = new JButton("離開");
         gamestart = new JButton("遊戲開始");
         makemap = new JButton("設計端");
@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
         defaultmap = new JButton("預設地圖");
         importmap = new JButton("導入地圖");
 
-        // 设置按钮字体
+        // 設置按鈕字體
         Font buttonFont = new Font("Microsoft JhengHei", Font.BOLD, 35);
         exitBtn.setFont(buttonFont);
         gamestart.setFont(buttonFont);
@@ -71,10 +71,10 @@ public class MainWindow extends JFrame {
         backgroundLabel.add(importmap);
         backgroundLabel.add(returntitle);
         
-        // 设置窗口为最大化
+        // 設置窗口為最大化
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        // 设置按钮位置
+        // 設置按鈕位置
         gamestart.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.5),200,75);
         makemap.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.6),200,75);
         exitBtn.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.7),200,75);
@@ -82,12 +82,12 @@ public class MainWindow extends JFrame {
         importmap.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.6),200,75);
         returntitle.setBounds((int)(screenSize.getWidth ()/2-100),(int)(screenSize.getHeight()*0.7),200,75);
         
-        // 默认隐藏部分按钮
+        // 默認隱藏部分按鈕
         returntitle.setVisible(false);
         defaultmap.setVisible(false);
         importmap.setVisible(false);
         
-        // 添加按钮监听事件
+        // 添加按鈕監聽事件
         gamestart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

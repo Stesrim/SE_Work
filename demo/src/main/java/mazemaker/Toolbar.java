@@ -39,18 +39,18 @@ public class Toolbar extends JPanel {
         toolBar.setFloatable(false);
         // 添加工具按鈕
         obstacleButton = new JButton("障礙物");
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 创建字体，大小为18
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 設置字體
         obstacleButton.setFont(font);
         obstacleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // 清除contentPanel所有內容後重新添加
                 contentPanel.removeAll();
                 contentPanel.add(createObstacleListPanel(), "障礙物選項");
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
                 Makemap.st = State.active;
-                // showObstacleList();  // 顯示障礙物選項
 
                 
             }
@@ -61,25 +61,24 @@ public class Toolbar extends JPanel {
         supportbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // 清除contentPanel所有內容後重新添加
                 contentPanel.removeAll();
                 contentPanel.add(createSupportListPanel(), "輔助物選項");
                 contentPanel.add(toolBar, BorderLayout.EAST);
                 contentPanel.revalidate();
                 contentPanel.repaint();
                 Makemap.st = State.active;
-                // showSupportList();  
             }
         });
         
         toolBar.add(supportbtn);
-        // decoratebtn = new JButton("裝飾物");
-        // decoratebtn.setFont(font);
-        // toolBar.add(decoratebtn);
+
         decoratebtn = new JButton("裝飾物");
         decoratebtn.setFont(font);
         decoratebtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // 清除contentPanel所有內容後重新添加
                 contentPanel.removeAll();
                 contentPanel.add(createDecoratebtnListPanel(), "裝飾物選項");
                 contentPanel.add(toolBar, BorderLayout.EAST);
@@ -98,9 +97,7 @@ public class Toolbar extends JPanel {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
         // 初始化 JList 面板
         
-        // toolPanel = new JPanel();
-        // toolPanel.setLayout(new BoxLayout(toolPanel, BoxLayout.Y_AXIS));
-        // toolPanel.add(toolBar,BorderLayout.NORTH);
+
         // 將 JList 面板放入卡片布局中
         contentPanel.add(createObstacleListPanel(), "障礙物選項");
         toolBar.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -120,74 +117,74 @@ public class Toolbar extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // 创建 ImageIcon 数组并加载图片
+        // 創建 ImageIcon 陣列並加載圖片
         ImageIcon[] listicon = new ImageIcon[3];
         listicon[0] = new ImageIcon(getClass().getResource("/images/object image/foliagePack_053.png"));
         listicon[1] = new ImageIcon(getClass().getResource("/images/object image/foliagePack_011.png"));
         listicon[2] = new ImageIcon(getClass().getResource("/images/object image/牆壁.png"));
 
-        // 创建 JList，使用 ImageIcon 数组
+        // 創建 JList，使用 ImageIcon 陣列
         JList<ImageIcon> obstacleList = new JList<>(listicon);
 
-        // 设置字体
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为微软雅黑字体，大小为18
+        // 設置字體
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 設置字體
         obstacleList.setFont(font);
 
-        // 使用自定义的 ListCellRenderer 来根据图片尺寸调整单元格大小
+        // 使用自定義的 ListCellRenderer 来根據圖片尺寸調整單元格大小
         obstacleList.setCellRenderer(new ListCellRenderer<ImageIcon>() {
             @Override
             public Component getListCellRendererComponent(JList<? extends ImageIcon> list, ImageIcon value, int index, boolean isSelected, boolean cellHasFocus) {
                 JPanel panel = new JPanel() {
                     @Override
                     public Dimension getPreferredSize() {
-                        // 根据图片的宽高设置单元格大小
+                        // 根據圖片的寬高設置單元格大小
                         int width = value.getIconWidth();
                         int height = value.getIconHeight();
-                        return new Dimension(width + 10, height + 10);  // 增加一些额外空间，避免图片紧贴边缘
+                        return new Dimension(width + 10, height + 10);  // 增加額外空間，避免圖片緊貼邊緣
                     }
                 };
 
-                // 使用 JLabel 来显示图片
+                // 使用JLabel 顯示圖片
                 JLabel label = new JLabel(value);
                 panel.setLayout(new BorderLayout());
                 panel.add(label, BorderLayout.CENTER);
 
-                // 设置选中时的背景颜色
+                // 設置選中時的背景圖片
                 if (isSelected) {
                     panel.setBackground(Color.LIGHT_GRAY);
                 } else {
                     panel.setBackground(Color.WHITE);
                 }
 
-                // 设置边框，增加项之间的间隔
+                // 設置邊框，增加之間的間隔
                 panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
                 return panel;
             }
         });
 
-        // 设置 JList 的选择模式（例如单选模式）
+        // 設置 JList的選擇模式為單選
         obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // 包裹 JList 的滚动面板
+        // 包裹JList的滾動面板
         JScrollPane scrollPane = new JScrollPane(obstacleList);
 
-        // 限制显示区域的大小，避免显示过多项目
-        scrollPane.setPreferredSize(new Dimension(160, 150));  // 设置滚动区域的大小
+        // 限制顯示區域的大小，避免顯示過多项目
+        scrollPane.setPreferredSize(new Dimension(160, 150));  // 設置滾動區域的大小
 
         // 添加到面板中
         panel.add(scrollPane, BorderLayout.WEST);
 
-        // 处理鼠标点击事件
+        // 處理鼠標點擊事件
         obstacleList.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // 判断鼠标是否单击
+                // 判斷鼠標是否單擊
                 if (e.getClickCount() == 1) {
-                    // 获取 JList 被点击的项目索引
+                    // 獲取 JList 被點擊的項目索引
                     int index = obstacleList.locationToIndex(e.getPoint());
                     Makemap.st = State.active;
-                    // 根据点击的索引设置不同的障碍类型
+                    // 根據點擊的索引設定不同的障礙類型
                     if (Makemap.st == State.active) {
                         if (index == 0) {
                             Makemap.obstacletype = 0;
@@ -221,60 +218,60 @@ public class Toolbar extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // 创建 ImageIcon 数组并加载图片
+        //  建立 ImageIcon 陣列並載入圖片
         ImageIcon[] listicon = new ImageIcon[3];
         listicon[0] = new ImageIcon(getClass().getResource("/images/playerandendspot/player.png"));
         listicon[1] = new ImageIcon(getClass().getResource("/images/object image/flag.png"));
         listicon[2] = new ImageIcon(getClass().getResource("/images/object image/indicator-round-b.png"));
 
-        // 创建 JList，使用 ImageIcon 数组
+        // 建立 JList，使用 ImageIcon 陣列
         JList<ImageIcon> obstacleList = new JList<>(listicon);
 
-        // 设置字体
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为微软雅黑字体，大小为18
+        // 設定字體
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 設置字體
         obstacleList.setFont(font);
 
-        // 使用自定义的 ListCellRenderer 来根据图片尺寸调整单元格大小
+        // 使用自訂的 ListCellRenderer 來根據圖片尺寸調整儲存格大小
         obstacleList.setCellRenderer(new ListCellRenderer<ImageIcon>() {
             @Override
             public Component getListCellRendererComponent(JList<? extends ImageIcon> list, ImageIcon value, int index, boolean isSelected, boolean cellHasFocus) {
                 JPanel panel = new JPanel() {
                     @Override
                     public Dimension getPreferredSize() {
-                        // 根据图片的宽高设置单元格大小
+                        // 根據圖片的寬高設定儲存格大小
                         int width = value.getIconWidth();
                         int height = value.getIconHeight();
-                        return new Dimension(width + 10, height + 10);  // 增加一些额外空间，避免图片紧贴边缘
+                        return new Dimension(width + 10, height + 10);  // 增加一些額外空間，避免圖片緊貼邊緣
                     }
                 };
 
-                // 使用 JLabel 来显示图片
+                // 使用 JLabel 來顯示圖片
                 JLabel label = new JLabel(value);
                 panel.setLayout(new BorderLayout());
                 panel.add(label, BorderLayout.CENTER);
 
-                // 设置选中时的背景颜色
+                // 設定選取時的背景顏色
                 if (isSelected) {
                     panel.setBackground(Color.LIGHT_GRAY);
                 } else {
                     panel.setBackground(Color.WHITE);
                 }
 
-                // 设置边框，增加项之间的间隔
+                // 設定邊框，增加項目之間的間隔
                 panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
                 return panel;
             }
         });
 
-        // 设置 JList 的选择模式（例如单选模式）
+        // 設定 JList 的選擇模式為單選模式
         obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // 包裹 JList 的滚动面板
+        // 包裹 JList 的捲動面板
         JScrollPane scrollPane = new JScrollPane(obstacleList);
 
-        // 限制显示区域的大小，避免显示过多项目
-        scrollPane.setPreferredSize(new Dimension(160, 150));  // 设置滚动区域的大小
+        // 限制顯示區域的大小，避免顯示過多項目
+        scrollPane.setPreferredSize(new Dimension(160, 150));  // 設定滾動區域的大小
 
         // 添加到面板中
         panel.add(scrollPane, BorderLayout.WEST);
@@ -326,61 +323,61 @@ public class Toolbar extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // 创建 ImageIcon 数组并加载图片
+        // 建立 ImageIcon 陣列並載入圖片
         ImageIcon[] listicon = new ImageIcon[1];
         listicon[0] = new ImageIcon(getClass().getResource("/images/object image/foliagePack_019.png"));
 
 
-        // 创建 JList，使用 ImageIcon 数组
+        // 建立 JList，使用 ImageIcon 數組
         JList<ImageIcon> obstacleList = new JList<>(listicon);
 
-        // 设置字体
-        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 设置为微软雅黑字体，大小为18
+        // 設定字體
+        Font font = new Font("Microsoft YaHei", Font.PLAIN, 18);  // 設定字體
         obstacleList.setFont(font);
 
-        // 使用自定义的 ListCellRenderer 来根据图片尺寸调整单元格大小
+        // 使用自訂的 ListCellRenderer 來根據圖片尺寸調整儲存格大小
         obstacleList.setCellRenderer(new ListCellRenderer<ImageIcon>() {
             @Override
             public Component getListCellRendererComponent(JList<? extends ImageIcon> list, ImageIcon value, int index, boolean isSelected, boolean cellHasFocus) {
                 JPanel panel = new JPanel() {
                     @Override
                     public Dimension getPreferredSize() {
-                        // 根据图片的宽高设置单元格大小
+                        // 根據圖片的寬高設定儲存格大小
                         int width = value.getIconWidth();
                         int height = value.getIconHeight();
-                        return new Dimension(width + 10, height + 10);  // 增加一些额外空间，避免图片紧贴边缘
+                        return new Dimension(width + 10, height + 10);  // 增加一些額外空間，避免圖片緊貼邊緣
                     }
                 };
 
-                // 使用 JLabel 来显示图片
+                // 使用 JLabel 來顯示圖片
                 JLabel label = new JLabel(value);
                 panel.setLayout(new BorderLayout());
                 panel.add(label, BorderLayout.CENTER);
 
-                // 设置选中时的背景颜色
+                // 設定選取時的背景顏色
                 if (isSelected) {
                     panel.setBackground(Color.LIGHT_GRAY);
                 } else {
                     panel.setBackground(Color.WHITE);
                 }
 
-                // 设置边框，增加项之间的间隔
+                // 設定邊框，增加項目之間的間隔
                 panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
                 return panel;
             }
         });
 
-        // 设置 JList 的选择模式（例如单选模式）
+        // 設定 JList 的選擇模式（例如單選模式）
         obstacleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // 包裹 JList 的滚动面板
+        // 包裹 JList 的捲動面板
         JScrollPane scrollPane = new JScrollPane(obstacleList);
 
-        // 限制显示区域的大小，避免显示过多项目
-        scrollPane.setPreferredSize(new Dimension(160, 150));  // 设置滚动区域的大小
+        // 限制顯示區域的大小，避免顯示過多項目
+        scrollPane.setPreferredSize(new Dimension(160, 150));  // 設定滾動區域的大小
 
-        // 添加到面板中
+        // 新增到面板中
         panel.add(scrollPane, BorderLayout.WEST);
         
         obstacleList.addMouseListener(new MouseAdapter() {
