@@ -7,12 +7,12 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
  
-public class Page extends JPanel{
+public class WorkSpace extends JPanel{
     public static int height;
     public static int width;
     public boolean[] pageNumber = {false, false, false, false, false};
     public JTabbedPane pageArray;
-    public Page() {
+    public WorkSpace() {
         pageArray = new JTabbedPane();
         pageArray.addChangeListener(new ChangeListener(){
             @Override

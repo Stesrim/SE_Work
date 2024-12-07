@@ -125,7 +125,7 @@ public class GameMap extends JFrame implements KeyListener {
                 if (timeLeft <= 0 || Gameover) {
                     ((Timer)e.getSource()).stop();
                     if(timeLeft <= 0 ){
-                        theendLabel.setText("You Loss !");
+                        theendLabel.setText("You Lose !");
                     }
                     Gameover = true;
                     theendLabel.setVisible(true);

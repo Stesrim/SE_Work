@@ -12,7 +12,7 @@ public class Makemap extends JFrame {
 	public static Mazedesignwin designWin;
 	public Mazedesignmenu dm;
 	public DrawPanel draw;
-	public Page tabpane;
+	public WorkSpace tabpane;
 	public Toolbar tb;
 
 	public static State st;
@@ -24,7 +24,7 @@ public class Makemap extends JFrame {
    	Makemap(){
 		sta = State.portalstate;
 		designWin = new Mazedesignwin(this); //創建設計端頁面
-    	tabpane = new Page();
+    	tabpane = new WorkSpace();
 		draw = new DrawPanel();
 		dm = new Mazedesignmenu(this, tabpane); //創建設計端菜單&工具列
 		tb = new Toolbar(this);

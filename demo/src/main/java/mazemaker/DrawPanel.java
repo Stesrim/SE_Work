@@ -51,8 +51,8 @@ public class DrawPanel extends JPanel implements Serializable{
     public JLabel BgJLabel;
 
     public DrawPanel() {
-            width = Page.width;
-            height = Page.height;
+            width = WorkSpace.width;
+            height = WorkSpace.height;
             Background = 0;
             TimeLeft = 60;
             setLayout(new BorderLayout());
@@ -61,7 +61,7 @@ public class DrawPanel extends JPanel implements Serializable{
             lp = null;
             //設定背景圖片
             BgJLabel = new JLabel();
-            BgJLabel.setBounds(0, 0, Page.width, Page.height);
+            BgJLabel.setBounds(0, 0, WorkSpace.width, WorkSpace.height);
             BgJLabel.setBorder(BorderFactory.createLineBorder(Color.black));
             BgJLabel.setOpaque(true);
             this.add(BgJLabel);
@@ -390,15 +390,15 @@ public class DrawPanel extends JPanel implements Serializable{
             BgJLabel.setIcon(null);
         }else if (Bg == 1){
             a = new ImageIcon(getClass().getResource("/images/background/grass.jpg"));
-            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_AREA_AVERAGING));
+            a.setImage(a.getImage().getScaledInstance(WorkSpace.width, WorkSpace.height, Image.SCALE_AREA_AVERAGING));
             BgJLabel.setIcon(a);
         }else if (Bg == 2){
             a = new ImageIcon(getClass().getResource("/images/background/snow.jpg"));
-            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_AREA_AVERAGING));
+            a.setImage(a.getImage().getScaledInstance(WorkSpace.width, WorkSpace.height, Image.SCALE_AREA_AVERAGING));
             BgJLabel.setIcon(a);
         }else if (Bg ==3){
             a = new ImageIcon(getClass().getResource("/images/background/desert.jpg"));
-            a.setImage(a.getImage().getScaledInstance(Page.width, Page.height, Image.SCALE_AREA_AVERAGING));
+            a.setImage(a.getImage().getScaledInstance(WorkSpace.width, WorkSpace.height, Image.SCALE_AREA_AVERAGING));
             BgJLabel.setIcon(a);
         }
         //重新繪圖不然會被遮住

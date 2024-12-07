@@ -1,18 +1,21 @@
 package mazemaker;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 
 
 public class Mazedesignmenu extends JFrame{
-	private Page page;
+	private WorkSpace page;
 	public Makemap parent;
 
-    Mazedesignmenu(Makemap parent, Page tabpane){	
+    Mazedesignmenu(Makemap parent, WorkSpace tabpane){	
         this.page = tabpane;
 		// 新增重返主頁面按鈕並添加進designWin
 		JButton returntitle = new JButton("重返主頁面");
@@ -20,7 +23,7 @@ public class Mazedesignmenu extends JFrame{
 		// 設置字體
 		Font menuFont = new Font("Microsoft JhengHei", Font.BOLD, 26);
 		Font itemFont = new Font("Microsoft JhengHei", Font.BOLD, 20);
-		Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+		// Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
 		// 新增 檔案的JMenu與JMenuItem
 		JMenu fileMenu = new JMenu("檔案");
 		returntitle.setFont(menuFont);
@@ -66,7 +69,6 @@ public class Mazedesignmenu extends JFrame{
 		editMenu.add(setPlaytime);
 		editMenu.addSeparator();
 		editMenu.add(setbackground);
-		editMenu.addSeparator();
 		// 新增JMenuBar 並將以上功能添加其中
         JMenuBar menuBar = new JMenuBar();
 		menuBar.add(returntitle);
@@ -83,7 +85,6 @@ public class Mazedesignmenu extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 				page.Cheak();
-				
             }
         });
 		CheakAndTest.addActionListener(new ActionListener() {
@@ -108,16 +109,12 @@ public class Mazedesignmenu extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
 				page.setPlaytime(Mazedesignmenu.this);
-
-
             }
         });
 		setbackground.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 				page.setbackground(Mazedesignmenu.this);
-
-
             }
         });
 	    newPage.addActionListener(new ActionListener() {
