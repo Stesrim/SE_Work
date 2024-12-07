@@ -1,18 +1,11 @@
 package mazemaker;
 
-import java.awt.BorderLayout;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.*;
+import javax.swing.event.*;
  
 public class Page extends JPanel{
     public static int height;
@@ -77,6 +70,7 @@ public class Page extends JPanel{
     }
 
     public void checkandRun(){
+        Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
         int pageNum = pageArray.getSelectedIndex();
                 if (pageNum >= 0){
                     //shallow copy temp
@@ -112,7 +106,7 @@ public class Page extends JPanel{
                         }else{
                             JLabel ErrorJLabel = new JLabel();
                             ErrorJLabel.setText("檢查不通過，請再檢查一下");
-                            // ErrorJLabel.setFont(dialogFont);
+                            ErrorJLabel.setFont(dialogFont);
                             JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
                         }
                     } catch (IOException ex ) {
@@ -128,5 +122,226 @@ public class Page extends JPanel{
                     JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
                 }
     }
+
+    public void Cheak()
+    {
+        Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+        int pageNum = pageArray.getSelectedIndex();
+            if (pageNum >= 0){
+                //抓DrawPanel裡面的資料
+                DrawPanel Temp = (DrawPanel)pageArray.getComponentAt(pageNum);
+                if (Temp.CheckCollison() == true){
+                    JLabel PassJLabel = new JLabel();
+                    PassJLabel.setText("檢查通過");
+                    PassJLabel.setFont(dialogFont);
+                    JOptionPane.showMessageDialog(null,PassJLabel);
+                }else{
+                    JLabel ErrorJLabel = new JLabel();
+                    ErrorJLabel.setText("檢查不通過，請再檢查一下");
+                    ErrorJLabel.setFont(dialogFont);
+                    JOptionPane.showMessageDialog(null,ErrorJLabel,"Fail",JOptionPane.WARNING_MESSAGE);
+                }
+            }else{
+                JLabel ErrorJLabel = new JLabel();
+                ErrorJLabel.setText("請先建立一個新的頁面");
+                ErrorJLabel.setFont(dialogFont);
+                JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+            }
+    }
+
+    public void saveFile()
+    {
+        Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+        int pageNum = pageArray.getSelectedIndex();
+            if (pageNum >= 0){
+                //抓到放檔案的相對位置
+                File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+                JFileChooser fileChooser = new JFileChooser(defaultDir);
+                fileChooser.setDialogTitle("選擇保存路徑位置");
+                //抓到目前所在的頁面
+                DrawPanel Temp = (DrawPanel)pageArray.getComponentAt(pageNum);
+                if (Temp.activeORectangle != null)
+                {
+                    if (Temp.activeORectangle.status == State.active) {
+                        Temp.activeORectangle.status = State.inactive;
+                        Temp.activeORectangle.closeControlPoint();
+                        Temp.activeORectangle = null;
+                        Makemap.attributes.removeAll();
+                        Temp.validate();
+                        Temp.repaint();
+
+                    }
+                }
+                if (Temp.activePRectangle != null)
+                {
+                    if (Temp.activePRectangle.status == State.active) {
+                        Temp.activePRectangle.status = State.inactive;
+                        Temp.activePRectangle.closeControlPoint();
+                        Temp.activePRectangle = null;
+                        Makemap.attributes.removeAll();
+                        Temp.validate();
+                        Temp.repaint();
+
+                    }
+                }
+                int userSelection = fileChooser.showSaveDialog(null);
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    try (ObjectOutputStream oos = new ObjectOutputStream(
+                        new FileOutputStream(fileChooser.getSelectedFile()))) {
+                        oos.writeObject(Temp);
+                        JOptionPane.showMessageDialog(null, "保存成功！");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "保存失敗:" + ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                }
+            }else{
+                JLabel ErrorJLabel = new JLabel();
+                ErrorJLabel.setText("請先建立一個新的頁面");
+                ErrorJLabel.setFont(dialogFont);
+                JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+            }
+    }
+
+    public void openFile()
+    {
+        Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+        int pageNum = pageArray.getTabCount();
+        //只讓玩家開最多五個頁面
+        if (pageNum <= 4){
+            //抓到放檔案的相對位置
+            File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+            JFileChooser fileChooser = new JFileChooser(defaultDir);
+            fileChooser.setDialogTitle("選擇載入路徑位置");
+
+            int userSelection = fileChooser.showOpenDialog(null);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                try (ObjectInputStream ois = new ObjectInputStream(
+                    new FileInputStream(fileChooser.getSelectedFile()))) {
+                    DrawPanel loadedPanel = (DrawPanel) ois.readObject();
+                    //把監聽器載入回來
+                    addNewTab2(loadedPanel);
+                    loadedPanel.restoreListeners();
+                    JOptionPane.showMessageDialog(null, "載入成功！");
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "載入失敗:" + ex.getMessage());
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+        }else{
+            JLabel ErrorJLabel = new JLabel();
+            ErrorJLabel.setText("頁面過多無法載入");
+            ErrorJLabel.setFont(dialogFont);
+            JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public void setPlaytime(Mazedesignmenu p)
+    {
+        Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+        int pageNum = pageArray.getSelectedIndex();
+        if (pageNum >= 0){
+            //初始化
+            JDialog Tleftinput = new JDialog(p.parent,"設置遊玩時間", true);
+            Tleftinput.setSize(450, 175);
+            Tleftinput.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            JLabel Pt = new JLabel("請輸入遊玩時間 (s):");
+            Pt.setFont(dialogFont);
+            //抓DrawPanel裡面的資料
+            DrawPanel Temp = (DrawPanel)pageArray.getComponentAt(pageNum);
+            JTextField Tleft = new JTextField(5);
+            Tleft.setText(String.valueOf(Temp.getTimeLeft()));
+            Tleft.setFont(dialogFont);
+            JButton Save = new JButton("儲存");
+            Save.setFont(dialogFont);
+            
+
+
+            Save.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        int newTleft = Integer.parseInt(Tleft.getText());
+                        // 更新DrawPanel.TimeLeft
+                        if ( newTleft >0 ) {
+                            Temp.setTimeLeft(newTleft);
+                            Tleftinput.dispose();				
+                        }else{
+                            JOptionPane.showMessageDialog(p.parent, "請輸入大於0的整數!", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(p.parent, "請輸入有效的數字!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                }
+            });
+
+
+
+
+            Tleftinput.add(Pt);
+            Tleftinput.add(Tleft);
+            Tleftinput.add(Save);
+            //放到最中間
+            Tleftinput.setLocationRelativeTo(p.parent); 
+            Tleftinput.setVisible(true);
+        }else{
+            JLabel ErrorJLabel = new JLabel();
+            ErrorJLabel.setText("請先建立一個新的頁面");
+            ErrorJLabel.setFont(dialogFont);
+            JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public void setbackground(Mazedesignmenu p)
+    {
+        Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
+        int pageNum = pageArray.getSelectedIndex();
+        if (pageNum >= 0){
+            //初始化
+            JDialog Bginput = new JDialog(p.parent,"設置地圖", true);
+            Bginput.setSize(450, 175);
+            Bginput.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            JLabel Pt = new JLabel("請選擇地圖種類:");
+            Pt.setFont(dialogFont);
+            //抓DrawPanel裡面的資料
+            DrawPanel Temp = (DrawPanel)pageArray.getComponentAt(pageNum);
+            JButton Save = new JButton("儲存");
+            Save.setFont(dialogFont);
+            String[] options = {"預設(無)", "草地", "雪地", "沙漠"};
+            JComboBox<String> comboBox = new JComboBox<>(options);
+            comboBox.setSelectedIndex(Temp.getBg());
+            comboBox.setFont(dialogFont);
+            Save.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int newBg = comboBox.getSelectedIndex();
+                    Temp.setBg(newBg);
+                    Bginput.dispose();
+                }
+            });
+
+
+
+
+            Bginput.add(Pt);
+            Bginput.add(comboBox);
+            Bginput.add(Save);
+            //放到最中間
+            Bginput.setLocationRelativeTo(p.parent); 
+            Bginput.setVisible(true);
+        }else{
+            JLabel ErrorJLabel = new JLabel();
+            ErrorJLabel.setText("請先建立一個新的頁面");
+            ErrorJLabel.setFont(dialogFont);
+            JOptionPane.showMessageDialog(null,ErrorJLabel,"Error",JOptionPane.WARNING_MESSAGE);
+        }
+    }
 }
+
+
 
