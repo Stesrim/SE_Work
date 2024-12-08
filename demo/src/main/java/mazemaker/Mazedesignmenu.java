@@ -108,13 +108,13 @@ public class Mazedesignmenu extends JFrame{
 		setPlaytime.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				page.setPlaytime(Mazedesignmenu.this);
+				page.setPlaytime(parent);
             }
         });
 		setbackground.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-				page.setbackground(Mazedesignmenu.this);
+				page.setbackground(parent);
             }
         });
 	    newPage.addActionListener(new ActionListener() {

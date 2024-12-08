@@ -240,13 +240,13 @@ public class WorkSpace extends JPanel{
         }
     }
 
-    public void setPlaytime(Mazedesignmenu p)
+    public void setPlaytime(Makemap p)
     {
         Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
         int pageNum = pageArray.getSelectedIndex();
         if (pageNum >= 0){
             //初始化
-            JDialog Tleftinput = new JDialog(p.parent,"設置遊玩時間", true);
+            JDialog Tleftinput = new JDialog(p,"設置遊玩時間", true);
             Tleftinput.setSize(450, 175);
             Tleftinput.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
             JLabel Pt = new JLabel("請輸入遊玩時間 (s):");
@@ -271,10 +271,10 @@ public class WorkSpace extends JPanel{
                             Temp.setTimeLeft(newTleft);
                             Tleftinput.dispose();				
                         }else{
-                            JOptionPane.showMessageDialog(p.parent, "請輸入大於0的整數!", "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(p, "請輸入大於0的整數!", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(p.parent, "請輸入有效的數字!", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(p, "請輸入有效的數字!", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
@@ -287,7 +287,7 @@ public class WorkSpace extends JPanel{
             Tleftinput.add(Tleft);
             Tleftinput.add(Save);
             //放到最中間
-            Tleftinput.setLocationRelativeTo(p.parent); 
+            Tleftinput.setLocationRelativeTo(p); 
             Tleftinput.setVisible(true);
         }else{
             JLabel ErrorJLabel = new JLabel();
@@ -297,13 +297,13 @@ public class WorkSpace extends JPanel{
         }
     }
 
-    public void setbackground(Mazedesignmenu p)
+    public void setbackground(Makemap p)
     {
         Font dialogFont = new Font("Microsoft JhengHei", Font.BOLD, 21);
         int pageNum = pageArray.getSelectedIndex();
         if (pageNum >= 0){
             //初始化
-            JDialog Bginput = new JDialog(p.parent,"設置地圖", true);
+            JDialog Bginput = new JDialog(p,"設置地圖", true);
             Bginput.setSize(450, 175);
             Bginput.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
             JLabel Pt = new JLabel("請選擇地圖種類:");
@@ -332,7 +332,7 @@ public class WorkSpace extends JPanel{
             Bginput.add(comboBox);
             Bginput.add(Save);
             //放到最中間
-            Bginput.setLocationRelativeTo(p.parent); 
+            Bginput.setLocationRelativeTo(p); 
             Bginput.setVisible(true);
         }else{
             JLabel ErrorJLabel = new JLabel();
