@@ -226,6 +226,13 @@ public class DrawPanel extends JPanel implements Serializable{
 
         // 自訂標籤標題
         String tabTitle = "障礙物";
+        if(label.getType() == 0){
+            tabTitle = "玩家";
+        }else if (label.getType() == 2){
+            tabTitle = "終點";
+        }else if (label.getType() == 1 && label.isPassable() == true){
+            tabTitle = "裝飾物";
+        }
         pageArray.addTab(tabTitle, tabPanel);
         pageArray.setSelectedComponent(tabPanel);
         pageArray.revalidate();
