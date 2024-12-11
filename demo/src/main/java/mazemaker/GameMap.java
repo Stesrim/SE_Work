@@ -8,13 +8,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 
@@ -23,11 +34,17 @@ public class GameMap extends JFrame implements KeyListener {
     private Obstable player;//玩家
     private ArrayList<Obstable> obstables;//存放障礙物、裝飾品、終點的陣列
     private ArrayList<Portal> portals;//存放傳送門的陣列
-
+    //放置遊戲音效
+    private Clip gameClip;
+    //碰撞音效
+    private Clip collisionClip;
+    private boolean isSoundPlaying;
+    //用於控制音量
+    private FloatControl volumeControl;
     //存放地圖的資料
     private JLayeredPane mapPanel;
     //放置時間的標籤
-    private JLabel countdownLabel; 
+    private JLabel countdownLabel;
     //放置結算的標籤 
     private JLabel theendLabel;
 
@@ -81,9 +98,110 @@ public class GameMap extends JFrame implements KeyListener {
         pane.add(mapPanel, JLayeredPane.DEFAULT_LAYER);
         pane.add(countdownLabel, JLayeredPane.PALETTE_LAYER);
         pane.add(theendLabel, JLayeredPane.DRAG_LAYER);
-        
-        
+
+        //遊戲方面的音效
+        isSoundPlaying = false;
+        playBackgroundMusic("gaming.wav", 60);
+        //遊戲被關閉時需要停止音樂
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                stopBackgroundMusic(); // 停止音樂
+                stopCollisionMusic(); // 碰撞音樂關閉
+            }
+        });
         this.setVisible(true);
+    }
+    //改變音量&&音樂
+    private void playBackgroundMusic(String fileName, int volumePercentage) {
+        try {
+            File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/music");
+            String filePath = defaultDir.getPath() + "/" + fileName;
+            File musicFile = new File(filePath);
+            stopBackgroundMusic();
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicFile);
+            gameClip = AudioSystem.getClip();
+            gameClip.open(audioStream);
+
+            // 獲取音量控制
+            volumeControl = (FloatControl) gameClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            // 設定音量
+            if (volumeControl != null) {
+                // 將百分比音量轉換為 dB
+                float min = volumeControl.getMinimum();
+                float max = volumeControl.getMaximum();
+                float dB = min + (max - min) * (volumePercentage / 100.0f); // 計算 dB 值
+                volumeControl.setValue(dB);
+            }
+
+            gameClip.start();
+            gameClip.loop(Clip.LOOP_CONTINUOUSLY); // 循環播放
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to play the background music: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    //碰撞和傳送的音效
+    private void playingSound(String fileName, int volumePercentage) {
+        try {
+            File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/music");
+            String filePath = defaultDir.getPath() + "/" + fileName;
+            File soundFile = new File(filePath);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+            collisionClip = AudioSystem.getClip();
+            collisionClip.open(audioStream);
+            // 獲取音量控制
+            volumeControl = (FloatControl) collisionClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            // 設定音量
+            if (volumeControl != null) {
+                // 將百分比音量轉換為 dB
+                float min = volumeControl.getMinimum();
+                float max = volumeControl.getMaximum();
+                float dB = min + (max - min) * (volumePercentage / 100.0f); // 計算 dB 值
+                volumeControl.setValue(dB);
+            }
+            collisionClip.addLineListener(new LineListener() {
+                @Override
+                public void update(LineEvent event) {
+                    if (event.getType() == LineEvent.Type.STOP) {
+                        // 音效播放完畢，將標誌設為 false 以允許重新播放
+                        isSoundPlaying = false;
+                    }
+                }
+            });
+            if (collisionClip != null && !isSoundPlaying) {
+                collisionClip.setFramePosition(0); // 重置音效播放位置
+                collisionClip.start(); // 播放音效
+                isSoundPlaying = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //停止播放 在關螢幕才會用到
+    private void stopBackgroundMusic() {
+        if (gameClip != null ){
+            if (gameClip.isRunning()) {
+                gameClip.stop(); // 停止播放
+            }
+
+            gameClip.close(); // 關閉音效資源
+            gameClip = null;  // 清理資源
+        }
+    }
+    //停止播放碰撞音效 在關螢幕才會用到
+    private void stopCollisionMusic() {
+        if (collisionClip != null ){
+            if (collisionClip.isRunning()) {
+                collisionClip.stop(); // 停止播放
+            }
+
+            collisionClip.close(); // 關閉音效資源
+            collisionClip = null;  // 清理資源
+        }
     }
     //設定地圖實際大小
     public void setMazesize(int Width, int Height){
@@ -123,6 +241,8 @@ public class GameMap extends JFrame implements KeyListener {
                 countdownLabel.setText("Time left: " + timeLeft/1000 + " s");
                 //如果數到0顯示出遊戲結果
                 if (timeLeft <= 0 || Gameover) {
+                    //失敗的音效
+                    playBackgroundMusic("gameOver.wav", 60);
                     ((Timer)e.getSource()).stop();
                     if(timeLeft <= 0 ){
                         theendLabel.setText("You Lose !");
@@ -296,6 +416,8 @@ public class GameMap extends JFrame implements KeyListener {
                     if (checkPortal() != -1) {
                         for(Portal portal : portals ){
                             if (checkPortal() == portal.getId()) {
+                                //傳送音效
+                                playingSound("teleport.wav", 60);
                                 newmapX -= portal.getX() + (portal.getWidth() - player.getWidth()) / 2 - newX;
                                 newmapY -= portal.getY() + (portal.getHeight() - player.getHeight()) / 2 - newY;
                                 newX = portal.getX() + (portal.getWidth() - player.getWidth()) / 2;
@@ -312,6 +434,8 @@ public class GameMap extends JFrame implements KeyListener {
             player.setLocation(newX, newY);
             checkWindowMargin(newmapX, newmapY);
         }else{
+            //碰撞音效
+            playingSound("collision.wav", 60);
             //else 則慢慢減少位置間的距離差
             for (int i = 10 ;i >= 0; i--) {
                 //逐步減少newX,newY的移動距離
@@ -330,6 +454,8 @@ public class GameMap extends JFrame implements KeyListener {
         //如果玩家與終點接觸到->遊戲結束
         if (checkEndSpot()){
             Gameover = true;
+            //調整成過關的音效
+            playBackgroundMusic("gameVictory.wav", 60);
         }
     }
 
