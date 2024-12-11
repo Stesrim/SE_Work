@@ -39,6 +39,7 @@ public class GameMap extends JFrame implements KeyListener {
     //碰撞音效
     private Clip collisionClip;
     private boolean isSoundPlaying;
+    private Timer timer;
     //用於控制音量
     private FloatControl volumeControl;
     //存放地圖的資料
@@ -108,6 +109,9 @@ public class GameMap extends JFrame implements KeyListener {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 stopBackgroundMusic(); // 停止音樂
                 stopCollisionMusic(); // 碰撞音樂關閉
+                if (timer != null) {
+                    timer.stop();  // 視窗關閉時停止計時器
+                }
             }
         });
         this.setVisible(true);
@@ -234,7 +238,7 @@ public class GameMap extends JFrame implements KeyListener {
     //倒數計時
     private void startCountdown() {
         //每100毫秒判斷一次
-        Timer timer = new Timer(100, new ActionListener() {
+        timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timeLeft-= 100;
@@ -455,8 +459,6 @@ public class GameMap extends JFrame implements KeyListener {
                 //調整成過關的音效
                 playBackgroundMusic("gameVictory.wav", 60);
                 Gameover = true;
-                
-                
             }
         }
     }

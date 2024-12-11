@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 
 
 public class DrawPanel extends JPanel implements Serializable{
+    private static final long serialVersionUID = 1L;
 	private int Background;// 預設為0
 	private int TimeLeft;// 預設為60
     //編譯要用到的長寬
