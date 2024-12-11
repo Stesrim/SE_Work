@@ -240,12 +240,12 @@ public class GameMap extends JFrame implements KeyListener {
                 timeLeft-= 100;
                 countdownLabel.setText("Time left: " + timeLeft/1000 + " s");
                 //如果數到0顯示出遊戲結果
-                if (timeLeft <= 0 || Gameover) {
-                    //失敗的音效
-                    playBackgroundMusic("gameOver.wav", 60);
+                if (timeLeft <= 0 || Gameover){
                     ((Timer)e.getSource()).stop();
                     if(timeLeft <= 0 ){
                         theendLabel.setText("You Lose !");
+                        //失敗的音效
+                        playBackgroundMusic("gameOver.wav", 60);
                     }
                     Gameover = true;
                     theendLabel.setVisible(true);
@@ -428,34 +428,36 @@ public class GameMap extends JFrame implements KeyListener {
                     }
                     break;
             }
-        }
-        //如果沒有接觸到障礙物和碰到邊界，則更新玩家位置以及更新地圖的相對位置視角
-        if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
-            player.setLocation(newX, newY);
-            checkWindowMargin(newmapX, newmapY);
-        }else{
-            //碰撞音效
-            playingSound("collision.wav", 60);
-            //else 則慢慢減少位置間的距離差
-            for (int i = 10 ;i >= 0; i--) {
-                //逐步減少newX,newY的移動距離
-                newX -= moveX[type] / 10;
-                newY -= moveY[type] / 10;
-                //慢慢恢復地圖相對位置視角
-                newmapX += moveX[type] / 10; 
-                newmapY += moveY[type] / 10;
-                if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
-                    player.setLocation(newX, newY);
-                    checkWindowMargin(newmapX, newmapY);
-                    break;
+            //如果沒有接觸到障礙物和碰到邊界，則更新玩家位置以及更新地圖的相對位置視角
+            if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
+                player.setLocation(newX, newY);
+                checkWindowMargin(newmapX, newmapY);
+            }else{
+                //碰撞音效
+                playingSound("collision.wav", 60);
+                //else 則慢慢減少位置間的距離差
+                for (int i = 10 ;i >= 0; i--) {
+                    //逐步減少newX,newY的移動距離
+                    newX -= moveX[type] / 10;
+                    newY -= moveY[type] / 10;
+                    //慢慢恢復地圖相對位置視角
+                    newmapX += moveX[type] / 10; 
+                    newmapY += moveY[type] / 10;
+                    if (!checkCollision(newX, newY) && !checkMargin(newX, newY)) {
+                        player.setLocation(newX, newY);
+                        checkWindowMargin(newmapX, newmapY);
+                        break;
+                    }
                 }
             }
-        }
-        //如果玩家與終點接觸到->遊戲結束
-        if (checkEndSpot()){
-            Gameover = true;
-            //調整成過關的音效
-            playBackgroundMusic("gameVictory.wav", 60);
+            //如果玩家與終點接觸到->遊戲結束
+            if (checkEndSpot()){
+                //調整成過關的音效
+                playBackgroundMusic("gameVictory.wav", 60);
+                Gameover = true;
+                
+                
+            }
         }
     }
 
