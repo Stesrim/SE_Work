@@ -1,1 +1,2 @@
-開始遊戲請執行start.bat檔，否則無法載入存檔。
+若java version為23.0.0 會有bug。
+在cmd 輸入 java -version 查詢本電腦的java version。
