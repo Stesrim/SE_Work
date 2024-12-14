@@ -130,9 +130,9 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 指定檔案的具體位置
-                File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+                File defaultDir = new File(System.getProperty("user.dir"), "demo/project");
                 // 您可以將這裡的路徑修改為固定的檔案路徑
-                String filePath = defaultDir.getPath() + "/hihhi";  // 存放的是預設地圖
+                String filePath = defaultDir.getPath() + "/defaultmap";  // 存放的是預設地圖
         
                 File selectedFile = new File(filePath);
         
@@ -175,7 +175,7 @@ public class MainWindow extends JFrame {
 				
 				
                 //抓到放檔案的相對位置
-                File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+                File defaultDir = new File(System.getProperty("user.dir"), "demo/project");
                 JFileChooser fileChooser = new JFileChooser(defaultDir);
                 fileChooser.setDialogTitle("選擇載入路徑位置");
                 int userSelection = fileChooser.showOpenDialog(null);

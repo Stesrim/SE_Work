@@ -155,7 +155,7 @@ public class WorkSpace extends JPanel{
         int pageNum = pageArray.getSelectedIndex();
             if (pageNum >= 0){
                 //抓到放檔案的相對位置
-                File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+                File defaultDir = new File(System.getProperty("user.dir"), "demo/project");
                 JFileChooser fileChooser = new JFileChooser(defaultDir);
                 fileChooser.setDialogTitle("選擇保存路徑位置");
                 //抓到目前所在的頁面
@@ -210,7 +210,7 @@ public class WorkSpace extends JPanel{
         //只讓玩家開最多五個頁面
         if (pageNum <= 4){
             //抓到放檔案的相對位置
-            File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/project");
+            File defaultDir = new File(System.getProperty("user.dir"), "demo/project");
             JFileChooser fileChooser = new JFileChooser(defaultDir);
             fileChooser.setDialogTitle("選擇載入路徑位置");
 

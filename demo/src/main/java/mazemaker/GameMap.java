@@ -119,7 +119,7 @@ public class GameMap extends JFrame implements KeyListener {
     //改變音量&&音樂
     private void playBackgroundMusic(String fileName, int volumePercentage) {
         try {
-            File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/music");
+            File defaultDir = new File(System.getProperty("user.dir"), "demo/music");
             String filePath = defaultDir.getPath() + "/" + fileName;
             File musicFile = new File(filePath);
             stopBackgroundMusic();
@@ -150,7 +150,7 @@ public class GameMap extends JFrame implements KeyListener {
     //碰撞和傳送的音效
     private void playingSound(String fileName, int volumePercentage) {
         try {
-            File defaultDir = new File(System.getProperty("user.dir"), "mazemaker/demo/music");
+            File defaultDir = new File(System.getProperty("user.dir"), "demo/music");
             String filePath = defaultDir.getPath() + "/" + fileName;
             File soundFile = new File(filePath);
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
