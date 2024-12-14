@@ -1,1 +1,1 @@
-如java version為23.0.0 會有bug。
+如java 版本為23.0.0 會有bug。
