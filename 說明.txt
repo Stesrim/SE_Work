@@ -1,1 +1,1 @@
-開始遊戲請執行start.bat檔，否則無法載入存檔。
+如java version為23.0.0 會有bug。
